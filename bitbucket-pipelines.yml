@@ -1,0 +1,17 @@
+image: node:20.10.0
+
+pipelines:
+  branches:
+    feat/kinan/LIC-77:
+      - step:
+          name: Test and Build
+          caches:
+            - node
+          script:
+            - pushd ./MBE.LegalPortal.UI         
+            - npm install --legacy-peer-deps --no-audit
+            - npm install -g @angular/cli
+            - ng build --prod --base-href /capp/ --configuration=staging
+            - echo "$(ls -la dist/)"
+          artifacts:
+            - MBE.LegalPortal.UI/dist/**
