@@ -2,7 +2,7 @@ image: node:20.10.0
 
 pipelines:
   branches:
-    feat/kinan/LIC-77:
+    master:
       - step:
           name: Test and Build
           caches:
