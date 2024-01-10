@@ -1,0 +1,68 @@
+image: node:20.10.0
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:  
+          name: Build
+          caches:
+            - node
+          script:
+            - cd ./MBE.LegalPortal.UI
+            - npm install
+            - npm run build
+          artifacts:
+            - MBE.LegalPortal.UI/dist/**
+  branches:
+    master:
+      - step:
+          name: Build
+          caches:
+            - node
+          script:
+            - cd ./MBE.LegalPortal.UI
+            - npm install
+            - npm run build
+          artifacts:
+            - MBE.LegalPortal.UI/dist/**
+      - step:
+          name: Archive to AWS
+          script:
+            # Install awscli
+            - apt-get update && apt-get install -y awscli
+            # Configure AWS CLI
+            - aws configure set aws_access_key_id ${aws_access_key_id}
+            - aws configure set aws_secret_access_key ${aws_secret_access_key}
+            - aws configure set default.region ${aws_default_region}
+            # Install zip
+            - apt-get update && apt-get install -y zip
+            # Define the archive file path
+            - export Archive_File=./MBE.LegalPortal.UI/dist/publish_archive.zip
+            # Zip all content and save to Archive_File
+            - zip -r -9 $Archive_File ./MBE.LegalPortal.UI/dist/*
+            # Copy the archive to AWS S3
+            - aws s3 cp "$Archive_File" "${s3_url}/Api/Dev/build_${BITBUCKET_BUILD_NUMBER}/publish_archive.zip"
+            - aws s3 cp "$Archive_File" "${s3_url}/UI/Dev/build_${BITBUCKET_BUILD_NUMBER}/publish_archive.zip"
+      - step:
+          name: Deploy to EC2
+          script:
+            # Install necessary tools on the Bitbucket Pipeline instance
+            - apt-get update && apt-get install -y sshpass
+            
+            # Install awscli
+            - sshpass -p "${server_password}" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo apt-get update && sudo apt-get install -y awscli"
+
+            # Configure AWS CLI
+            - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo aws configure set aws_access_key_id ${aws_access_key_id} && sudo aws configure set aws_secret_access_key ${aws_secret_access_key} && sudo aws configure set default.region ${aws_default_region}"
+
+            # Download the archive from S3 to EC2
+            - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo aws s3 cp ${s3_url}/UI/Dev/build_${BITBUCKET_BUILD_NUMBER}/publish_archive.zip /var/www/"
+
+            # Connect to EC2 and extract the artifacts
+            - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo unzip -o /var/www/publish_archive.zip -d /var/www/legal-portal-ui/"
+
+            # Move Artifacts to a specific directory on EC2
+            - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo mv /var/www/legal-portal-ui/MBE.LegalPortal.UI/dist/mbe.legal-portal.ui/browser/* /var/www/legal-portal-ui && sudo rm -r /var/www/legal-portal-ui/MBE.LegalPortal.UI"
+
+            # Restart Application on the EC2 instance
+            - sshpass -p 'C1|0..q8y0As' ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo nginx -t; sudo nginx -s reload; sudo systemctl daemon-reload; echo Success"
