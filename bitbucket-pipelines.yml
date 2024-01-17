@@ -10,7 +10,7 @@ pipelines:
           script:
             - cd ./MBE.LegalPortal.UI
             - npm install
-            - npm run build
+            - npm run build -- --configuration=production
           artifacts:
             - MBE.LegalPortal.UI/dist/**
   branches:
@@ -22,7 +22,7 @@ pipelines:
           script:
             - cd ./MBE.LegalPortal.UI
             - npm install
-            - npm run build
+            - npm run build -- --configuration=production
           artifacts:
             - MBE.LegalPortal.UI/dist/**
       - step:
