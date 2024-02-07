@@ -6,7 +6,7 @@ import { Region } from '../region.model';
 @Component({
   selector: 'app-private-page',
   templateUrl: './private-page.component.html',
-  styleUrl: './private-page.component.css'
+  styleUrl: './private-page.component.scss'
 })
 export class PrivatePageComponent implements OnInit {
   profile?: Profile;
