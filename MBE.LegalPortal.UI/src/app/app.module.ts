@@ -8,11 +8,11 @@ import { HomeComponent } from './home/home.component';
 import { PublicPageComponent } from './public-page/public-page.component';
 import { PrivatePageComponent } from './private-page/private-page.component';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { Clietn_ID, Access_As_User_Scope, Tenant_ID } from './constants';
 import { environment } from '../environments/environment';
+import { MaterialModule } from '../Material.Module';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { environment } from '../environments/environment';
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
-    MatButtonModule,
+    MaterialModule,
     MsalModule.forRoot(new PublicClientApplication
       (
         {
