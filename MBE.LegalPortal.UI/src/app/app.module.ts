@@ -12,7 +12,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { Clietn_ID, Access_As_User_Scope, Tenant_ID } from './constants';
 import { environment } from '../environments/environment';
+import { HeaderComponent } from './dashboard-layout/header/header.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { FormsModule } from '@angular/forms';
+import { SidenavComponent } from './dashboard-layout/sidenav/sidenav.component';
 import { MaterialModule } from '../Material.Module';
+import { LayoutComponent } from './dashboard-layout/layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -20,11 +25,15 @@ import { MaterialModule } from '../Material.Module';
     PrivatePageComponent,
     PublicPageComponent,
     HomeComponent,
+    HeaderComponent,
+    SidenavComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    FormsModule,
     MaterialModule,
     MsalModule.forRoot(new PublicClientApplication
       (
@@ -66,7 +75,7 @@ import { MaterialModule } from '../Material.Module';
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
       multi: true
-    }, MsalGuard],
+    }, MsalGuard, provideAnimationsAsync()],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }
