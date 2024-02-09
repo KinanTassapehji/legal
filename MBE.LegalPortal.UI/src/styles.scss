@@ -1,0 +1,27 @@
+/*legal portal variables*/
+:root{
+    --lp-primary: #0088ea;
+    --lp-secondary: #263644;
+    --lp-background: #f1f5f9;
+    --lp-success: #27AE60;
+    --lp-warning: #DF2029;
+    --lp-grey: #64748b;
+    --lp-white: #ffffff;
+    --lp-black: #414141;
+    --lp-menu-shadow: 0 0 transparent, 0 0 transparent, 0 0 transparent, 0 0 transparent, 0 1px 3px 0 rgba(0,0,0,0.1),0 1px 2px 0 rgba(0,0,0,0.06);
+    --lp-card-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+body {
+    background: var(--lp-background);
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
