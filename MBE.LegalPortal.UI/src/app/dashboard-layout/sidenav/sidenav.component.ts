@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import * as feather from 'feather-icons';
 
 @Component({
   selector: 'app-sidenav',
@@ -8,7 +7,5 @@ import * as feather from 'feather-icons';
   encapsulation: ViewEncapsulation.None
 })
 export class SidenavComponent {
-  ngAfterViewInit() {
-    feather.replace();
-  }
+  
 }
