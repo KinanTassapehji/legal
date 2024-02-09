@@ -1,13 +1,11 @@
-@import "variables";
-
 .lp-mat-nav-list{
     .mdc-list-item__primary-text{
         display: flex;
         align-items: center;
         gap: 1rem;
-        color: $lp-grey;
+        color: var(--lp-grey);
         &:hover, &:focus{            
-            color: $lp-grey;
+            color: var(--lp-grey);
         }
     }
 }
