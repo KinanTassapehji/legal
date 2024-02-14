@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddApplicationComponent } from '../modal/add-application/add-application.component';
 
 @Component({
   selector: 'app-application',
@@ -6,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './application.component.scss'
 })
 export class ApplicationComponent {
-
+  constructor(private matDialog:MatDialog){}
+  openDialog(){
+    this.matDialog.open(AddApplicationComponent,{
+      width: "800px"
+    })
+  }
 }
