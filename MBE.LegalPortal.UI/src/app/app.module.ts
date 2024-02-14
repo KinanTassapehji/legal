@@ -18,6 +18,8 @@ import { FormsModule } from '@angular/forms';
 import { SidenavComponent } from './dashboard-layout/sidenav/sidenav.component';
 import { MaterialModule } from '../Material.Module';
 import { LayoutComponent } from './dashboard-layout/layout/layout.component';
+import { ApplicationComponent } from './components/application/application.component';
+import { AddApplicationComponent } from './components/modal/add-application/add-application.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { LayoutComponent } from './dashboard-layout/layout/layout.component';
     HeaderComponent,
     SidenavComponent,
     LayoutComponent,
+    ApplicationComponent,
+    AddApplicationComponent,
   ],
   imports: [
     BrowserModule,
