@@ -25,3 +25,10 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+.main-container{
+    padding: 1rem;
+}
+.card{
+    border: none;
+    box-shadow: var(--lp-menu-shadow);
+}
