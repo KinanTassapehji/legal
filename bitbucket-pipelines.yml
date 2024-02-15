@@ -62,7 +62,7 @@ pipelines:
             - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo unzip -o /var/www/publish_archive.zip -d /var/www/legal-portal-ui/"
 
             # Move Artifacts to a specific directory on EC2
-            - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo mv /var/www/legal-portal-ui/MBE.LegalPortal.UI/dist/mbe.legal-portal.ui/browser/* /var/www/legal-portal-ui && sudo rm -r /var/www/legal-portal-ui/MBE.LegalPortal.UI"
+            - sshpass -p "C1|0..q8y0As" ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo rm -r /var/www/legal-portal-ui/assets/* && sudo mv /var/www/legal-portal-ui/MBE.LegalPortal.UI/dist/mbe.legal-portal.ui/browser/* /var/www/legal-portal-ui && sudo rm -r /var/www/legal-portal-ui/MBE.LegalPortal.UI"
 
             # Restart Application on the EC2 instance
             - sshpass -p 'C1|0..q8y0As' ssh -o StrictHostKeyChecking=no ubuntu@${server} "sudo nginx -t; sudo nginx -s reload; sudo systemctl daemon-reload; echo Success"
