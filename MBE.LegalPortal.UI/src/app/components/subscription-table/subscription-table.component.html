@@ -1,0 +1,31 @@
+<table mat-table [dataSource]="dataSource" class=" subscription-plan-table mat-elevation-z0">
+  
+    <!-- constraintTitle Column -->
+    <ng-container matColumnDef="constraintTitle">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <td mat-cell *matCellDef="let element"> {{element.constraintTitle}} </td>
+    </ng-container>
+  
+    <!-- silver Column -->
+    <ng-container matColumnDef="silver">
+      <th mat-header-cell *matHeaderCellDef> Silver </th>
+      <td mat-cell *matCellDef="let element"> {{element.silver}} </td>
+    </ng-container>
+  
+    <!-- gold Column -->
+    <ng-container matColumnDef="gold">
+      <th mat-header-cell *matHeaderCellDef> Gold </th>
+      <td mat-cell *matCellDef="let element"> {{element.gold}} </td>
+    </ng-container>
+  
+    <!-- platinum Column -->
+    <ng-container matColumnDef="platinum">
+      <th mat-header-cell *matHeaderCellDef> Platinum </th>
+      <td mat-cell *matCellDef="let element"> {{element.platinum}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  
