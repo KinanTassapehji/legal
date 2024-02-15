@@ -20,6 +20,7 @@ import { MaterialModule } from '../Material.Module';
 import { LayoutComponent } from './dashboard-layout/layout/layout.component';
 import { ApplicationComponent } from './components/application/application.component';
 import { AddApplicationComponent } from './components/modal/add-application/add-application.component';
+import { SubscriptionTableComponent } from './components/subscription-table/subscription-table.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AddApplicationComponent } from './components/modal/add-application/add-
     LayoutComponent,
     ApplicationComponent,
     AddApplicationComponent,
+    SubscriptionTableComponent,
   ],
   imports: [
     BrowserModule,

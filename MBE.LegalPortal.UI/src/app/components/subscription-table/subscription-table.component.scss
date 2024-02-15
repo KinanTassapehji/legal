@@ -1,0 +1,22 @@
+table.subscription-plan-table{
+    font-size: 1rem;
+    .mat-mdc-header-cell{
+        font-size: 1.15rem;
+    }
+    tr{
+        td, th{            
+            &:first-child{
+                font-size: 1rem;
+                font-weight: 400;
+                background-color: var(--lp-white)!important;
+            }
+            $var: 0.05;         
+            @for $i from 1 through 10 {
+                &:nth-child(#{$i}) {
+                background-color:  rgba(var(--lp-secondary-rgb), #{$var});
+                  $var: $var + 0.05;
+                }
+              }
+        }
+    }
+}
