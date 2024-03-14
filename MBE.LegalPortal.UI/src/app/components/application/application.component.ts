@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddApplicationComponent } from '../modal/add-application/add-application.component';
+import { AddApplicationComponent } from './add-application/add-application.component';
 
 @Component({
   selector: 'app-application',

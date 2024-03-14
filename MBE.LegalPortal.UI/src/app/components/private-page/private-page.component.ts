@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AzureAdService } from '../services/azure-ad.service';
-import { Profile } from '../profile.model';
-import { Region } from '../region.model';
+import { AzureAdService } from '../../services/azure-ad.service';
+import { IProfile } from '../../interfaces/profile';
+import { IRegion } from '../../interfaces/region';
 
 @Component({
   selector: 'app-private-page',
@@ -9,8 +9,8 @@ import { Region } from '../region.model';
   styleUrl: './private-page.component.scss'
 })
 export class PrivatePageComponent implements OnInit {
-  profile?: Profile;
-  regions: Region[] = [];
+  profile?: IProfile;
+  regions: IRegion[] = [];
 
   constructor(private azureAdService: AzureAdService) { }
 

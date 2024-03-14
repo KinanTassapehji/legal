@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, map } from 'rxjs';
-import { Profile } from '../profile.model';
+import { IProfile } from '../interfaces/profile';
 import { environment } from '../../environments/environment';
 
 const GRAPH_ENDPOINT = 'https://graph.microsoft.com/v1.0/me';
@@ -18,7 +18,7 @@ export class AzureAdService {
   constructor(private httpClient: HttpClient) { }
 
   getUserProfile() {
-    return this.httpClient.get<Profile>(GRAPH_ENDPOINT);
+    return this.httpClient.get<IProfile>(GRAPH_ENDPOINT);
   }
 
   getRegions() {
