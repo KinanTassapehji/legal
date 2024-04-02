@@ -1,1 +1,26 @@
-<p>card works!</p>
+<div class="card application-card">
+  <div class="card-image">
+    <img [src]="image" [alt]="title">
+  </div>
+  <div class="card-content">
+    <div class="card-title">{{ title }}</div>
+    <div class="card-action">
+      <button mat-icon-button [matMenuTriggerFor]="menu1" aria-label="application action">
+        <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
+      </button>
+      <mat-menu #menu1="matMenu" xPosition="before">
+        <button mat-menu-item (click)="onSetAsDefault()">
+          <mat-icon class="material-symbols-outlined">task_alt</mat-icon>
+          <span>Set as default</span>
+        </button>
+        <button mat-menu-item (click)="onDelete()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          <span>Delete Application</span>
+        </button>
+      </mat-menu>
+      <div class="selected-icon" *ngIf="selected">
+        <mat-icon class="material-symbols-outlined">task_alt</mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

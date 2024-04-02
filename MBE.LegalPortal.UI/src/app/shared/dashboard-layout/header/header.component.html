@@ -8,8 +8,8 @@
         <button mat-button [matMenuTriggerFor]="menu" aria-label="user settings" class="user-profile-button-container">
         <div class="user-profile-button-section">
             <div class="user-profile-text-cont">
-                <h2>John Doe</h2>
-                <h3>johndoe&#64;email.com</h3>
+                <h2>{{ profile?.displayName }}</h2>
+                <h3>{{ profile?.userPrincipalName }}</h3>
             </div>
             <div class="user-profile-avatar">
                 <img src="assets/images/avatar.png" alt="user avatar">
@@ -21,7 +21,7 @@
           <mat-icon class="material-symbols-outlined">settings</mat-icon>
           <span>Settings</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="logout()">
           <mat-icon class="material-symbols-outlined">power_settings_new</mat-icon>
           <span>Log out</span>
         </button>
