@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, map } from 'rxjs';
 import { ISubscriptionPlan } from '../interfaces/subscription-plan';
 import { SubscriptionPlans_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';

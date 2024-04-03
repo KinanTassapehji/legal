@@ -45,6 +45,18 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     {
       httpMethod: 'GET',
       scopes: [Access_As_User_Scope]
+    },
+    {
+      httpMethod: 'POST',
+      scopes: [Access_As_User_Scope]
+    },
+    {
+      httpMethod: 'PUT',
+      scopes: [Access_As_User_Scope]
+    },
+    {
+      httpMethod: 'DELETE',
+      scopes: [Access_As_User_Scope]
     }
   ]);
 

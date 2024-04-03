@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, pipe, tap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, map } from 'rxjs';
 import { IApplication } from '../interfaces/application';
-import { AzureAdService } from './azure-ad.service';
 import { Applications_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
+import { IApplicationInstance } from '../interfaces/application-instance';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +22,16 @@ export class ApplicationService {
     );
   }
 
+  getApplicationById(id: number): Observable<IApplicationInstance[]> {
+    return this.http.get<any>(`${Applications_Url}/${id}`)
+      .pipe(
+        map(response => response.data.applicationInstances),
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
   deleteApplication(id: number): Observable<void> {
-    const url = '${Applications_Url}/${id}';
-    return this.http.delete<void>(url)
+    return this.http.delete<void>(`${Applications_Url}/${id}`)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );

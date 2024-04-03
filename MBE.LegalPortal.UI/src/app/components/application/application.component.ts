@@ -4,6 +4,7 @@ import { AddApplicationComponent } from './add-application/add-application.compo
 import { Subscription } from 'rxjs';
 import { IApplication } from "../../interfaces/application";
 import { ApplicationService } from "../../services/application.service";
+import { IApplicationInstance } from '../../interfaces/application-instance';
 
 @Component({
   selector: 'app-application',
@@ -15,7 +16,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   applications: IApplication[] = [];
   errorMessage = '';
 
-  constructor(private matDialog:MatDialog, private applicationService: ApplicationService){}
+  displayedColumns: string[] = ['id', 'account', 'name', 'tenants', 'createdOn'];
+  dataSource: IApplicationInstance[] = [];
+
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -26,9 +30,9 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   openDialog() {
-    this.matDialog.open(AddApplicationComponent,{
+    this.matDialog.open(AddApplicationComponent, {
       width: "800px"
-    })
+    });
   }
 
   getApplications() {
@@ -40,6 +44,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         if (this.applications.length > 0) {
           // Set the first application as selected
           this.applications[0].selected = true;
+          this.getApplicationInstances(this.applications[0].id);
         }
       },
       error: err => this.errorMessage = err
@@ -63,5 +68,19 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       // Set selected to true for the application with the given ID
       app.selected = app.id === id;
     });
+  }
+
+  onCardClick(id: number) {
+    this.getApplicationInstances(id);
+  }
+
+  getApplicationInstances(id: number) {
+    this.applicationService.getApplicationById(id)
+      .subscribe({
+        next: instances => {
+          this.dataSource = instances;
+        },
+        error: err => this.errorMessage = err
+      });
   }
 }

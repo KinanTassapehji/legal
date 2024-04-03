@@ -12,6 +12,7 @@ export class CardComponent {
   @Input() selected!: boolean;
   @Output() delete: EventEmitter<number> = new EventEmitter<number>();
   @Output() setAsDefault: EventEmitter<number> = new EventEmitter<number>();
+  @Output() cardClick: EventEmitter<number> = new EventEmitter<number>();
 
   onDelete(): void {
     this.delete.emit(this.id);
@@ -20,5 +21,9 @@ export class CardComponent {
   onSetAsDefault(): void {
     this.selected = true;
     this.setAsDefault.emit(this.id);
+  }
+
+  onCardClick(): void {
+    this.cardClick.emit(this.id);
   }
 }
