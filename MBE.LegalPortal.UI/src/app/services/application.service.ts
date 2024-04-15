@@ -30,6 +30,13 @@ export class ApplicationService {
       );
   }
 
+  createApplication(applicationDto: any): Observable<any> {
+    return this.http.post(Applications_Url, applicationDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
   deleteApplication(id: number): Observable<void> {
     return this.http.delete<void>(`${Applications_Url}/${id}`)
       .pipe(

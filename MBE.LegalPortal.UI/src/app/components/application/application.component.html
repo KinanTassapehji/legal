@@ -1,5 +1,7 @@
 <div class="main-container">
   <div class="row">
+    <h2>Applications</h2>
+    <!-- Application cards -->
     <div class="col-sm-12 col-md-3" *ngFor="let app of applications; let i = index">
       <app-card [id]="app.id"
                 [title]="app.name"
@@ -10,14 +12,21 @@
                 (cardClick)="onCardClick(app.id)">
       </app-card>
     </div>
+    <!-- Add new application button -->
     <div class="col-sm-12 col-md-3">
-      <div class="card add-new-application-card" (click)="openDialog()">
+      <div class="card add-new-application-card" (click)="openAddApplicationDialog()">
         <mat-icon class="material-symbols-outlined">add</mat-icon>
         <span>Add Application</span>
       </div>
     </div>
   </div>
-
+  <br />
+  <!-- Application Instance section -->
+  <h2>Application Instance</h2>
+  <!-- Add Application Instance button -->
+  <div class="col-md-12">
+    <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
+  </div>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
@@ -57,4 +66,3 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
-

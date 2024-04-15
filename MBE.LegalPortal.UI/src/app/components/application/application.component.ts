@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { IApplication } from "../../interfaces/application";
 import { ApplicationService } from "../../services/application.service";
 import { IApplicationInstance } from '../../interfaces/application-instance';
+import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 
 @Component({
   selector: 'app-application',
@@ -14,6 +15,7 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 export class ApplicationComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   applications: IApplication[] = [];
+  selectedApplication: IApplication | undefined;
   errorMessage = '';
 
   displayedColumns: string[] = ['id', 'account', 'name', 'tenants', 'createdOn'];
@@ -29,9 +31,30 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  openDialog() {
-    this.matDialog.open(AddApplicationComponent, {
+  openAddApplicationDialog() {
+    const dialogRef = this.matDialog.open(AddApplicationComponent, {
       width: "800px"
+    });
+
+    dialogRef.componentInstance.applicationAdded.subscribe(() => {
+      this.getApplications(); // Refresh the list of applications
+    });
+  }
+
+  openAddApplicationInstanceDialog() {
+    const dialogRef = this.matDialog.open(AddApplicationInstanceComponent, {
+      width: "800px",
+      data: {
+        applications: this.applications, // Pass applications data to the dialog component
+      }
+    });
+
+    dialogRef.componentInstance.applicationInstanceAdded.subscribe((applicationInstanceId: number) => {
+      if (this.selectedApplication) {
+        this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
+      } else {
+        console.error("selectedApplication is undefined");
+      }
     });
   }
 
@@ -43,6 +66,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         // Check if there are applications
         if (this.applications.length > 0) {
           // Set the first application as selected
+          this.selectedApplication = applications[0];
           this.applications[0].selected = true;
           this.getApplicationInstances(this.applications[0].id);
         }
@@ -68,6 +92,12 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       // Set selected to true for the application with the given ID
       app.selected = app.id === id;
     });
+
+    // Find the application with the given ID
+    const selectedApp = this.applications.find(app => app.id === id);
+
+    // Set the found application as the selectedApplication
+    this.selectedApplication = selectedApp;
   }
 
   onCardClick(id: number) {
@@ -75,12 +105,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   getApplicationInstances(id: number) {
-    this.applicationService.getApplicationById(id)
-      .subscribe({
-        next: instances => {
-          this.dataSource = instances;
-        },
-        error: err => this.errorMessage = err
-      });
+    this.applicationService.getApplicationById(id).subscribe({
+      next: instances => {
+        this.dataSource = instances;
+      },
+      error: err => this.errorMessage = err
+    });
   }
 }

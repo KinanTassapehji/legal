@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MsalGuard, MsalInterceptor, MsalModule, MsalRedirectComponent, MsalService, MsalBroadcastService, MSAL_INSTANCE, MSAL_GUARD_CONFIG, MsalGuardConfiguration, MSAL_INTERCEPTOR_CONFIG, MsalInterceptorConfiguration, ProtectedResourceScopes } from '@azure/msal-angular';
-import { InteractionType, LogLevel, PublicClientApplication, IPublicClientApplication } from '@azure/msal-browser';
+import { InteractionType, PublicClientApplication, IPublicClientApplication } from '@azure/msal-browser';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +17,7 @@ import { MaterialModule } from '../Material.Module';
 import { LayoutComponent } from './shared/dashboard-layout/layout/layout.component';
 import { ApplicationComponent } from './components/application/application.component';
 import { AddApplicationComponent } from './components/application/add-application/add-application.component';
+import { AddApplicationInstanceComponent } from './components/application/add-application-instance/add-application-instance.component';
 import { SubscriptionPlanComponent } from './components/subscription-plan/subscription-plan.component';
 import { CardComponent } from './shared/card/card.component';
 import { loginRequest, msalConfig } from './auth/auth-config';
@@ -74,6 +75,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     LayoutComponent,
     ApplicationComponent,
     AddApplicationComponent,
+    AddApplicationInstanceComponent,
     SubscriptionPlanComponent,
     CardComponent,
   ],
@@ -83,6 +85,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     RouterModule.forRoot(routes),
     FormsModule,
     MaterialModule,
+    BrowserAnimationsModule,
     MsalModule.forRoot(new PublicClientApplication
       (
         {
