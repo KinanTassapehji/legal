@@ -6,6 +6,8 @@ import { IApplication } from "../../interfaces/application";
 import { ApplicationService } from "../../services/application.service";
 import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ApplicationOverviewComponent } from './application-overview/application-overview.component';
 
 @Component({
   selector: 'app-application',
@@ -21,8 +23,13 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'account', 'name', 'tenants', 'createdOn'];
   dataSource: IApplicationInstance[] = [];
 
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService) { }
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService,private bottomSheet: MatBottomSheet) { }
 
+  openBottomSheet(): void {
+    this.bottomSheet.open(ApplicationOverviewComponent, {
+      panelClass: 'application-overview-bottomsheet-container'
+    });
+  }
   ngOnInit(): void {
     this.getApplications();
   }

@@ -26,6 +26,9 @@
   <!-- Add Application Instance button -->
   <div class="col-md-12">
     <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
+    <!-- Dummy button you can remove this after implementation-->
+    <button mat-raised-button (click)="openBottomSheet()">Application Overview</button>
+    <!-- Dummy button you can remove this after implementation-->
   </div>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Id Column -->
