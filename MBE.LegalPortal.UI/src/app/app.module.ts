@@ -21,7 +21,7 @@ import { AddApplicationInstanceComponent } from './components/application/add-ap
 import { SubscriptionPlanComponent } from './components/subscription-plan/subscription-plan.component';
 import { CardComponent } from './shared/card/card.component';
 import { loginRequest, msalConfig } from './auth/auth-config';
-import { ApplicationOverviewComponent } from './components/application/application-overview/application-overview.component';
+import { ApplicationOverviewComponent } from './components/application/application-instance-overview/application-instance-overview.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);

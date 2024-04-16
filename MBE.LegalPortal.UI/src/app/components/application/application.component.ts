@@ -7,7 +7,7 @@ import { ApplicationService } from "../../services/application.service";
 import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ApplicationOverviewComponent } from './application-overview/application-overview.component';
+import { ApplicationOverviewComponent } from './application-instance-overview/application-instance-overview.component';
 
 @Component({
   selector: 'app-application',
@@ -27,7 +27,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   openBottomSheet(): void {
     this.bottomSheet.open(ApplicationOverviewComponent, {
-      panelClass: 'application-overview-bottomsheet-container'
+      panelClass: 'application-overview-bottomsheet-container',
+      hasBackdrop: false
     });
   }
   ngOnInit(): void {
