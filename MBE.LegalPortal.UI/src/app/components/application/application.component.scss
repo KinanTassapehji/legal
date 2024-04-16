@@ -48,3 +48,15 @@
     color: var(--lp-grey);
     cursor: pointer;
 }
+.application-instance-title-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    h2{
+        margin: 0;
+    }
+    button{
+        background-color: var(--lp-primary);
+    }
+}
