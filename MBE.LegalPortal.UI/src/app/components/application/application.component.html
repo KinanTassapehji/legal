@@ -27,7 +27,11 @@
     <!-- Add Application Instance button -->
     <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
   </div>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Dummy button you can remove this after implementation-->
+  <button mat-raised-button (click)="openBottomSheet()">Application Overview</button>
+  <!-- Dummy button you can remove this after implementation-->
+  <div class="card application-instance-table-card">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> Id </th>
@@ -65,4 +69,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  </div>
 </div>

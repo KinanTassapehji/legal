@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ exports:[
     MatMenuModule,
     MatDialogModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    MatBottomSheetModule
 ]
 })
 export class MaterialModule{}
