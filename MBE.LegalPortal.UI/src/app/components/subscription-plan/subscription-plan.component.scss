@@ -1,7 +1,7 @@
 table.subscription-plan-table{
     font-size: 1rem;
     .mat-mdc-header-cell{
-        font-size: 1.15rem;
+        font-size: 1.15rem!important;
     }
     tr{
         td, th{            
@@ -18,5 +18,22 @@ table.subscription-plan-table{
                 }
               }
         }
+        th{
+            .subscription-table-header{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            &:first-child{
+                .subscription-table-header{
+                    button{
+                        display: none;
+                    }
+                }
+            }
+        }
     }
+}
+.subscription-plan-table-card {
+    overflow: hidden;
 }
