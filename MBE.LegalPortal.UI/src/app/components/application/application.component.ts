@@ -7,7 +7,8 @@ import { ApplicationService } from "../../services/application.service";
 import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ApplicationOverviewComponent } from './application-instance-overview/application-instance-overview.component';
+import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
+import { ApplicationInstanceService } from '../../services/application-instance.service';
 
 @Component({
   selector: 'app-application',
@@ -20,17 +21,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   selectedApplication: IApplication | undefined;
   errorMessage = '';
 
-  displayedColumns: string[] = ['id', 'account', 'name', 'tenants', 'createdOn'];
+  displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn'];
   dataSource: IApplicationInstance[] = [];
 
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService,private bottomSheet: MatBottomSheet) { }
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
 
-  openBottomSheet(): void {
-    this.bottomSheet.open(ApplicationOverviewComponent, {
-      panelClass: 'application-overview-bottomsheet-container',
-      hasBackdrop: false
-    });
-  }
   ngOnInit(): void {
     this.getApplications();
   }
@@ -118,6 +113,14 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         this.dataSource = instances;
       },
       error: err => this.errorMessage = err
+    });
+  }
+
+  openBottomSheet(applicationInstanceId: number): void {
+    this.bottomSheet.open(ApplicationInstanceOverviewComponent, {
+      panelClass: 'application-overview-bottomsheet-container',
+      hasBackdrop: true, // Enable backdrop
+      data: { applicationInstanceId: applicationInstanceId }
     });
   }
 }

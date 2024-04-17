@@ -6,3 +6,4 @@ export const Application_Instances_Url: string = BaseUrl + 'ApplicationInstance'
 export const Accounts_Url: string = BaseUrl + 'Account';
 export const Accounts_GetAll_Url: string = Accounts_Url + '/GetAll';
 export const Tenants_Url: string = BaseUrl + 'Tenant';
+export const License_Url: string = BaseUrl + 'License';

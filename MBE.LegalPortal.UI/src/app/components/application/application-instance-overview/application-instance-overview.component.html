@@ -1,94 +1,82 @@
 <div class="application-overview-bottomsheet">
-    <div class="aob-header">
-        <div class="aob-title">Application Overview</div>
-        <button mat-icon-button (click)="dismissAppOverview()">
-            <mat-icon class="material-symbols-outlined">Close</mat-icon>
-        </button>
-    </div>
-    <div class="aob-body">
-        <div class="aob-main-cont">
-            <div class="aob-c-card">
-                <div class="aob-cc-title">
-                    Account
-                </div>
-                <div class="aob-cc-row">
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Account name</div>
-                        <div class="aob-cc-input">Mubadala</div>
-                    </div>
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Account email</div>
-                        <div class="aob-cc-input">support{{'@'}}mubadala.com</div>
-                    </div>
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Account phone</div>
-                        <div class="aob-cc-input">+971550000001</div>
-                    </div>
-                </div>
-            </div>
-            <div class="aob-c-card">
-                <div class="aob-cc-title">
-                    Applications
-                </div>
-                <div class="aob-cc-row">
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Application name</div>
-                        <div class="aob-cc-input">datahub v2.1.0</div>
-                    </div>
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Tenant</div>
-                        <div class="aob-cc-input">mubadala</div>
-                    </div>
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Tenant</div>
-                        <div class="aob-cc-input">Solutions +</div>
-                    </div>
-                </div>
-            </div>
-            <div class="aob-c-card">
-                <div class="aob-cc-title">
-                    License
-                </div>
-                <div class="aob-cc-row">
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Environment</div>
-                        <div class="aob-cc-input">Production</div>
-                    </div>
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Expiry Date</div>
-                        <div class="aob-cc-input">01-01-2025</div>
-                    </div>
-                    <div class="aob-cc-col">
-                        <div class="aob-cc-label">Expiry Action</div>
-                        <div class="aob-cc-input">Auto Renew</div>
-                    </div>
-                </div>
-            </div>
+  <div class="aob-header">
+    <div class="aob-title">{{ applicationInstance?.name }}</div>
+    <button mat-icon-button (click)="dismissAppOverview()">
+      <mat-icon class="material-symbols-outlined">Close</mat-icon>
+    </button>
+  </div>
+  <div class="aob-body">
+    <div class="aob-main-cont">
+      <div class="aob-c-card">
+        <div class="aob-cc-title">Account</div>
+        <div class="aob-cc-row">
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Account name</div>
+            <div class="aob-cc-input">{{ applicationInstance?.account?.name }}</div>
+          </div>
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Account email</div>
+            <div class="aob-cc-input">{{ applicationInstance?.account?.email }}</div>
+          </div>
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Account phone</div>
+            <div class="aob-cc-input">{{ applicationInstance?.account?.phoneNumber }}</div>
+          </div>
         </div>
-        <div class="aob-sidebar">
-            <div class="aob-sp-title">Subscription Plan: Silver</div>
-            <div class="aob-sb-card">
-                <div class="aob-sb-row">
-                    <div class="aob-sb-title">Number of Users</div>
-                    <div class="aob-sb-cont">1-5 People</div>
-                </div>
-                <div class="aob-sb-row">
-                    <div class="aob-sb-title">Number of Instances</div>
-                    <div class="aob-sb-cont">1</div>
-                </div>
-                <div class="aob-sb-row">
-                    <div class="aob-sb-title">Number of Tenants</div>
-                    <div class="aob-sb-cont">Single</div>
-                </div>
-                <div class="aob-sb-row">
-                    <div class="aob-sb-title">Date/Time Control</div>
-                    <div class="aob-sb-cont">Controlled</div>
-                </div>
-                <div class="aob-sb-row">
-                    <div class="aob-sb-title">Count Control</div>
-                    <div class="aob-sb-cont">Controlled</div>
-                </div>
+      </div>
+      <div class="aob-c-card">
+        <div class="aob-cc-title">Applications</div>
+        <div class="aob-cc-row">
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Application name</div>
+            <div class="aob-cc-input">{{ applicationInstance?.application?.name }}</div>
+          </div>
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Tenants</div>
+            <div class="aob-cc-input">
+              <ng-container *ngIf="applicationInstance?.tenants">
+                <ng-container *ngFor="let tenant of applicationInstance?.tenants; let last = last">
+                  <!-- Make tenant name clickable -->
+                  <a href="#" (click)="handleTenantClick(tenant?.id, $event)">{{ tenant?.name }}</a>
+                  <!-- Add comma if it's not the last tenant -->
+                  <span *ngIf="!last">, </span>
+                </ng-container>
+              </ng-container>
             </div>
+          </div>
+          <div class="aob-cc-col">
+          </div>
         </div>
+      </div>
+      <div class="aob-c-card">
+        <div class="aob-cc-title">License</div>
+        <div class="aob-cc-row">
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Environment</div>
+            <div class="aob-cc-input">{{this.license?.environment}}</div>
+          </div>
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Expiry Date</div>
+            <div class="aob-cc-input">{{this.license?.expiryDate}}</div>
+          </div>
+          <div class="aob-cc-col">
+            <div class="aob-cc-label">Expiry Action</div>
+            <div class="aob-cc-input">{{this.license?.expiryAction}}</div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="aob-sidebar">
+      <div class="aob-sp-title">Subscription Plan: {{this.license?.subscriptionPlan?.name}}</div>
+      <div class="aob-sb-card">
+        <!-- Iterate over constraints and display them -->
+        <ng-container *ngIf="this.license?.subscriptionPlan?.constraints">
+          <div *ngFor="let constraint of this.license?.subscriptionPlan?.constraints" class="aob-sb-row">
+            <div class="aob-sb-title">{{ constraint.key }}</div>
+            <div class="aob-sb-cont">{{ constraint.defaultValue }}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>
