@@ -1,4 +1,11 @@
 <div class="main-container">
+  
+  <div class="subscription-plan-title-section">
+    <!-- Subscription Plan section -->
+    <h2>Subscription Plan</h2>
+    <!-- Add Subscription Plan button -->
+    <button mat-raised-button color="primary" (click)="openDialog()">Add Subscription Plan</button>
+  </div>
   <div class="card subscription-plan-table-card">
   <table mat-table [dataSource]="dataSource" class="subscription-plan-table mat-elevation-z0">
   <!-- Dynamic column definition -->

@@ -37,3 +37,15 @@ table.subscription-plan-table{
 .subscription-plan-table-card {
     overflow: hidden;
 }
+.subscription-plan-title-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    h2{
+        margin: 0;
+    }
+    button{
+        background-color: var(--lp-primary);
+    }
+}

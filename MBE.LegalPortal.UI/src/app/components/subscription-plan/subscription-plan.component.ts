@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IConstraint, ISubscriptionPlan } from '../../interfaces/subscription-plan';
 import { Subscription } from 'rxjs';
 import { SubscriptionPlanService } from "../../services/subscription-plan.service";
+import { MatDialog } from '@angular/material/dialog';
+import { AddSubscriptionPlanComponent } from './add-subscription-plan/add-subscription-plan.component';
 
 @Component({
   selector: 'app-subscription-plan',
@@ -18,8 +20,12 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   constraints: IConstraint[] = [];
   errorMessage = '';
 
-  constructor(private subscriptionPlanService: SubscriptionPlanService) { }
-
+  constructor(private subscriptionPlanService: SubscriptionPlanService, private matDialog: MatDialog) { }
+  openDialog() {
+    this.matDialog.open(AddSubscriptionPlanComponent, {
+      width:"800px"
+    });
+  }
   ngOnInit(): void {
     this.getSubscriptionPlans();
   }
