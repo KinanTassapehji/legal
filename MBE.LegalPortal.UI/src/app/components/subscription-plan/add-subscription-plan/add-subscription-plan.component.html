@@ -1,0 +1,105 @@
+<div mat-dialog-container class="lp-common-modal-container add-subscription-plan-modal">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <span>Add Subscription Plan</span>
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="material-symbols-outlined">close</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-dialog-content>
+      <div class="row dense-2">
+        <div class="col-sm-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Application name</mat-label>
+                <mat-select>
+                  <mat-option value="1">datahub</mat-option>
+                  <mat-option value="2">Supporthub</mat-option>
+                  <mat-option value="3">Reporthub</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Subscription Plan Name</mat-label>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+            <h5 class="app-constraint-title">Constraints</h5>
+        </div>
+        <div class="col-sm-12">
+            <div class="enable-application-constraints-row dense-2">
+                <div class="enable-application-constraints-col">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Constraints Title</mat-label>
+                        <input matInput value="Number of Users" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Default Action</mat-label>
+                        <mat-select>
+                          <mat-option value="DefaultPolicy">Default Policy</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="aac-action">
+                      <mat-slide-toggle color="primary"></mat-slide-toggle>
+                  </div>
+                </div>
+                <div class="enable-application-constraints-col">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Constraints Title</mat-label>
+                        <input matInput value="Number of Instances" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Default Action</mat-label>
+                        <mat-select>
+                          <mat-option value="DefaultPolicy">Default Policy</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="aac-action">
+                      <mat-slide-toggle color="primary"></mat-slide-toggle>
+                  </div>
+                </div>
+                <div class="enable-application-constraints-col">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Constraints Title</mat-label>
+                        <input matInput value="Number of Tenants" readonly>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Default Action</mat-label>
+                        <mat-select>
+                          <mat-option value="DefaultPolicy">Default Policy</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="aac-action">
+                      <mat-slide-toggle color="primary"></mat-slide-toggle>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button >Add</button>
+    </mat-dialog-actions>
+  </div>
+  

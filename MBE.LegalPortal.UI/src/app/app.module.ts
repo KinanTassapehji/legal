@@ -22,6 +22,7 @@ import { SubscriptionPlanComponent } from './components/subscription-plan/subscr
 import { CardComponent } from './shared/card/card.component';
 import { loginRequest, msalConfig } from './auth/auth-config';
 import { ApplicationOverviewComponent } from './components/application/application-instance-overview/application-instance-overview.component';
+import { AddSubscriptionPlanComponent } from './components/subscription-plan/add-subscription-plan/add-subscription-plan.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -80,6 +81,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     SubscriptionPlanComponent,
     CardComponent,
     ApplicationOverviewComponent,
+    AddSubscriptionPlanComponent,
   ],
   imports: [
     BrowserModule,
