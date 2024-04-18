@@ -63,3 +63,13 @@
 .application-instance-table-card{
     padding: 5px 10px;
 }
+.app-instance-table-action{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    mat-icon{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
