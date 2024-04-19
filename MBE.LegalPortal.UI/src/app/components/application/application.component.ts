@@ -21,7 +21,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   selectedApplication: IApplication | undefined;
   errorMessage = '';
 
-  displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn'];
+  displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
+
   dataSource: IApplicationInstance[] = [];
 
   constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }

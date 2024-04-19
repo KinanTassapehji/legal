@@ -62,4 +62,23 @@
 }
 .application-instance-table-card{
     padding: 5px 10px;
+    table{
+        tr{
+            td{
+                &:first-child{
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
+.app-instance-table-action{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    mat-icon{
+        &:hover{
+            cursor: pointer;
+        }
+    }
 }
