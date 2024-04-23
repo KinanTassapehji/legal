@@ -19,6 +19,29 @@
         .title{
             font-size: 0.9rem;
         }
+        &.img-uploaded{
+            padding: 0.5rem;
+            .img-preview{
+                display: block!important;
+                width: 150px;
+                height: 150px;
+                background-size: cover;
+                overflow: hidden;
+                border-radius: 8px;
+                position: relative;
+                button{
+                    position: absolute;
+                    top: 0.25rem;
+                    right: 0.25rem;
+                    mat-icon{
+                        display: block;
+                    }
+                }
+            }
+            mat-icon, .title{
+                display: none;
+            }
+        }
     }
     .app-constraint-title{
         font-size: 1rem;
