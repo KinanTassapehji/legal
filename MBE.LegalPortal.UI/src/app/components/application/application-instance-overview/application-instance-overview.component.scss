@@ -61,6 +61,33 @@
                                 .aob-cc-input {
                                     font-size: 1rem;
                                     font-weight: 500;
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    .aob-tenants-tab-cont{
+                                        border: 1px solid rgba(var(--bs-black-rgb), 0.5);
+                                        color: var(--bs-black);
+                                        text-decoration: none;
+                                        padding: 3px 6px;
+                                        margin-top: 5px;
+                                        border-radius: 6px;
+                                        &.selected{
+                                            color: var(--lp-primary);                                            
+                                            border: 1px solid var(--lp-primary);
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 0.5rem;
+                                            mat-icon{
+                                                display: block!important;
+                                                font-size: 1.2rem;
+                                                width: 1.2rem;
+                                                height: 1.2rem;
+                                            }
+                                        }
+                                        &:hover{
+                                            color: var(--lp-primary);                                            
+                                            border: 1px solid var(--lp-primary);
+                                        }
+                                    }
                                 }
                             }
                         }
