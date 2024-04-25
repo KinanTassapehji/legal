@@ -18,14 +18,13 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
   license: ILicense | undefined;
   private sub: Subscription | undefined;
   applicationInstanceId: number | undefined;
-
+  selectedTenantId: number | undefined;
   constructor(
     private bottomSheet: MatBottomSheetRef,
     private applicationInstanceService: ApplicationInstanceService,
     private licenseService: LicenseService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any // Inject MAT_BOTTOM_SHEET_DATA
-  )
-  {
+  ) {
     this.applicationInstanceId = data.applicationInstanceId; // Access applicationInstanceId
   }
 
@@ -62,14 +61,18 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
       event.stopPropagation(); // Stop event propagation
     }
     if (id !== undefined) {
-      this.sub = this.licenseService.getLicenseByTenantId(id).subscribe(
-        (response: ILicense | undefined) => {
-          this.license = response; // Update the license property
-        },
-        (error: any) => {
-          console.error('Error retrieving application instance data:', error);
-        }
-      );
+      // Check if the clicked tenant is different from the currently selected one
+      if (this.selectedTenantId !== id) {
+        this.selectedTenantId = id; // Update the selected tenant
+        this.sub = this.licenseService.getLicenseByTenantId(id).subscribe(
+          (response: ILicense | undefined) => {
+            this.license = response; // Update the license property
+          },
+          (error: any) => {
+            console.error('Error retrieving application instance data:', error);
+          }
+        );
+      }
     }
   }
 }

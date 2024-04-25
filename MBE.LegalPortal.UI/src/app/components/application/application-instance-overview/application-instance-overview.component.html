@@ -37,7 +37,7 @@
               <ng-container *ngIf="applicationInstance?.tenants">
                 <ng-container *ngFor="let tenant of applicationInstance?.tenants; let last = last">
                   <!-- Make tenant name clickable -->
-                  <a href="#" (click)="handleTenantClick(tenant?.id, $event)" class="aob-tenants-tab-cont selected">
+                  <a href="#" (click)="handleTenantClick(tenant?.id, $event)" class="aob-tenants-tab-cont selected" [class.selected]="tenant?.id === selectedTenantId">
                     {{ tenant?.name }}
                     <mat-icon class="material-symbols-outlined" style="display: none;">check_circle</mat-icon>
                   </a>

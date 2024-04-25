@@ -8,7 +8,6 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
-import { ApplicationInstanceService } from '../../services/application-instance.service';
 
 @Component({
   selector: 'app-application',
