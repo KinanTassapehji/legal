@@ -25,7 +25,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   dataSource: IApplicationInstance[] = [];
 
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private bottomSheet: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.getApplications();

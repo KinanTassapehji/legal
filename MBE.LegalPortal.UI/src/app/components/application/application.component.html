@@ -27,7 +27,7 @@
     <!-- Add Application Instance button -->
     <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
   </div>
-  <div class="card application-instance-table-card">
+  <div class="card application-instance-table-card" *ngIf="dataSource.length > 0">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z">
       <!-- Account Column -->
       <ng-container matColumnDef="account">
@@ -71,6 +71,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openBottomSheet(row.id)"></tr>
   </table>
-      
   </div>
 </div>
