@@ -16,6 +16,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatSortModule} from '@angular/material/sort';
 import { MatPaginatorModule } from "@angular/material/paginator";
 
 
@@ -40,6 +41,7 @@ exports:[
     MatTabsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSortModule,
     MatPaginatorModule
 ]
 })
