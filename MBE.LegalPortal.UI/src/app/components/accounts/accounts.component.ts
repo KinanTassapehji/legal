@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AddAccountComponent } from './add-account/add-account.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface PeriodicElement {
   accountname: string;
@@ -22,4 +24,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class AccountsComponent {
   displayedColumns: string[] = ['accountname', 'email', 'phone', 'applicationinstance', 'action'];
   dataSource = ELEMENT_DATA;
+  constructor(private matDialog:MatDialog){}
+  addAccount(){
+    this.matDialog.open(AddAccountComponent, {
+      width:"600px"
+    });
+  }
 }
