@@ -24,6 +24,7 @@ import { loginRequest, msalConfig } from './auth/auth-config';
 import { AddSubscriptionPlanComponent } from './components/subscription-plan/add-subscription-plan/add-subscription-plan.component';
 import { ApplicationInstanceOverviewComponent } from './components/application/application-instance-overview/application-instance-overview.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -84,6 +85,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     ApplicationInstanceOverviewComponent,
     AddSubscriptionPlanComponent,
     OnboardingComponent,
+    AccountsComponent,
   ],
   imports: [
     BrowserModule,
