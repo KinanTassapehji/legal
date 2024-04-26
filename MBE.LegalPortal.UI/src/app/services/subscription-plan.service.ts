@@ -25,4 +25,11 @@ export class SubscriptionPlanService {
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
+
+  createSubscriptionPlan(subscriptionPlanDto: any): Observable<any> {
+    return this.http.post(SubscriptionPlans_Url, subscriptionPlanDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
 }

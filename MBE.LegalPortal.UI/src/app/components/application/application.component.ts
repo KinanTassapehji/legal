@@ -61,11 +61,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.componentInstance.applicationInstanceAdded.subscribe((applicationInstanceId: number) => {
+    dialogRef.componentInstance.applicationInstanceAdded.subscribe(() => {
       if (this.selectedApplication) {
         this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
       } else {
-        console.error("selectedApplication is undefined");
+        console.error("selected Application is undefined");
       }
     });
   }
@@ -117,7 +117,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   getApplicationInstances(id: number) {
-    this.applicationService.getApplicationById(id).subscribe({
+    this.applicationService.getApplicationInstancesByApplicationId(id).subscribe({
       next: instances => {
         this.ELEMENT_DATA= instances;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);

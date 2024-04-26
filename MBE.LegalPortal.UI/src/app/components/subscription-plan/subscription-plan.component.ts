@@ -26,8 +26,19 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   constructor(private subscriptionPlanService: SubscriptionPlanService, private applicationService: ApplicationService, private matDialog: MatDialog) { }
 
   openDialog() {
-    this.matDialog.open(AddSubscriptionPlanComponent, {
-      width:"800px"
+    const dialogRef = this.matDialog.open(AddSubscriptionPlanComponent, {
+      width: "800px",
+      data: {
+        applications: this.applications // Pass applications data to the child component
+      }
+    });
+
+    dialogRef.componentInstance.subscriptionPlanAdded.subscribe(() => {
+      if (this.selectedApplication) {
+        this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
+      } else {
+        console.error("selected Application is undefined");
+      }
     });
   }
 
