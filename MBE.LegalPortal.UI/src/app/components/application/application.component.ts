@@ -8,7 +8,6 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
-import { ApplicationInstanceService } from '../../services/application-instance.service';
 
 @Component({
   selector: 'app-application',
@@ -25,7 +24,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   dataSource: IApplicationInstance[] = [];
 
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private bottomSheet: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.getApplications();

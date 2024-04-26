@@ -12,8 +12,14 @@ import { ErrorHandlingService } from './error-handling-service';
 export class SubscriptionPlanService {
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
-  getSubscriptionPlans(): Observable<ISubscriptionPlan[]> {
-    return this.http.get<ISubscriptionPlan[]>(SubscriptionPlans_Url)
+  getSubscriptionPlans(applicationId?: number): Observable<ISubscriptionPlan[]> {
+    let url = SubscriptionPlans_Url;
+    if (applicationId !== undefined && applicationId !== null) {
+      // If applicationId is provided, include it in the URL
+      url += `?applicationId=${applicationId}`;
+    }
+
+    return this.http.get<ISubscriptionPlan[]>(url)
       .pipe(
         map((response: any) => response.data),
         catchError(error => this.errorHandlingService.handleError(error))
