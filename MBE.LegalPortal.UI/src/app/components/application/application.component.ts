@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddApplicationComponent } from './add-application/add-application.component';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,8 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-application',
@@ -22,7 +24,14 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
 
-  dataSource: IApplicationInstance[] = [];
+
+  ELEMENT_DATA: IApplicationInstance[] = [];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+  @ViewChild(MatSort) sort!: MatSort;
+  ngAfterViewInit(){
+    this.dataSource.sort = this.sort;
+  }
 
   constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private bottomSheet: MatBottomSheet) { }
 
@@ -110,7 +119,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   getApplicationInstances(id: number) {
     this.applicationService.getApplicationById(id).subscribe({
       next: instances => {
-        this.dataSource = instances;
+        this.ELEMENT_DATA= instances;
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       },
       error: err => this.errorMessage = err
     });
