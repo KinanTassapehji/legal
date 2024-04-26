@@ -62,7 +62,8 @@
 }
 .application-instance-table-card{
     padding: 5px 10px;
-    table{
+    table{        
+        border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
         tr{
             th{
                 font-size: 1.1rem;
