@@ -28,6 +28,12 @@
     <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
   </div>
   <div class="card application-instance-table-card" *ngIf="ELEMENT_DATA.length > 0">
+    <div class="application-instance-table-header dense-2">      
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search...">
+        <mat-icon class="material-symbols-outlined" matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z" matSort>
       <!-- Account Column -->
       <ng-container matColumnDef="account">

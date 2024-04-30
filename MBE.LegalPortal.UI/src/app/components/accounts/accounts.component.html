@@ -8,6 +8,12 @@
         </div>
         <div class="col-sm-12">
             <div class="card accounts-card-cont">
+              <div class="accounts-card-header dense-2">      
+                <mat-form-field appearance="outline">
+                  <input matInput placeholder="Search...">
+                  <mat-icon class="material-symbols-outlined" matSuffix>search</mat-icon>
+                </mat-form-field>
+              </div>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
                   
                     <!-- Account Name Column -->

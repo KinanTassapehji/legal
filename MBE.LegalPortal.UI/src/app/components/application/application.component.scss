@@ -61,7 +61,14 @@
     }
 }
 .application-instance-table-card{
-    padding: 5px 10px;
+    padding: 10px 10px 5px 10px;
+    .application-instance-table-header {
+        display: flex;
+        justify-content: flex-end;
+        mat-form-field {
+            margin-bottom: -1.25em;
+        }
+    }
     table{        
         border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
         tr{
