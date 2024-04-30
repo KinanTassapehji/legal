@@ -10,6 +10,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-application',
@@ -42,7 +43,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
-
+  deleteApp(){
+    this.matDialog.open(ConfirmationPopupComponent, {
+      width:"400px"
+    });
+  }
   openAddApplicationDialog() {
     const dialogRef = this.matDialog.open(AddApplicationComponent, {
       width: "800px"
