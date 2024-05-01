@@ -27,50 +27,61 @@
     <!-- Add Application Instance button -->
     <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
   </div>
-  <div class="card application-instance-table-card">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z">
+  <div class="card application-instance-table-card" *ngIf="ELEMENT_DATA.length > 0">
+    <div class="application-instance-table-header dense-2">      
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Search...">
+        <mat-icon class="material-symbols-outlined" matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z" matSort>
       <!-- Account Column -->
       <ng-container matColumnDef="account">
-        <th mat-header-cell *matHeaderCellDef> Account </th>
-        <td mat-cell *matCellDef="let element"> {{element.account.name}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Account </th>
+        <td mat-cell *matCellDef="let element"> <div class="application-instance-app-title">{{element.account.name}} <mat-icon class="material-symbols-outlined">north_east</mat-icon></div></td>
       </ng-container>
 
       <!-- Instance Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Instance </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Instance </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
       <!-- Tenants Column -->
       <ng-container matColumnDef="tenants">
-        <th mat-header-cell *matHeaderCellDef> Tenants </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tenants </th>
         <td mat-cell *matCellDef="let element">
           <span *ngFor="let tenant of element.tenants; let last = last">
             {{ tenant.name }}{{ !last ? ', ' : '' }}
           </span>
         </td>
       </ng-container>
-      
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="createdOn">
-      <th mat-header-cell *matHeaderCellDef> Creation Date </th>
-      <td mat-cell *matCellDef="let element"> {{ element.createdOn | date: 'dd/MM/yyyy HH:mm a' }} </td>
-    </ng-container>
 
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element"> 
-        <div class="app-instance-table-action">
-          <mat-icon class="material-symbols-outlined">edit</mat-icon>
-          <mat-icon class="material-symbols-outlined">delete</mat-icon>
-        </div> 
-      </td>
-    </ng-container>
+      <!-- Creation Date Column -->
+      <ng-container matColumnDef="createdOn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Date </th>
+        <td mat-cell *matCellDef="let element"> {{ element.createdOn | date: 'dd/MM/yyyy HH:mm a' }} </td>
+      </ng-container>
 
-    <!-- Define row click action -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openBottomSheet(row.id)"></tr>
-  </table>
-      
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="app-instance-table-action">
+            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+            <mat-icon class="material-symbols-outlined" (click)="deleteApp()">delete</mat-icon>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Define row click action -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openBottomSheet(row.id)"></tr>
+    </table>
+    <!--Pagination-->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Application table pagination">
+  </mat-paginator>
   </div>
 </div>

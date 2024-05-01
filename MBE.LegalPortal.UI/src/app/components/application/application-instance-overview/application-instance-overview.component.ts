@@ -18,14 +18,13 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
   license: ILicense | undefined;
   private sub: Subscription | undefined;
   applicationInstanceId: number | undefined;
-
+  selectedTenantId: number | undefined;
   constructor(
     private bottomSheet: MatBottomSheetRef,
     private applicationInstanceService: ApplicationInstanceService,
     private licenseService: LicenseService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: any // Inject MAT_BOTTOM_SHEET_DATA
-  )
-  {
+  ) {
     this.applicationInstanceId = data.applicationInstanceId; // Access applicationInstanceId
   }
 
@@ -38,6 +37,10 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
       this.sub = this.applicationInstanceService.getApplicationInstanceById(this.applicationInstanceId).subscribe(
         (response: IApplicationInstanceOverview | undefined) => {
           this.applicationInstance = response;
+          if (this.applicationInstance?.tenants && this.applicationInstance.tenants?.length > 0) {
+            // Automatically trigger handleTenantClick for the first tenant
+            this.handleTenantClick(this.applicationInstance.tenants[0].id);
+          }
         },
         (error: any) => {
           console.error('Error retrieving application instance data:', error);
@@ -52,18 +55,24 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleTenantClick(id?: number, event?: MouseEvent): void {
-    if (id !== undefined && event) {
-      event.preventDefault(); // Prevent the default link behavior
-      event.stopPropagation(); // Stop event propagation to parent elements
-      this.sub = this.licenseService.getLicenseByTenantId(id).subscribe(
-        (response: ILicense | undefined) => {
-          this.license = response;
-        },
-        (error: any) => {
-          console.error('Error retrieving application instance data:', error);
-        }
-      );
+  handleTenantClick(id?: number, event?: Event): void {
+    if (event) {
+      event.preventDefault(); // Prevent default action of the click event
+      event.stopPropagation(); // Stop event propagation
+    }
+    if (id !== undefined) {
+      // Check if the clicked tenant is different from the currently selected one
+      if (this.selectedTenantId !== id) {
+        this.selectedTenantId = id; // Update the selected tenant
+        this.sub = this.licenseService.getLicenseByTenantId(id).subscribe(
+          (response: ILicense | undefined) => {
+            this.license = response; // Update the license property
+          },
+          (error: any) => {
+            console.error('Error retrieving application instance data:', error);
+          }
+        );
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddApplicationComponent } from './add-application/add-application.component';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,9 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
-import { ApplicationInstanceService } from '../../services/application-instance.service';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-application',
@@ -23,9 +25,16 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
 
-  dataSource: IApplicationInstance[] = [];
 
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
+  ELEMENT_DATA: IApplicationInstance[] = [];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+  @ViewChild(MatSort) sort!: MatSort;
+  ngAfterViewInit(){
+    this.dataSource.sort = this.sort;
+  }
+
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private bottomSheet: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -34,7 +43,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
-
+  deleteApp(){
+    this.matDialog.open(ConfirmationPopupComponent, {
+      width:"400px"
+    });
+  }
   openAddApplicationDialog() {
     const dialogRef = this.matDialog.open(AddApplicationComponent, {
       width: "800px"
@@ -53,11 +66,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.componentInstance.applicationInstanceAdded.subscribe((applicationInstanceId: number) => {
+    dialogRef.componentInstance.applicationInstanceAdded.subscribe(() => {
       if (this.selectedApplication) {
         this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
       } else {
-        console.error("selectedApplication is undefined");
+        console.error("selected Application is undefined");
       }
     });
   }
@@ -109,9 +122,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   getApplicationInstances(id: number) {
-    this.applicationService.getApplicationById(id).subscribe({
+    this.applicationService.getApplicationInstancesByApplicationId(id).subscribe({
       next: instances => {
-        this.dataSource = instances;
+        this.ELEMENT_DATA= instances;
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       },
       error: err => this.errorMessage = err
     });

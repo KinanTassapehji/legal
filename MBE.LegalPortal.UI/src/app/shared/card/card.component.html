@@ -1,4 +1,4 @@
-<div class="card application-card" (click)="onCardClick()">
+<div class="card application-card" [class.selected]="selected" (click)="onCardClick()">
   <div class="card-image">
     <img [src]="image" [alt]="title">
   </div>
@@ -13,7 +13,7 @@
           <mat-icon class="material-symbols-outlined">task_alt</mat-icon>
           <span>Set as default</span>
         </button>
-        <button mat-menu-item (click)="onDelete()">
+        <button mat-menu-item *ngIf="delete.observers.length > 0" (click)="onDelete()">
           <mat-icon class="material-symbols-outlined">delete</mat-icon>
           <span>Delete Application</span>
         </button>
