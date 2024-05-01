@@ -11,6 +11,8 @@ import { ApplicationInstanceOverviewComponent } from './application-instance-ove
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { ApplicationInstanceService } from '../../services/application-instance.service';
 
 @Component({
   selector: 'app-application',
@@ -22,6 +24,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   applications: IApplication[] = [];
   selectedApplication: IApplication | undefined;
   errorMessage = '';
+  // Paginator
+  totalCount = 0;
+  pageSize = 5;
+  pageIndex = 0;
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
 
@@ -30,11 +36,13 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   @ViewChild(MatSort) sort!: MatSort;
-  ngAfterViewInit(){
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
 
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private bottomSheet: MatBottomSheet) { }
+  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -43,6 +51,47 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
+
+  getApplications() {
+    this.sub = this.applicationService.getApplications().subscribe({
+      next: applications => {
+        this.applications = applications;
+
+        // Check if there are applications
+        if (this.applications.length > 0) {
+          // Set the first application as selected
+          this.selectedApplication = applications[0];
+          this.applications[0].selected = true;
+          this.getApplicationInstances(this.applications[0].id);
+        }
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  getApplicationInstances(id: number) {
+    this.applicationInstanceService.getApplicationInstances(id, this.pageIndex + 1, this.pageSize).subscribe({
+      next: response => {
+        this.ELEMENT_DATA = response.data;
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+        const pi = response; // Paginator Info
+        console.log(pi.page, pi.totalPages, pi.totalCount, pi.pageSize, pi.hasPreviousPage, pi.hasNextPage);
+        this.totalCount = pi.totalCount;
+        this.pageSize = pi.pageSize;
+        this.pageIndex = pi.page - 1;
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  onPageChange(event: any) {
+    console.log("event: ", event)
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getApplicationInstances(this.selectedApplication ? this.selectedApplication.id : 0);
+  }
+
   deleteApp(){
     this.matDialog.open(ConfirmationPopupComponent, {
       width:"400px"
@@ -75,32 +124,16 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     });
   }
 
-  getApplications() {
-    this.sub = this.applicationService.getApplications().subscribe({
-      next: applications => {
-        this.applications = applications;
-
-        // Check if there are applications
-        if (this.applications.length > 0) {
-          // Set the first application as selected
-          this.selectedApplication = applications[0];
-          this.applications[0].selected = true;
-          this.getApplicationInstances(this.applications[0].id);
-        }
-      },
-      error: err => this.errorMessage = err
+  openBottomSheet(applicationInstanceId: number): void {
+    this.bottomSheet.open(ApplicationInstanceOverviewComponent, {
+      panelClass: 'application-overview-bottomsheet-container',
+      hasBackdrop: true, // Enable backdrop
+      data: { applicationInstanceId: applicationInstanceId }
     });
   }
 
-  deleteApplication(id: number) {
-    // Call the delete service
-    this.applicationService.deleteApplication(id).subscribe({
-      next: () => {
-        // Update the UI
-        this.getApplications();
-      },
-      error: err => this.errorMessage = err
-    });
+  onCardClick(id: number) {
+    this.getApplicationInstances(id);
   }
 
   setApplicationAsDefault(id: number) {
@@ -117,25 +150,14 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     this.selectedApplication = selectedApp;
   }
 
-  onCardClick(id: number) {
-    this.getApplicationInstances(id);
-  }
-
-  getApplicationInstances(id: number) {
-    this.applicationService.getApplicationInstancesByApplicationId(id).subscribe({
-      next: instances => {
-        this.ELEMENT_DATA= instances;
-        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  deleteApplication(id: number) {
+    // Call the delete service
+    this.applicationService.deleteApplication(id).subscribe({
+      next: () => {
+        // Update the UI
+        this.getApplications();
       },
       error: err => this.errorMessage = err
-    });
-  }
-
-  openBottomSheet(applicationInstanceId: number): void {
-    this.bottomSheet.open(ApplicationInstanceOverviewComponent, {
-      panelClass: 'application-overview-bottomsheet-container',
-      hasBackdrop: true, // Enable backdrop
-      data: { applicationInstanceId: applicationInstanceId }
     });
   }
 }
