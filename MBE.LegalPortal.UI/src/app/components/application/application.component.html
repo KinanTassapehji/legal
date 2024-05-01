@@ -8,7 +8,7 @@
                 [image]="app.image"
                 [selected]="app.selected"
                 [isDefault]="app.isDefault"
-                (delete)="deleteApplication($event)"
+                (delete)="openDeleteApplicationDialog(app.id)"
                 (setAsDefault)="setApplicationAsDefault($event)"
                 (cardClick)="onCardClick(app.id)">
       </app-card>
@@ -70,7 +70,7 @@
         <td mat-cell *matCellDef="let element">
           <div class="app-instance-table-action">
             <mat-icon class="material-symbols-outlined">edit</mat-icon>
-            <mat-icon class="material-symbols-outlined" (click)="deleteApp()">delete</mat-icon>
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
           </div>
         </td>
       </ng-container>

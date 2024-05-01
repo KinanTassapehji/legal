@@ -17,7 +17,7 @@
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button>Delete</button>
+      <button mat-button mat-dialog-close (click)="onCancelClick()">Cancel</button>
+      <button mat-button [mat-dialog-close]="data">Delete</button>
     </mat-dialog-actions>
   </div>

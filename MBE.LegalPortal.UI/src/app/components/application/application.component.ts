@@ -79,7 +79,6 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
         const pi = response; // Paginator Info
-        console.log(pi.page, pi.totalPages, pi.totalCount, pi.pageSize, pi.hasPreviousPage, pi.hasNextPage);
         this.totalCount = pi.totalCount;
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
@@ -89,16 +88,9 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(event: any) {
-    console.log("event: ", event)
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getApplicationInstances(this.selectedApplication ? this.selectedApplication.id : 0);
-  }
-
-  deleteApp(){
-    this.matDialog.open(ConfirmationPopupComponent, {
-      width:"400px"
-    });
   }
 
   openAddApplicationDialog() {
@@ -164,6 +156,19 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
     // Set the found application as the defaultApplication
     this.defaultApplication = defaultApp;
+  }
+
+  openDeleteApplicationDialog(id: number) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      data: { input: "input", output: "output" },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteApplication(id);
+      }
+    });
   }
 
   deleteApplication(id: number) {
