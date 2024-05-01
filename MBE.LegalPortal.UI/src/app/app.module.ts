@@ -27,6 +27,7 @@ import { OnboardingComponent } from './components/onboarding/onboarding.componen
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { AddAccountComponent } from './components/accounts/add-account/add-account.component';
 import { ConfirmationPopupComponent } from './shared/popups/confirmation-popup/confirmation-popup.component';
+import { LicenseComponent } from './components/license/license.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -90,6 +91,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     AccountsComponent,
     AddAccountComponent,
     ConfirmationPopupComponent,
+    LicenseComponent,
   ],
   imports: [
     BrowserModule,
