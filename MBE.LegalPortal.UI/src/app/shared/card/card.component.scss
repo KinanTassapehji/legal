@@ -4,11 +4,12 @@
   align-items: center;
   height: 60px;
   overflow: hidden;
-
+  &:hover{
+    cursor: pointer;
+  }
   &.selected {
     border: 2px solid var(--lp-primary);
   }
-
   .card-image {
     width: 60px;
     height: 60px;
@@ -36,8 +37,30 @@
       align-items: center;
 
       .selected-icon {
-        display: flex;
-        color: var(--lp-primary);
+        display: none;       
+        &.isDefault{
+          display: flex;
+          right: -22px;
+          top: 0px;
+          color: var(--lp-white);
+          background: var(--lp-primary);
+          width: 60px;
+          position: absolute;
+          justify-content: center;
+          line-height: 40px;
+          letter-spacing: 1px;
+          transform: rotate(45deg);
+          -webkit-transform: rotate(45deg);
+          overflow: hidden;
+          height: 24px;
+          align-items: center;
+          mat-icon{
+            transform: rotate(-45deg);
+            font-size: 18px;
+            width: 20px;
+            height: 18px;
+          }
+        }
       }
     }
   }

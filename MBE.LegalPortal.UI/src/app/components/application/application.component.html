@@ -7,6 +7,7 @@
                 [title]="app.name"
                 [image]="app.image"
                 [selected]="app.selected"
+                [isDefault]="app.isDefault"
                 (delete)="deleteApplication($event)"
                 (setAsDefault)="setApplicationAsDefault($event)"
                 (cardClick)="onCardClick(app.id)">

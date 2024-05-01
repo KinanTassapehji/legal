@@ -10,6 +10,7 @@ export class CardComponent {
   @Input() title!: string;
   @Input() image!: string;
   @Input() selected!: boolean;
+  @Input() isDefault!: boolean;
   @Output() delete: EventEmitter<number> = new EventEmitter<number>();
   @Output() setAsDefault: EventEmitter<number> = new EventEmitter<number>();
   @Output() cardClick: EventEmitter<number> = new EventEmitter<number>();

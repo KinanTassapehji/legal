@@ -1,4 +1,4 @@
-<div class="card application-card" [class.selected]="selected" (click)="onCardClick()">
+<div class="card application-card" [ngClass]="{'selected': selected, 'isDefault': isDefault}" (click)="onCardClick()">
   <div class="card-image">
     <img [src]="image" [alt]="title">
   </div>
@@ -18,7 +18,7 @@
           <span>Delete Application</span>
         </button>
       </mat-menu>
-      <div class="selected-icon" *ngIf="selected">
+      <div class="selected-icon" [ngClass]="{'selected': selected, 'isDefault': isDefault}">
         <mat-icon class="material-symbols-outlined">task_alt</mat-icon>
       </div>
     </div>

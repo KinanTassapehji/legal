@@ -23,6 +23,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   applications: IApplication[] = [];
   selectedApplication: IApplication | undefined;
+  defaultApplication: IApplication | undefined;
   errorMessage = '';
   // Paginator
   totalCount = 0;
@@ -61,7 +62,9 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         if (this.applications.length > 0) {
           // Set the first application as selected
           this.selectedApplication = applications[0];
+          this.defaultApplication = applications[0];
           this.applications[0].selected = true;
+          this.applications[0].isDefault = true;
           this.getApplicationInstances(this.applications[0].id);
         }
       },
@@ -97,6 +100,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       width:"400px"
     });
   }
+
   openAddApplicationDialog() {
     const dialogRef = this.matDialog.open(AddApplicationComponent, {
       width: "800px"
@@ -133,10 +137,6 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   }
 
   onCardClick(id: number) {
-    this.getApplicationInstances(id);
-  }
-
-  setApplicationAsDefault(id: number) {
     // Loop through all applications
     this.applications.forEach(app => {
       // Set selected to true for the application with the given ID
@@ -148,6 +148,22 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
     // Set the found application as the selectedApplication
     this.selectedApplication = selectedApp;
+
+    this.getApplicationInstances(id);
+  }
+
+  setApplicationAsDefault(id: number) {
+    // Loop through all applications
+    this.applications.forEach(app => {
+      // Set isDefault to true for the application with the given ID
+      app.isDefault = app.id === id;
+    });
+
+    // Find the application with the given ID
+    const defaultApp = this.applications.find(app => app.id === id);
+
+    // Set the found application as the defaultApplication
+    this.defaultApplication = defaultApp;
   }
 
   deleteApplication(id: number) {
