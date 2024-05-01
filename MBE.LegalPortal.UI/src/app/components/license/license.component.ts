@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CreateLicenseComponent } from './create-license/create-license.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface PeriodicElement {
   application: string;
@@ -24,4 +26,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class LicenseComponent {
   displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'expirydate',  'expiryaction', 'action'];
   dataSource = ELEMENT_DATA;
+  constructor(private matDialog:MatDialog){}
+  createLicense(){
+    this.matDialog.open(CreateLicenseComponent, {
+      width:"600px"
+    });
+  }
 }
