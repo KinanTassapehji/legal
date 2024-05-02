@@ -5,6 +5,7 @@ import { SubscriptionPlanComponent } from './components/subscription-plan/subscr
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { AccountsComponent } from './components/accounts/accounts.component';
 import { LicenseComponent } from './components/license/license.component';
+import { ResellerComponent } from './components/reseller/reseller.component';
 
 export const routes: Routes = [
   { path: '', component: ApplicationComponent, pathMatch: 'full', canActivate: [MsalGuard] },
@@ -13,4 +14,5 @@ export const routes: Routes = [
   { path: 'onboarding', component: OnboardingComponent, canActivate: [MsalGuard] },
   { path: 'accounts', component: AccountsComponent, canActivate: [MsalGuard] },
   { path: 'license', component: LicenseComponent, canActivate: [MsalGuard] },
+  { path: 'reseller', component: ResellerComponent, canActivate: [MsalGuard] },
 ];
