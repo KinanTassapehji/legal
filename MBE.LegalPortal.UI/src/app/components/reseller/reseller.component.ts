@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateResellerComponent } from './create-reseller/create-reseller.component';
 
 export interface PeriodicElement {
   id: string;
@@ -21,4 +23,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ResellerComponent {
   displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'country', 'action'];
   dataSource = ELEMENT_DATA;
+  constructor(private matDialog:MatDialog){}
+  createReseller(){
+    this.matDialog.open(CreateResellerComponent, {
+      width:"600px"
+    });
+  }
 }
