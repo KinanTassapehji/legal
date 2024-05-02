@@ -30,6 +30,7 @@ import { ConfirmationPopupComponent } from './shared/popups/confirmation-popup/c
 import { LicenseComponent } from './components/license/license.component';
 import { CreateLicenseComponent } from './components/license/create-license/create-license.component';
 import { ResellerComponent } from './components/reseller/reseller.component';
+import { CreateResellerComponent } from './components/reseller/create-reseller/create-reseller.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -96,6 +97,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     LicenseComponent,
     CreateLicenseComponent,
     ResellerComponent,
+    CreateResellerComponent,
   ],
   imports: [
     BrowserModule,
