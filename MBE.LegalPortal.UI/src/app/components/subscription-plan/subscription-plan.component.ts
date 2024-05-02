@@ -20,6 +20,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   subscriptionPlans: ISubscriptionPlan[] = [];
   applications: IApplication[] = [];
   selectedApplication: IApplication | undefined;
+  defaultApplication: IApplication | undefined;
   constraints: IConstraint[] = [];
   errorMessage = '';
 
@@ -61,7 +62,9 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
         if (this.applications.length > 0) {
           // Set the first application as selected
           this.selectedApplication = applications[0];
+          this.defaultApplication = applications[0];
           this.applications[0].selected = true;
+          this.applications[0].isDefault = true;
           this.getSubscriptionPlans(this.applications[0].id);
         }
       },
@@ -70,6 +73,20 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   setApplicationAsDefault(id: number) {
+    // Loop through all applications
+    this.applications.forEach(app => {
+      // Set isDefault to true for the application with the given ID
+      app.isDefault = app.id === id;
+    });
+
+    // Find the application with the given ID
+    const defaultApp = this.applications.find(app => app.id === id);
+
+    // Set the found application as the defaultApplication
+    this.defaultApplication = defaultApp;
+  }
+
+  onCardClick(id: number) {
     // Loop through all applications
     this.applications.forEach(app => {
       // Set selected to true for the application with the given ID
@@ -81,9 +98,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
     // Set the found application as the selectedApplication
     this.selectedApplication = selectedApp;
-  }
 
-  onCardClick(id: number) {
     this.getSubscriptionPlans(id);
   }
 

@@ -40,4 +40,11 @@ export class ApplicationInstanceService {
         catchError(error => this.errorHandlingService.handleError(error))
     );
   }
+
+  deleteApplicationInstance(id: number): Observable<void> {
+    return this.http.delete<void>(`${Application_Instances_Url}/${id}`)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
 }

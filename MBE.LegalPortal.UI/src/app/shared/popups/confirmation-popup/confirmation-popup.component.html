@@ -1,23 +1,23 @@
 <div mat-dialog-container class="lp-common-modal-container common-confirmation-popup">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <span>Confirm Deletion</span>
-        <button mat-icon-button mat-dialog-close>
-          <mat-icon class="material-symbols-outlined">close</mat-icon>
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <mat-dialog-content>
-      <div class="row">
-        <div class="col-sm-12">
-            <p>
-                Are you sure to delete this application?
-            </p>
-        </div>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Confirm Deletion</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          Are you sure to delete the {{data}}?
+        </p>
       </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close (click)="onCancelClick()">Cancel</button>
-      <button mat-button [mat-dialog-close]="data">Delete</button>
-    </mat-dialog-actions>
-  </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="onCancelClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data">Delete</button>
+  </mat-dialog-actions>
+</div>

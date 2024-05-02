@@ -161,7 +161,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openDeleteApplicationDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data: { input: "input", output: "output" },
+      data: `"${this.applications.find(app => app.id === id)?.name}" Application`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -174,6 +174,30 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   deleteApplication(id: number) {
     // Call the delete service
     this.applicationService.deleteApplication(id).subscribe({
+      next: () => {
+        // Update the UI
+        this.getApplications();
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  openDeleteApplicationInstanceDialog(id: number) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" Application Instance`,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteApplicationInstance(id);
+      }
+    });
+  }
+
+  deleteApplicationInstance(id: number) {
+    // Call the delete service
+    this.applicationInstanceService.deleteApplicationInstance(id).subscribe({
       next: () => {
         // Update the UI
         this.getApplications();
