@@ -8,11 +8,12 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 import { AddApplicationInstanceComponent } from './add-application-instance/add-application-instance.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ApplicationInstanceOverviewComponent } from './application-instance-overview/application-instance-overview.component';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { ApplicationInstanceService } from '../../services/application-instance.service';
+import { Utils } from '../../utilities/sort.util';
 
 @Component({
   selector: 'app-application',
@@ -29,6 +30,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   totalCount = 0;
   pageSize = 5;
   pageIndex = 0;
+  // Sort
+  sortDirection?= '';
+  orderBy?= '';
+  // Search
+  keyword?= '';
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
 
@@ -72,8 +78,27 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     });
   }
 
-  getApplicationInstances(id: number) {
-    this.applicationInstanceService.getApplicationInstances(id, this.pageIndex + 1, this.pageSize).subscribe({
+  sortApplicationInstances(sort: Sort) {
+    this.sortDirection = sort?.direction?.toString();
+    this.orderBy = sort?.active;
+
+    if (!sort.active || sort.direction === '') {
+      return;
+    }
+
+    this.getApplicationInstances(this.selectedApplication ? this.selectedApplication.id : 0, sort);
+  }
+
+  searchApplicationInstances(keyword: string) {
+    this.keyword = keyword;
+
+    const sort = Utils.getSortObject(this.orderBy, this.sortDirection);
+
+    this.getApplicationInstances(this.selectedApplication ? this.selectedApplication.id : 0, sort, keyword);
+  }
+
+  getApplicationInstances(id: number, sort?: Sort, keyword?: string) {
+    this.applicationInstanceService.getApplicationInstances(id, this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
         this.ELEMENT_DATA = response.data;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);

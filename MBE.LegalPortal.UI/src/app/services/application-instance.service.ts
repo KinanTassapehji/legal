@@ -4,6 +4,7 @@ import { Observable, catchError, map } from 'rxjs';
 import { Application_Instances_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { IApplicationInstanceOverview } from '../interfaces/application-instance-overview';
+import { Sort, SortDirection } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,25 @@ export class ApplicationInstanceService {
 
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
-  getApplicationInstances(applicationId: number, page: number, pageSize: number): Observable<any> {
+  getApplicationInstances(applicationId: number, page: number, pageSize: number, sort?: Sort, keyword?: string): Observable<any> {
     // Constructing query parameters
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('applicationId', applicationId.toString())
       .set('page', page.toString())
       .set('pageSize', pageSize.toString());
+
+    if (sort?.direction !== undefined && sort?.direction !== '') {
+      const direction = sort.direction === 'asc' ? 'Asc' : 'Desc';
+      params = params.set('sortDirection', direction);
+    }
+
+    if (sort?.active !== undefined) {
+      params = params.set('orderBy', sort.active);
+    }
+
+    if (keyword !== undefined && keyword.trim() !== '') {
+      params = params.set('keyword', keyword.trim());
+    }
 
     return this.http.get<any>(`${Application_Instances_Url}`, { params })
       .pipe(
@@ -38,7 +52,7 @@ export class ApplicationInstanceService {
     return this.http.post(Application_Instances_Url, applicationInstanceDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
-    );
+      );
   }
 
   deleteApplicationInstance(id: number): Observable<void> {
