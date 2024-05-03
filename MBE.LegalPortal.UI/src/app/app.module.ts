@@ -32,6 +32,8 @@ import { CreateLicenseComponent } from './components/license/create-license/crea
 import { ResellerComponent } from './components/reseller/reseller.component';
 import { CreateResellerComponent } from './components/reseller/create-reseller/create-reseller.component';
 import { ResellerDashboardComponent } from './components/reseller/reseller-dashboard/reseller-dashboard.component';
+import { RegionCountryComponent } from './components/region-country/region-country.component';
+import { AddRegionComponent } from './components/region-country/add-region/add-region.component';
 import { CreateUserComponent } from './components/reseller/create-user/create-user.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
@@ -101,6 +103,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     ResellerComponent,
     CreateResellerComponent,
     ResellerDashboardComponent,
+    RegionCountryComponent,
+    AddRegionComponent,
     CreateUserComponent,
   ],
   imports: [
