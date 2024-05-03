@@ -1,0 +1,161 @@
+<div class="main-container reseller-dashboard-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="reseller-title-section">
+                <h2>Reseller Dashboard</h2>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="card rd-profile-section-card">
+                <div class="rd-profile-header">
+                    <div class="rd-profile-img">
+                        <img src="/assets/images/reseller-avatar.png">
+                    </div>
+                    <div class="rd-profile-title">
+                        Mobility Eye
+                    </div>
+                </div>
+                <div class="rd-profile-basic-details-column">
+                    <div class="drp-row">
+                        <mat-icon class="material-symbols-outlined">email</mat-icon>
+                        <span>{{resellerEmail}}</span>
+                    </div>
+                    <div class="drp-row">
+                        <mat-icon class="material-symbols-outlined">phone</mat-icon>
+                        <span>{{resellerPhone}}</span>
+                    </div>
+                    <div class="drp-row">
+                        <mat-icon class="material-symbols-outlined">globe</mat-icon>
+                        <span>{{resellerCountry}}</span>
+                    </div>
+                </div>
+                <div class="rd-profile-button">
+                    <button mat-raised-button> Create User</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-9">
+            <div class="card rd-details-section-card">
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="rd-details-tabs">
+                    <mat-tab label="General">
+                        <div class="tab-content">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="rdd-counter-card">
+                                        <div class="counter">50</div>
+                                        <div class="title">Licenses</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="rdd-counter-card">
+                                        <div class="counter">100</div>
+                                        <div class="title">Users</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="rdd-counter-card">
+                                        <div class="counter">15</div>
+                                        <div class="title">Accounts</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="rdd-counter-card">
+                                        <div class="counter">5</div>
+                                        <div class="title">Quota</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Users">
+                        <div class="tab-content">                            
+                        <div class="reseller-card-header dense-2">      
+                            <mat-form-field appearance="outline">
+                            <input matInput placeholder="Search...">
+                            <mat-icon class="material-symbols-outlined" matSuffix>search</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+                        
+                            <!-- Id Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef> Id </th>
+                                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                            </ng-container>
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef> Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                            </ng-container>
+                            <!-- Email Column -->
+                            <ng-container matColumnDef="email">
+                                <th mat-header-cell *matHeaderCellDef> Email </th>
+                                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                            </ng-container>
+                        
+                            <!-- Phone Column -->
+                            <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef> Phone </th>
+                            <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                            </ng-container>
+                        
+                            <!-- Country Column -->
+                            <ng-container matColumnDef="country">
+                            <th mat-header-cell *matHeaderCellDef> Country </th>
+                            <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+                            </ng-container>
+
+                            <!-- Action Instance Column -->
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                <td mat-cell *matCellDef="let element">                             
+                                    <div class="reseller-table-action">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                        <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>                                    
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Settings">
+                        <div class="tab-content">
+                            <div class="accounts-settings-contaniner">
+                                <h3>Account Settings</h3>
+                                <button mat-icon-button><mat-icon class="material-symbols-outlined">edit</mat-icon></button>
+                            </div>
+                            <div class="account-settings-col">
+                                <div class="as-row">
+                                    <div class="title">Reseller Name</div>
+                                    <div class="content">{{resellerName}}</div>
+                                </div>
+                                <div class="as-row">
+                                    <div class="title">Email</div>
+                                    <div class="content">{{resellerEmail}}</div>
+                                </div>
+                                <div class="as-row">
+                                    <div class="title">Phone</div>
+                                    <div class="content">{{resellerPhone}}</div>
+                                </div>
+                                <div class="as-row">
+                                    <div class="title">Country</div>
+                                    <div class="content">{{resellerCountry}}</div>
+                                </div>
+                            </div>                            
+                            <div class="deactivate-account">
+                                <button mat-raised-button> Deactivate Account</button>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

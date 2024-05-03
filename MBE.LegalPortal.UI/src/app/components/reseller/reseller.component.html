@@ -25,10 +25,10 @@
                       <ng-container matColumnDef="name">
                           <th mat-header-cell *matHeaderCellDef> Name </th>
                           <td mat-cell *matCellDef="let element"> 
-                            <div class="reseller-name-column">
+                            <a class="reseller-name-column" routerLink="/reseller/dashboard">
                               {{element.name}}
                               <mat-icon class="material-symbols-outlined">north_east</mat-icon>
-                            </div>
+                            </a>
                           </td>
                       </ng-container>
                       <!-- Email Column -->
