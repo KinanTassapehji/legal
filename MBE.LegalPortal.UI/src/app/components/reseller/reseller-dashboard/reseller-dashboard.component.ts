@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { CreateUserComponent } from '../create-user/create-user.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface PeriodicElement {
   id: string;
@@ -26,4 +28,10 @@ export class ResellerDashboardComponent {
   resellerEmail: string =  'reseller1@mobilityeye.com';
   resellerPhone: string =  '+971 55000 00000';
   resellerCountry: string =  'United Arab Emirates';
+  constructor(private matDialog:MatDialog){}
+  createUser(){
+    this.matDialog.open(CreateUserComponent, {
+      width:"600px"
+    });
+  }
 }
