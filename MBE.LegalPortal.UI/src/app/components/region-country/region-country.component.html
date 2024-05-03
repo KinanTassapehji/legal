@@ -1,0 +1,83 @@
+<div class="main-container region-country-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="region-title-section">
+                <h2>Region</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-3" *ngFor="let region of regionData; let i = index;">
+            <div class="card region-card" (click)="regionCard(i)" [class.selected]="region.selected">
+                <mat-icon class="material-symbols-outlined">globe</mat-icon>
+                <div class="title">{{ region.title }}</div>
+                <div class="count">{{ region.count }}</div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3">
+            <div class="card add-new-region-card" (click)="addRegion()">
+              <mat-icon class="material-symbols-outlined">add</mat-icon>
+              <span>Add Region</span>
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="region-title-section">
+                <h2>Country</h2>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card region-country-table-card">                
+            <div class="region-card-header dense-2">      
+                <mat-form-field appearance="outline">
+                <input matInput placeholder="Search...">
+                <mat-icon class="material-symbols-outlined" matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+            
+                <!-- Id Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> Id </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+                <!-- Code Column -->
+                <ng-container matColumnDef="code">
+                    <th mat-header-cell *matHeaderCellDef> Code </th>
+                    <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                </ng-container>
+            
+                <!-- Region Column -->
+                <ng-container matColumnDef="region">
+                <th mat-header-cell *matHeaderCellDef> Region </th>
+                <td mat-cell *matCellDef="let element"> {{element.region}} </td>
+                </ng-container>
+            
+                <!-- Action Instance Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let element">                             
+                        <div class="region-table-action">
+                            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>                                    
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements">
+        </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+
+.region-country-container{
+    .region-title-section{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        h2{
+            margin: 0;
+        }
+    }
+    .region-card {
+        padding: 18px 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;        
+        border: 2px solid transparent;
+        height: 64px;
+        &.selected{
+            color: var(--lp-primary);
+            border: 2px solid var(--lp-primary);
+        }
+        &:hover{
+            cursor: pointer;
+        }
+        .title, .count{
+            font-size: 20px;
+        }
+        .count{
+            margin-left: auto;
+        }
+    }
+    .add-new-region-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        height: 64px;
+        font-size: 1.15rem;
+        background: var(--lp-background);
+        border: 3px dashed var(--lp-grey);
+        color: var(--lp-grey);
+        cursor: pointer;
+    }
+    .region-country-table-card{   
+        padding: 10px 10px 5px;               
+        .region-card-header {
+            display: flex;
+            justify-content: flex-end;
+            mat-form-field {
+                margin-bottom: -1.25em;
+            }
+        }             
+        table{
+            border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
+            tr{
+                th{
+                    font-size: 1.1rem;
+                    font-weight: 500;
+                }
+                td{
+                    &:first-child{
+                        font-weight: 500;
+                    }               
+                    .region-table-action{
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        mat-icon{
+                            &:hover{
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+    }
+}
