@@ -32,6 +32,7 @@ import { CreateLicenseComponent } from './components/license/create-license/crea
 import { ResellerComponent } from './components/reseller/reseller.component';
 import { CreateResellerComponent } from './components/reseller/create-reseller/create-reseller.component';
 import { ResellerDashboardComponent } from './components/reseller/reseller-dashboard/reseller-dashboard.component';
+import { CreateUserComponent } from './components/reseller/create-user/create-user.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -100,6 +101,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     ResellerComponent,
     CreateResellerComponent,
     ResellerDashboardComponent,
+    CreateUserComponent,
   ],
   imports: [
     BrowserModule,
