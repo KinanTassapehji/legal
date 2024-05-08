@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Utils } from '../../utilities/sort.util';
 import { MatPaginator } from '@angular/material/paginator';
+import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 
 export interface PeriodicElement {
   accountname: string;
@@ -97,5 +98,29 @@ export class AccountsComponent {
     this.keyword = keyword;
     const sort = Utils.getSortObject(this.orderBy, this.sortDirection);
     this.getAccounts(sort, keyword);
+  }
+
+  openDeleteAccountDialog(id: number) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" Account`,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteAccount(id);
+      }
+    });
+  }
+
+  deleteAccount(id: number) {
+    // Call the delete service
+    this.accountsService.deleteAccount(id).subscribe({
+      next: () => {
+        // Update the UI
+        this.getAccounts();
+      },
+      error: err => this.errorMessage = err
+    });
   }
 }

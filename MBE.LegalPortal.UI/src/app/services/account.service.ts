@@ -48,4 +48,11 @@ export class AccountService {
   createAccounts(CreateAccountDto: any): Observable<any> {
     return this.http.post(Accounts_Url, CreateAccountDto).pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
+  //
+  deleteAccount(id: number): Observable<void> {
+    return this.http.delete<void>(`${Accounts_Url}/${id}`)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
 }
