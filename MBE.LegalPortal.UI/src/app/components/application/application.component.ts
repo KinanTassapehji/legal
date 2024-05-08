@@ -14,6 +14,7 @@ import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-pop
 import { MatPaginator } from '@angular/material/paginator';
 import { ApplicationInstanceService } from '../../services/application-instance.service';
 import { Utils } from '../../utilities/sort.util';
+import { UpdateApplicationComponent } from './update-application/update-application.component';
 
 @Component({
   selector: 'app-application',
@@ -181,6 +182,17 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
     // Set the found application as the defaultApplication
     this.defaultApplication = defaultApp;
+  }
+
+  openUpdateApplicationDialog(id: number) {
+    const dialogRef = this.matDialog.open(UpdateApplicationComponent, {
+      width: "800px",
+      data: id,
+    });
+
+    dialogRef.componentInstance.applicationUpdated.subscribe(() => {
+      this.getApplications(); // Refresh the list of applications
+    });
   }
 
   openDeleteApplicationDialog(id: number) {
