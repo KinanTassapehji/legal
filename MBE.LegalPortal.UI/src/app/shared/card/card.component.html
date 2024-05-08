@@ -13,6 +13,10 @@
           <mat-icon class="material-symbols-outlined">task_alt</mat-icon>
           <span>Set as default</span>
         </button>
+        <button mat-menu-item *ngIf="update.observers.length > 0" (click)="onUpdate()">
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
+          <span>Update Application</span>
+        </button>
         <button mat-menu-item *ngIf="delete.observers.length > 0" (click)="onDelete()">
           <mat-icon class="material-symbols-outlined">delete</mat-icon>
           <span>Delete Application</span>

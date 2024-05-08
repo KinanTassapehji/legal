@@ -1,0 +1,71 @@
+<div mat-dialog-container class="lp-common-modal-container add-application-modal-conrailer">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Update Application</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-12 dense-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Application Name</mat-label>
+          <input matInput [(ngModel)]="application.name">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <h5 class="upload-application-icon-title">
+          Application logo icon
+        </h5>
+        <div class="upload-application-icon-container img-uploaded">
+          <div class="img-preview" [style.background-image]="'url(' + application.image + ')'">
+            <button mat-icon-button><mat-icon class="material-symbols-outlined">delete</mat-icon></button>
+          </div>
+          <input type="file" (change)="handleImageInput($event)" style="display: none;" #fileInput>
+          <mat-icon class="material-symbols-outlined" (click)="fileInput.click()">upload</mat-icon>
+          <div class="title">Upload application icon</div>
+        </div>
+        <h5 class="app-constraint-title">Constraints</h5>
+      </div>
+      <div class="col-sm-12">
+        <div class="add-application-constraints-row dense-2">
+          <div class="add-application-constraints-col" *ngFor="let constraint of application.applicationConstraints; let i=index">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Constraints Title</mat-label>
+                  <input matInput [(ngModel)]="constraint.key">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Default Action</mat-label>
+                  <mat-select [(ngModel)]="constraint.defaultAction">
+                    <mat-option value="DefaultPolicy">Default Policy</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="aac-action">
+              <button mat-icon-button (click)="removeConstraint(i)">
+                <mat-icon class="material-symbols-outlined">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="add-application-constraints-col incremental">
+          <button mat-stroked-button (click)="addNewConstraint()">
+            <mat-icon class="material-symbols-outlined">add</mat-icon>
+            <span>Add new Constraints</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button (click)="updateApplication()">Update</button>
+  </mat-dialog-actions>
+</div>

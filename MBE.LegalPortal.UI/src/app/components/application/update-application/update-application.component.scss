@@ -1,0 +1,74 @@
+.add-application-modal-conrailer{
+    .upload-application-icon-title{
+        font-size: 0.75rem;
+        margin-bottom: 0.05rem;
+    }
+    .upload-application-icon-container{
+        width: 100%;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-self: center;
+        border: 2px dashed var(--lp-text-light);
+        border-radius: 6px;
+        gap: 0.25rem;
+        &:hover {
+            cursor: pointer;
+        }
+        .title{
+            font-size: 0.9rem;
+        }
+        &.img-uploaded{
+            padding: 0.5rem;
+            .img-preview{
+                display: block!important;
+                width: 150px;
+                height: 150px;
+                background-size: cover;
+                overflow: hidden;
+                border-radius: 8px;
+                position: relative;
+                button{
+                    position: absolute;
+                    top: 0.25rem;
+                    right: 0.25rem;
+                    mat-icon{
+                        display: block;
+                    }
+                }
+            }
+            mat-icon, .title{
+                display: none;
+            }
+        }
+    }
+    .app-constraint-title{
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+    .add-application-constraints-row{
+        display: flex;
+        flex-direction: column;
+        .add-application-constraints-col{
+            display: flex;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+            gap: 0.5rem;
+            .row{
+                width: 100%;
+            }
+            .aac-action{
+                margin-bottom: 1.25rem;
+            }
+            &.incremental{
+                justify-content: center;
+                padding-bottom: 0.5rem;
+                button{
+                    height: 40px;
+                }
+            }
+        }
+    }
+}

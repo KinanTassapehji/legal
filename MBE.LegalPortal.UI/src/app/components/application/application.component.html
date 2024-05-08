@@ -8,6 +8,7 @@
                 [image]="app.image"
                 [selected]="app.selected"
                 [isDefault]="app.isDefault"
+                (update)="openUpdateApplicationDialog(app.id)"
                 (delete)="openDeleteApplicationDialog(app.id)"
                 (setAsDefault)="setApplicationAsDefault($event)"
                 (cardClick)="onCardClick(app.id)">

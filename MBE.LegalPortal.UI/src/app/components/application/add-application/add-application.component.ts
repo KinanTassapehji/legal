@@ -53,7 +53,7 @@ export class AddApplicationComponent {
     this.mediaService.UploadImage(folder, formData).subscribe({
       next: (response: any) => {
         this.applicationImage = response.data;
-        this.applicationImageUrl = `${Base_Media_Url}/${response.data}`; // Display the uploaded image
+        this.applicationImageUrl = `${Base_Media_Url}${response.data}`; // Display the uploaded image
       },
       error: (error: any) => {
         // Handle error

@@ -17,6 +17,7 @@ import { MaterialModule } from '../Material.Module';
 import { LayoutComponent } from './shared/dashboard-layout/layout/layout.component';
 import { ApplicationComponent } from './components/application/application.component';
 import { AddApplicationComponent } from './components/application/add-application/add-application.component';
+import { UpdateApplicationComponent } from './components/application/update-application/update-application.component';
 import { AddApplicationInstanceComponent } from './components/application/add-application-instance/add-application-instance.component';
 import { SubscriptionPlanComponent } from './components/subscription-plan/subscription-plan.component';
 import { CardComponent } from './shared/card/card.component';
@@ -90,6 +91,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     LayoutComponent,
     ApplicationComponent,
     AddApplicationComponent,
+    UpdateApplicationComponent,
     AddApplicationInstanceComponent,
     SubscriptionPlanComponent,
     CardComponent,
