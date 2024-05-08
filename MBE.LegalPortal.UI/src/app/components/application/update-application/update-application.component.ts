@@ -4,6 +4,7 @@ import { ApplicationService } from '../../../services/application.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplicationDetails } from '../../../interfaces/application-details';
 import { Base_Media_Url } from '../../../constants/apis-constants';
+import { MediaService } from '../../../services/media.service';
 
 @Component({
   selector: 'app-update-application',
@@ -13,9 +14,10 @@ import { Base_Media_Url } from '../../../constants/apis-constants';
 export class UpdateApplicationComponent implements OnInit, OnDestroy {
   @Output() applicationUpdated: EventEmitter<void> = new EventEmitter<void>();
 
+  applicationImageUrl: string | undefined;
   application: IApplicationDetails = {} as IApplicationDetails;
   sub!: Subscription;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
 
   ngOnInit(): void {
     this.getApplicationById(this.data);
@@ -31,7 +33,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
       (response: IApplicationDetails | undefined) => {
         if (response) {
           this.application = response;
-          this.application.image = `${Base_Media_Url}${this.application.image}`;
+          this.applicationImageUrl = this.application.image;
         } else {
           console.error('Application details not found');
         }
@@ -51,7 +53,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
     };
 
     this.sub = this.applicationService.updateApplication(requestBody).subscribe({
-      next: (response) => {
+      next: () => {
         // Emit event to notify parent component
         this.applicationUpdated.emit();
 
@@ -60,17 +62,36 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         // Handle error response, maybe show an error message
-        console.error('Error creating application', err);
+        console.error('Error updating application', err);
       }
     });
   }
 
   handleImageInput(event: any) {
+    const folder = 'Applications'; // Specify the folder here
     const file: File = event.target.files[0];
+    const formData = new FormData();
 
-    if (this.application) {
-      this.application.image = file.name;
+    formData.append('file', file);
+
+    // Use the mediaService to handle the upload
+    this.mediaService.UploadImage(folder, formData).subscribe({
+      next: (response: any) => {
+        this.application.image = response.data;
+        this.applicationImageUrl = `${Base_Media_Url}${response.data}`; // Display the uploaded image
+      },
+      error: (error: any) => {
+        // Handle error
+        console.error('Upload failed:', error);
+        // Reset the image-related properties
+        this.application.image = '';
+      }
+    });
     }
+
+  removeImage() {
+    this.application.image = undefined;
+    this.applicationImageUrl = undefined;
   }
 
   addNewConstraint() {

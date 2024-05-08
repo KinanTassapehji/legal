@@ -14,7 +14,7 @@
                   <mat-icon  (click)="searchAccounts(keywordInput.value)" class="material-symbols-outlined" matSuffix>search</mat-icon>
                 </mat-form-field>
               </div>
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort (matSortChange)="sortAccounts($event)">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort (matSortChange)="sortAccounts($event)" *ngIf="ELEMENT_DATA.length > 0">
                   
                     <!-- Account Name Column -->
                     <ng-container matColumnDef="accountname">
@@ -48,14 +48,15 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>                                    
-                    <mat-paginator [length]="totalCount"
-                                   [pageSize]="pageSize"
-                                   [pageSizeOptions]="[5, 10, 20]"
-                                   [pageIndex]="pageIndex"
-                                   showFirstLastButtons
-                                   aria-label="Accounts table pagination"
-                                   (page)="onPageChange($event)">
-                    </mat-paginator>
+                  <mat-paginator *ngIf="totalCount > pageSizeOptions[0]"
+                                 [length]="totalCount"
+                                 [pageSize]="pageSize"
+                                 [pageSizeOptions]="pageSizeOptions"
+                                 [pageIndex]="pageIndex"
+                                 showFirstLastButtons
+                                 aria-label="Accounts table pagination"
+                                 (page)="onPageChange($event)">
+                  </mat-paginator>
             </div>
         </div>
     </div>
