@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { IAccount } from '../../interfaces/account';
 import { AccountService } from '../../services/account.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Sort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Utils } from '../../utilities/sort.util';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface PeriodicElement {
   accountname: string;
@@ -24,7 +25,7 @@ export interface PeriodicElement {
   styleUrl: './accounts.component.scss'
 })
 export class AccountsComponent {
-  displayedColumns: string[] = ['accountname', 'email', 'phone', 'applicationinstance', 'action'];
+  displayedColumns: string[] = ['accountname', 'email', 'phone', 'action'];
   sub!: Subscription;
   accounts: IAccount[] = [];
   selectedAccounts: IAccount | undefined;
@@ -41,7 +42,16 @@ export class AccountsComponent {
   keyword?= '';
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private matDialog: MatDialog, private accountsService: AccountService) { }
+
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
   ngOnInit(): void {
     this.getAccounts();
   }
