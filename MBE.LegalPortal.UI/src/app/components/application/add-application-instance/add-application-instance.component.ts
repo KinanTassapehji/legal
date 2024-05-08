@@ -39,7 +39,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   }
 
   getAccounts() {
-    this.sub = this.accountService.getAccounts().subscribe({
+    this.sub = this.accountService.getAccountsAll().subscribe({
       next: accounts => {
         this.accounts = accounts;
       },
