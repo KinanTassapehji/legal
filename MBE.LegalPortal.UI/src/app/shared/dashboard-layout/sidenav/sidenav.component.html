@@ -1,6 +1,9 @@
 <mat-nav-list class="lp-mat-nav-list">    
-    <a mat-list-item routerLink="/{{ sidenav.link }}" matTooltip="{{ sidenav.name }}" matTooltipPosition="right" *ngFor="let sidenav of sidenavData; let i = index;">
-        <mat-icon class="material-symbols-outlined">{{ sidenav.icon }}</mat-icon>
-        <span>{{ sidenav.name }}</span>
+    <a mat-list-item routerLink="/{{ sidenav.link }}" matTooltip="{{ sidenav.name }}" matTooltipPosition="right" 
+    *ngFor="let sidenav of sidenavData; let i = index;" [ngClass]="{'mat-nav-isloading': isLoading, 'mat-nav-isloaded': !isLoading}">
+        <ngx-skeleton-loader [theme]="{width:'24px', height:'24px','margin':'0'}" appearance="circle" *ngIf="isLoading" />
+        <ngx-skeleton-loader [theme]="{width:'200px', height:'24px','margin':'0'}" appearance="line" *ngIf="isLoading" />
+        <mat-icon class="material-symbols-outlined" *ngIf="!isLoading">{{ sidenav.icon }}</mat-icon>
+        <span *ngIf="!isLoading">{{ sidenav.name }}</span>
     </a>
 </mat-nav-list>

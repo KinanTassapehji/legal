@@ -8,4 +8,11 @@
             color: var(--lp-grey);
         }
     }
+    .mat-nav-isloading{
+        .mat-mdc-list-item-unscoped-content{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+    }
 }

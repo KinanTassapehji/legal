@@ -7,5 +7,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class LayoutComponent {
+isLoading = true;
 
+ngOnInit(): void{
+  setTimeout(() => {
+    this.isLoading = false;
+  }, 2000);
+}
 }
