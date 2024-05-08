@@ -9,6 +9,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { Utils } from '../../utilities/sort.util';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
+import { UpdateAccountComponent } from './update-account/update-account.component';
 
 export interface PeriodicElement {
   accountname: string;
@@ -97,6 +98,15 @@ export class AccountsComponent {
     this.getAccounts(sort, keyword);
   }
 
+  openUpdateAccountDialog(element: any) {
+    const dialogRef = this.matDialog.open(UpdateAccountComponent, {
+      width: "800px",
+      data: element,
+    });
+    dialogRef.componentInstance.accountUpdated.subscribe(() => {
+      this.getAccounts(); // Refresh the list of applications
+    });
+  }
   openDeleteAccountDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",

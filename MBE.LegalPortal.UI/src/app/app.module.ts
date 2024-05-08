@@ -38,6 +38,7 @@ import { AddRegionComponent } from './components/region-country/add-region/add-r
 import { CreateUserComponent } from './components/reseller/create-user/create-user.component';
 import { LicenseDetailsComponent } from './components/license/license-details/license-details.component';
 import { UpdateApplicationInstanceComponent } from './components/application/update-application-instance/update-application-instance.component';
+import { UpdateAccountComponent } from './components/accounts/update-account/update-account.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -112,6 +113,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     CreateUserComponent,
     LicenseDetailsComponent,
     UpdateApplicationInstanceComponent,
+    UpdateAccountComponent,
   ],
   imports: [
     BrowserModule,

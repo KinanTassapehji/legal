@@ -55,4 +55,11 @@ export class AccountService {
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
+  //
+  updateAccount(accountDto: any): Observable<any> {
+    return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
 }
