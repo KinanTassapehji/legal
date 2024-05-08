@@ -34,18 +34,7 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.applicationInstanceId !== undefined) {
-      this.sub = this.applicationInstanceService.getApplicationInstanceById(this.applicationInstanceId).subscribe(
-        (response: IApplicationInstanceOverview | undefined) => {
-          this.applicationInstance = response;
-          if (this.applicationInstance?.tenants && this.applicationInstance.tenants?.length > 0) {
-            // Automatically trigger handleTenantClick for the first tenant
-            this.handleTenantClick(this.applicationInstance.tenants[0].id);
-          }
-        },
-        (error: any) => {
-          console.error('Error retrieving application instance data:', error);
-        }
-      );
+      this.getApplicationInstanceById(this.applicationInstanceId);
     }
   }
 
@@ -53,6 +42,21 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  getApplicationInstanceById(applicationInstanceId: number) {
+    this.sub = this.applicationInstanceService.getApplicationInstanceById(applicationInstanceId).subscribe(
+      (response: IApplicationInstanceOverview | undefined) => {
+        this.applicationInstance = response;
+        if (this.applicationInstance?.tenants && this.applicationInstance.tenants?.length > 0) {
+          // Automatically trigger handleTenantClick for the first tenant
+          this.handleTenantClick(this.applicationInstance.tenants[0].id);
+        }
+      },
+      (error: any) => {
+        console.error('Error retrieving application instance data:', error);
+      }
+    );
   }
 
   handleTenantClick(id?: number, event?: Event): void {

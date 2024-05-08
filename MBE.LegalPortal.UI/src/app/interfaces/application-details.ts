@@ -1,3 +1,4 @@
+import { IApplicationConstraint } from "./application-constraint";
 import { IApplicationInstance } from "./application-instance";
 
 export interface IApplicationDetails {
@@ -5,4 +6,5 @@ export interface IApplicationDetails {
   name: string,
   image: string,
   applicationInstances: IApplicationInstance[]
+  applicationConstraints: IApplicationConstraint[]
 }

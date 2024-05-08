@@ -89,7 +89,6 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   toggleChanged(event: any, constraint: IApplicationConstraint) {
-    console.log(event);
     constraint.enabled = event.checked;
     constraint.value = 0;
   }
