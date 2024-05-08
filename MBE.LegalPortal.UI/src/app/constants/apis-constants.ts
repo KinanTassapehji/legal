@@ -7,3 +7,5 @@ export const Accounts_Url: string = BaseUrl + 'Account';
 export const Accounts_GetAll_Url: string = Accounts_Url + '/GetAll';
 export const Tenants_Url: string = BaseUrl + 'Tenant';
 export const License_Url: string = BaseUrl + 'License';
+export const Media_Url: string = BaseUrl + 'Media';
+export const Base_Media_Url: string = 'https://legal-portal.s3.ap-south-1.amazonaws.com';

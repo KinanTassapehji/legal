@@ -19,13 +19,14 @@
         <h5 class="upload-application-icon-title">
           Application logo icon
         </h5>
-        <div class="upload-application-icon-container img-uploaded">
-          <div class="img-preview" style="background-image: url('https://dummyimage.com/500x500/b5b5b5/0011ff');display: none;">
-            <button mat-icon-button><mat-icon class="material-symbols-outlined">delete</mat-icon></button>
+        <div class="upload-application-icon-container" [class.img-uploaded]="applicationImageUrl">
+          <button mat-icon-button class="remove-img" (click)="removeImage()"><mat-icon class="material-symbols-outlined">delete</mat-icon></button>
+          <div class="img-preview" *ngIf="applicationImageUrl" [ngStyle]="{'background-image': 'url(' + applicationImageUrl + ')'}">
           </div>
           <input type="file" (change)="handleImageInput($event)" style="display: none;" #fileInput>
-          <mat-icon class="material-symbols-outlined" (click)="fileInput.click()">upload</mat-icon>
+          <mat-icon class="material-symbols-outlined">upload</mat-icon>
           <div class="title">Upload application icon</div>
+          <button (click)="fileInput.click()" mat-raised-button class="upload-icon">Upload Icon</button>
         </div>
         <h5 class="app-constraint-title">Constraints</h5>
       </div>
