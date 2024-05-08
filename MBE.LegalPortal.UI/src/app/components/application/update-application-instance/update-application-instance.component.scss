@@ -15,48 +15,12 @@
     border-radius: 6px;
     gap: 0.25rem;
 
+    &:hover {
+      cursor: pointer;
+    }
+
     .title {
       font-size: 0.9rem;
-    }
-
-    button.remove-img {
-      display: none;
-    }
-
-    &.img-uploaded {
-      padding: 0.5rem;
-      position: relative;
-
-      button.remove-img {
-        position: absolute;
-        top: 0.25rem;
-        right: 0.25rem;
-        display: block;
-
-        mat-icon {
-          display: block;
-          color: var(--lp-warning);
-        }
-      }
-
-      .img-preview {
-        display: block !important;
-        width: 150px;
-        height: 150px;
-        background-size: cover;
-        overflow: hidden;
-        border-radius: 8px;
-        position: relative;
-      }
-
-      mat-icon, .title, .upload-icon {
-        display: none;
-      }
-    }
-
-    .upload-icon {
-      background: var(--lp-primary);
-      color: var(--lp-white)
     }
   }
 

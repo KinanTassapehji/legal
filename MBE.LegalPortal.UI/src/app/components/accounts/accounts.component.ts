@@ -19,8 +19,6 @@ export interface PeriodicElement {
   action: string;
 }
 
-
-
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
@@ -37,6 +35,7 @@ export class AccountsComponent {
   totalCount = 0;
   pageSize = 5;
   pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 20];
   // Sort
   sortDirection?= '';
   orderBy?= '';
@@ -64,11 +63,9 @@ export class AccountsComponent {
     });
   }
 
-  //
   getAccounts(sort?: Sort, keyword?: string) {
     this.sub = this.accountsService.getAccounts(this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
-        console.log('response', response);
         this.ELEMENT_DATA = response.data;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         const pi = response; // Paginator Info

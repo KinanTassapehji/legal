@@ -1,0 +1,77 @@
+<div mat-dialog-container class="lp-common-modal-container add-application-modal-conrailer">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Update Application Instance</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-12 dense-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="applicationInstance.name">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 dense-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Application</mat-label>
+          <mat-select [(ngModel)]="applicationInstance.application.id">
+            <mat-option *ngFor="let app of data.applications" [value]="app.id">{{ app.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 dense-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Account</mat-label>
+          <mat-select [(ngModel)]="applicationInstance.account.id">
+            <mat-option *ngFor="let acc of accounts" [value]="acc.id">{{ acc.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <div class="add-application-constraints-row dense-2">
+          <div class="add-application-constraints-col" *ngFor="let tenant of applicationInstance.tenants; let i=index">
+            <div class="row">
+              <div class="col-sm-12 col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Tenant</mat-label>
+                  <input matInput [(ngModel)]="tenant.name">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Email</mat-label>
+                  <input matInput [(ngModel)]="tenant.email">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>URL</mat-label>
+                  <input matInput [(ngModel)]="tenant.url">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="aac-action">
+              <button mat-icon-button (click)="removeTenant(i)">
+                <mat-icon class="material-symbols-outlined">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="add-application-constraints-col incremental">
+          <button mat-stroked-button (click)="addNewTenant(applicationInstance.id)">
+            <mat-icon class="material-symbols-outlined">add</mat-icon>
+            <span>Add new Tenant</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button (click)="updateApplicationInstance()">Update</button>
+  </mat-dialog-actions>
+</div>

@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { IApplicationInstanceOverview } from '../../../interfaces/application-instance-overview';
+import { IApplicationInstance } from '../../../interfaces/application-instance';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
 import { Subscription } from 'rxjs';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -14,7 +14,7 @@ import { ILicense } from '../../../interfaces/license';
   encapsulation: ViewEncapsulation.None
 })
 export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
-  applicationInstance: IApplicationInstanceOverview | undefined;
+  applicationInstance: IApplicationInstance | undefined;
   license: ILicense | undefined;
   private sub: Subscription | undefined;
   applicationInstanceId: number | undefined;
@@ -46,7 +46,7 @@ export class ApplicationInstanceOverviewComponent implements OnInit, OnDestroy {
 
   getApplicationInstanceById(applicationInstanceId: number) {
     this.sub = this.applicationInstanceService.getApplicationInstanceById(applicationInstanceId).subscribe(
-      (response: IApplicationInstanceOverview | undefined) => {
+      (response: IApplicationInstance | undefined) => {
         this.applicationInstance = response;
         if (this.applicationInstance?.tenants && this.applicationInstance.tenants?.length > 0) {
           // Automatically trigger handleTenantClick for the first tenant
