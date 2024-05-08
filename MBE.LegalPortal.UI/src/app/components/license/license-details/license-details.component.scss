@@ -1,0 +1,66 @@
+.license-title-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    h2{
+        margin: 0;
+    }
+}
+.license-details-card-cont{
+    padding: 10px;
+    margin-bottom: 1rem;
+    .ld-card-title{
+        font-size: 1.25rem;
+        font-weight: 500;
+        border-bottom: 2px solid var(--lp-text-light);
+        padding: 0.75rem;
+    }
+    .license-details-list{
+        mat-list-item{
+            border-bottom: 1px solid var(--lp-text-light);            
+            .ld-container{
+                display: flex;
+                .ld-title, .ld-details {
+                    flex:1;
+                    font-size: 1.1rem;
+                }
+                .ld-title{
+                    font-weight: 500;
+                }
+            }
+        }
+    }    
+    .license-constraints-list{
+        mat-list-item{
+            border-bottom: 1px solid var(--lp-text-light);            
+            .ld-container{
+                display: flex;
+                .ld-title{
+                    flex:1;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+    }
+    .license-machines-list{
+        mat-list-item{
+            border-bottom: 1px solid var(--lp-text-light);            
+            .ld-container{
+                display: flex;
+                align-items: center;
+                .ld-title {
+                    flex:1;
+                    font-size: 1.1rem;
+                }
+                .ld-details{
+                    button{
+                        background-color: var(--lp-warning);
+                        color: var(--lp-white);
+                    }
+                }
+
+            }
+        }
+    }
+}

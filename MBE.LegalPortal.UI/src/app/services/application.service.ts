@@ -6,6 +6,7 @@ import { Applications_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { IApplicationInstance } from '../interfaces/application-instance';
 import { IApplicationConstraint } from '../interfaces/application-constraint';
+import { IApplicationDetails } from '../interfaces/application-details';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,14 @@ export class ApplicationService {
         map((response: any) => response.data),
         catchError(error => this.errorHandlingService.handleError(error))
     );
+  }
+
+  getApplicationById(id: number): Observable<IApplicationDetails> {
+    return this.http.get<IApplicationDetails>(`${Applications_Url}/${id}`)
+      .pipe(
+        map((response: any) => response.data),
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
   }
 
   getApplicationInstancesByApplicationId(id: number): Observable<IApplicationInstance[]> {
@@ -41,6 +50,13 @@ export class ApplicationService {
 
   createApplication(applicationDto: any): Observable<any> {
     return this.http.post(Applications_Url, applicationDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
+  updateApplication(applicationDto: any): Observable<any> {
+    return this.http.put(`${Applications_Url}/${applicationDto.id}`, applicationDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );

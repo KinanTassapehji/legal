@@ -1,0 +1,47 @@
+<div class="main-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="license-title-section">
+                <h2>License Details</h2>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card license-details-card-cont">
+                <div class="ld-card-title">Mubadala</div>
+                <mat-list role="list" class="license-details-list">
+                    <mat-list-item role="listitem" *ngFor="let license of licenseData; let i = index;">
+                        <div class="ld-container">
+                            <div class="ld-title">{{ license.title }}</div>
+                            <div class="ld-details">{{ license.details }}</div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card license-details-card-cont">
+                <div class="ld-card-title">Constraints</div>
+                <mat-list role="list" class="license-constraints-list">
+                    <mat-list-item role="listitem" *ngFor="let constraints of constraintData; let i = index;">
+                        <div class="ld-container">
+                            <div class="ld-title">{{ constraints.title }}</div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="card license-details-card-cont">
+                <div class="ld-card-title">Machines</div>
+                <mat-list role="list" class="license-machines-list">
+                    <mat-list-item role="listitem" *ngFor="let machines of machineData; let i = index;">
+                        <div class="ld-container">
+                            <div class="ld-title">{{ machines.title }}</div>
+                            <div class="ld-details"><button mat-raised-button>Terminate</button></div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+    </div>
+</div>
