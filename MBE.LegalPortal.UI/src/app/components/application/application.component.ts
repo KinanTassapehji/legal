@@ -37,8 +37,9 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   // Search
   keyword?= '';
 
-  displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
+  isLoading = true;
 
+  displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
 
   ELEMENT_DATA: IApplicationInstance[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -49,11 +50,13 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
-
   constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.getApplications();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   ngOnDestroy(): void {
