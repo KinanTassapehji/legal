@@ -8,6 +8,7 @@ import { LicenseComponent } from './components/license/license.component';
 import { ResellerComponent } from './components/reseller/reseller.component';
 import { ResellerDashboardComponent } from './components/reseller/reseller-dashboard/reseller-dashboard.component';
 import { RegionCountryComponent } from './components/region-country/region-country.component';
+import { LicenseDetailsComponent } from './components/license/license-details/license-details.component';
 
 export const routes: Routes = [
   { path: '', component: ApplicationComponent, pathMatch: 'full', canActivate: [MsalGuard] },
@@ -19,4 +20,5 @@ export const routes: Routes = [
   { path: 'reseller', component: ResellerComponent, canActivate: [MsalGuard] },
   { path: 'reseller/dashboard', component: ResellerDashboardComponent, canActivate: [MsalGuard] },
   { path: 'region/country', component: RegionCountryComponent, canActivate: [MsalGuard] },
+  { path: 'license/details', component: LicenseDetailsComponent, canActivate: [MsalGuard] },
 ];

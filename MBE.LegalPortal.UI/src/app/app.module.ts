@@ -17,6 +17,7 @@ import { MaterialModule } from '../Material.Module';
 import { LayoutComponent } from './shared/dashboard-layout/layout/layout.component';
 import { ApplicationComponent } from './components/application/application.component';
 import { AddApplicationComponent } from './components/application/add-application/add-application.component';
+import { UpdateApplicationComponent } from './components/application/update-application/update-application.component';
 import { AddApplicationInstanceComponent } from './components/application/add-application-instance/add-application-instance.component';
 import { SubscriptionPlanComponent } from './components/subscription-plan/subscription-plan.component';
 import { CardComponent } from './shared/card/card.component';
@@ -35,6 +36,7 @@ import { ResellerDashboardComponent } from './components/reseller/reseller-dashb
 import { RegionCountryComponent } from './components/region-country/region-country.component';
 import { AddRegionComponent } from './components/region-country/add-region/add-region.component';
 import { CreateUserComponent } from './components/reseller/create-user/create-user.component';
+import { LicenseDetailsComponent } from './components/license/license-details/license-details.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -89,6 +91,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     LayoutComponent,
     ApplicationComponent,
     AddApplicationComponent,
+    UpdateApplicationComponent,
     AddApplicationInstanceComponent,
     SubscriptionPlanComponent,
     CardComponent,
@@ -106,6 +109,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     RegionCountryComponent,
     AddRegionComponent,
     CreateUserComponent,
+    LicenseDetailsComponent,
   ],
   imports: [
     BrowserModule,
