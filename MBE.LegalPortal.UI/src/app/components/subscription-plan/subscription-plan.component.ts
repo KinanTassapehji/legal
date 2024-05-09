@@ -23,6 +23,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   defaultApplication: IApplication | undefined;
   constraints: IConstraint[] = [];
   errorMessage = '';
+  isLoading = true;
 
   constructor(private subscriptionPlanService: SubscriptionPlanService, private applicationService: ApplicationService, private matDialog: MatDialog) { }
 
@@ -45,8 +46,10 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getApplications();
-
     this.getSubscriptionPlans();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   ngOnDestroy(): void {

@@ -1,26 +1,36 @@
 <div class="main-container">
   <div class="row">
-    <h2>Subscription Plans</h2>
+    <div class="col-sm-12">
+      <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+      <h2 *ngIf="!isLoading">Subscription Plans</h2>
+    </div>
     <!-- Application cards -->
     <div class="col-sm-12 col-md-3" *ngFor="let app of applications; let i = index">
+      <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'60px','border-radius': '6px','margin-bottom': '0.75rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
       <app-card [id]="app.id"
                 [title]="app.name"
                 [image]="app.image"
                 [selected]="app.selected"
                 [isDefault]="app.isDefault"
                 (setAsDefault)="setApplicationAsDefault($event)"
-                (cardClick)="onCardClick(app.id)">
+                (cardClick)="onCardClick(app.id)"
+                *ngIf="!isLoading">
       </app-card>
     </div>
   </div>
   <br />
   <div class="subscription-plan-title-section">
+    <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+    <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
     <!-- Subscription Plan section -->
-    <h2>Application Subscription Plan</h2>
+    <h2 *ngIf="!isLoading">Application Subscription Plan</h2>
     <!-- Add Subscription Plan button -->
-    <button mat-raised-button color="primary" (click)="openDialog()">Add Subscription Plan</button>
+    <button mat-raised-button *ngIf="!isLoading" color="primary" (click)="openDialog()">Add Subscription Plan</button>
   </div>
-  <div class="card subscription-plan-table-card" *ngIf="dataSource.length > 0">
+  <div class="card subscription-plan-table-card" *ngIf="isLoading">
+    <ngx-skeleton-loader count="10" [theme]="{width:'100%',height:'40px','margin-bottom': '0.01rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+  </div>
+  <div class="card subscription-plan-table-card" *ngIf="dataSource.length > 0 && !isLoading">
     <table mat-table [dataSource]="dataSource" class="subscription-plan-table mat-elevation-z0">
       <!-- Dynamic column definition -->
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
