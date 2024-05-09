@@ -24,11 +24,11 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<AddSubscriptionPlanComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[] }) {
+    @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[], selectedApplicationId: number }) {
   }
 
   ngOnInit(): void {
-    this.applicationId = this.data?.applications[0]?.id;
+    this.applicationId = this.data.selectedApplicationId;
     this.getApplicationConstraints();
   }
 
@@ -58,7 +58,7 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         // Handle error response, maybe show an error message
-        console.error('Error creating application instance', err);
+        console.error('Error creating subscription plan', err);
       }
     });
   }

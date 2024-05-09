@@ -1,0 +1,56 @@
+<div mat-dialog-container class="lp-common-modal-container add-subscription-plan-modal">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Update Subscription Plan</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div class="row dense-2">
+      <div class="col-sm-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Application name</mat-label>
+          <input matInput value="{{ applicationName }}" readonly>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Subscription Plan Name</mat-label>
+          <input matInput [(ngModel)]="name">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12">
+        <h5 class="app-constraint-title">Constraints</h5>
+      </div>
+      <div class="col-sm-12">
+        <div class="enable-application-constraints-row dense-2">
+          <div class="enable-application-constraints-col" *ngFor="let constraint of applicationConstraints">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Constraints Title</mat-label>
+                  <input matInput value="{{ constraint.key }}" readonly>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Default Value</mat-label>
+                  <input matInput [(ngModel)]="constraint.value" [disabled]="!constraint.enabled">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="aac-action">
+              <mat-slide-toggle color="primary" [checked]="constraint.enabled" (change)="toggleChanged($event, constraint)"></mat-slide-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button (click)="updateSubscriptionPlan()">Update</button>
+  </mat-dialog-actions>
+</div>

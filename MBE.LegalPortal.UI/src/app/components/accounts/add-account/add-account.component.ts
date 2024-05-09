@@ -2,8 +2,6 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { AccountService } from '../../../services/account.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MatDialogRef } from '@angular/material/dialog';
-import { IAccount } from '../../../interfaces/account';
-import { Form } from '@angular/forms';
 
 
 @Component({
@@ -32,7 +30,6 @@ export class AddAccountComponent implements  OnDestroy {
         this.dialogRef.close();
       },
       error: (err) => {
-        console.log('err', err);
         // Handle error response, maybe show an error message
         console.error('Error creating application instance', err);
       }

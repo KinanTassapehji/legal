@@ -7,6 +7,7 @@ import { AddSubscriptionPlanComponent } from './add-subscription-plan/add-subscr
 import { IApplication } from '../../interfaces/application';
 import { ApplicationService } from '../../services/application.service';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
+import { UpdateSubscriptionPlanComponent } from './update-subscription-plan/update-subscription-plan.component';
 
 @Component({
   selector: 'app-subscription-plan',
@@ -27,27 +28,8 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
   constructor(private subscriptionPlanService: SubscriptionPlanService, private applicationService: ApplicationService, private matDialog: MatDialog) { }
 
-  openDialog() {
-    const dialogRef = this.matDialog.open(AddSubscriptionPlanComponent, {
-      width: "800px",
-      data: {
-        applications: this.applications // Pass applications data to the child component
-      }
-    });
-
-    dialogRef.componentInstance.subscriptionPlanAdded.subscribe(() => {
-      if (this.selectedApplication) {
-        this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
-      } else {
-        console.error("selected Application is undefined");
-      }
-    });
-  }
-
   ngOnInit(): void {
     this.getApplications();
-
-    this.getSubscriptionPlans();
   }
 
   ngOnDestroy(): void {
@@ -63,14 +45,79 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
         if (this.applications.length > 0) {
           // Set the first application as selected
           this.selectedApplication = applications[0];
-          this.defaultApplication = applications[0];
-          this.applications[0].selected = true;
-          this.applications[0].isDefault = true;
-          this.getSubscriptionPlans(this.applications[0].id);
+          this.defaultApplication = this.selectedApplication;
+          this.selectedApplication.selected = true;
+          this.selectedApplication.isDefault = true;
+          this.getSubscriptionPlans(this.selectedApplication.id);
         }
       },
       error: err => this.errorMessage = err
     });
+  }
+
+  getSubscriptionPlans(applicationId: number) {
+    this.sub = this.subscriptionPlanService.getSubscriptionPlans(applicationId).subscribe({
+      next: subscriptionPlans => {
+        this.subscriptionPlans = subscriptionPlans;
+        this.generateDataSource(); // Generate dataSource and displayedColumns
+      },
+      error: err => this.errorMessage = err
+    });
+  }
+
+  generateDataSource(): void {
+    if (this.selectedApplication) {
+      this.sub = this.applicationService.getApplicationById(this.selectedApplication?.id).subscribe({
+        next: application => {
+          if (application && application.applicationConstraints && application.applicationConstraints.length > 0) {
+            this.constraints = application.applicationConstraints.map(constraint => ({
+              id: constraint.id || 0,
+              key: constraint.key,
+              defaultValue: constraint.value || 0
+            }));
+
+            // Iterate over existing constraints
+            this.constraints.forEach(existingConstraint => {
+              // Check if corresponding constraint exists in plan.constraints
+              const correspondingConstraint = this.subscriptionPlans.flatMap(plan => plan.constraints)
+                .find(constraint => constraint.key === existingConstraint.key);
+
+              // If corresponding constraint doesn't exist, add it
+              if (!correspondingConstraint) {
+                this.subscriptionPlans.forEach(plan => {
+                  plan.constraints.push({
+                    id: 0,
+                    key: existingConstraint.key,
+                    defaultValue: existingConstraint.defaultValue
+                  });
+                });
+              }
+            });
+
+            this.displayedColumns = ['Constraints'];
+            this.subscriptionPlans.forEach(plan => {
+              this.displayedColumns.push(plan.name);
+            });
+
+            this.dataSource = this.constraints.map(constraint => {
+              const rowData: any = { Constraints: constraint.key };
+              this.subscriptionPlans.forEach(plan => {
+                rowData[plan.name] = this.getConstraintValue(plan, constraint.key);
+              });
+              return rowData;
+            });
+          }
+        },
+        error: err => {
+          this.errorMessage = err;
+        }
+      });
+    }
+  }
+
+  getConstraintValue(plan: ISubscriptionPlan, key: string): any {
+    const constraint = plan.constraints.find(constraint => constraint.key === key);
+    return constraint && constraint.defaultValue !== undefined && constraint.defaultValue > 0 ? constraint.defaultValue : '-';
   }
 
   setApplicationAsDefault(id: number) {
@@ -103,47 +150,42 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
     this.getSubscriptionPlans(id);
   }
 
-  getSubscriptionPlans(applicationId?: number) {
-      this.sub = this.subscriptionPlanService.getSubscriptionPlans(applicationId).subscribe({
-        next: subscriptionPlans => {
-          this.subscriptionPlans = subscriptionPlans;
-          this.generateDataSource(); // Generate dataSource and displayedColumns
-        },
-        error: err => this.errorMessage = err
-      });
-  }
-
-  generateDataSource(): void {
-    this.constraints = this.getConstraints();
-    this.displayedColumns = ['Constraints'];
-    this.subscriptionPlans.forEach(plan => {
-      this.displayedColumns.push(plan.name);
+  openAddSubscriptionPlanDialog() {
+    const dialogRef = this.matDialog.open(AddSubscriptionPlanComponent, {
+      width: "800px",
+      data: {
+        applications: this.applications, // Pass applications data to the child component
+        selectedApplicationId: this.selectedApplication?.id
+      }
     });
-    this.dataSource = this.constraints.map(constraint => {
-      const rowData: any = { Constraints: constraint.key };
-      this.subscriptionPlans.forEach(plan => {
-        rowData[plan.name] = this.getConstraintValue(plan, constraint.key);
-      });
-      return rowData;
+
+    dialogRef.componentInstance.subscriptionPlanAdded.subscribe(() => {
+      if (this.selectedApplication) {
+        this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
+      } else {
+        console.error("selected Application is undefined");
+      }
     });
   }
 
-  getConstraints(): IConstraint[] {
-    const constraints: IConstraint[] = [];
-    this.subscriptionPlans.forEach(plan => {
-      plan.constraints.forEach(constraint => {
-        const existingConstraint = constraints.find(c => c.key === constraint.key);
-        if (!existingConstraint) {
-          constraints.push(constraint);
-        }
-      });
-    });
-    return constraints;
-  }
+  openUpdateSubscriptionPlanDialog(name: string) {
+    let subscriptionPlan = this.subscriptionPlans.find(x => x.name === name);
 
-  getConstraintValue(plan: ISubscriptionPlan, key: string): any {
-    const constraint = plan.constraints.find(constraint => constraint.key === key);
-    return constraint ? constraint.defaultValue : '-';
+    const dialogRef = this.matDialog.open(UpdateSubscriptionPlanComponent, {
+      width: "800px",
+      data: {
+        subscriptionPlan: subscriptionPlan,
+        selectedApplication: this.selectedApplication
+      }
+    });
+
+    dialogRef.componentInstance.subscriptionPlanUpdated.subscribe(() => {
+      if (this.selectedApplication) {
+        this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
+      } else {
+        console.error("selected Application is undefined");
+      }
+    });
   }
 
   openDeleteSubscriptionPlanDialog(name: string) {
@@ -165,7 +207,9 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
     this.subscriptionPlanService.deleteSubscriptionPlan(id).subscribe({
       next: () => {
         // Update the UI
-        this.getSubscriptionPlans();
+        if (this.selectedApplication) {
+          this.getSubscriptionPlans(this.selectedApplication.id);
+        }
       },
       error: err => this.errorMessage = err
     });

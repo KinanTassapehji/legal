@@ -33,6 +33,13 @@ export class SubscriptionPlanService {
       );
   }
 
+  updateSubscriptionPlan(subscriptionPlanDto: any): Observable<any> {
+    return this.http.put(`${SubscriptionPlans_Url}/${subscriptionPlanDto.id}`, subscriptionPlanDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
   deleteSubscriptionPlan(id?: number): Observable<void> {
     return this.http.delete<void>(`${SubscriptionPlans_Url}/${id}`)
       .pipe(

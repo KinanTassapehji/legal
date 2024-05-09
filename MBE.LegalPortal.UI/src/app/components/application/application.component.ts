@@ -41,7 +41,6 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
 
-
   ELEMENT_DATA: IApplicationInstance[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 

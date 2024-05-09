@@ -18,7 +18,7 @@
     <!-- Subscription Plan section -->
     <h2>Application Subscription Plan</h2>
     <!-- Add Subscription Plan button -->
-    <button mat-raised-button color="primary" (click)="openDialog()">Add Subscription Plan</button>
+    <button mat-raised-button color="primary" (click)="openAddSubscriptionPlanDialog()">Add Subscription Plan</button>
   </div>
   <div class="card subscription-plan-table-card" *ngIf="dataSource.length > 0">
     <table mat-table [dataSource]="dataSource" class="subscription-plan-table mat-elevation-z0">
@@ -31,7 +31,7 @@
               <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>
+              <button mat-menu-item (click)="openUpdateSubscriptionPlanDialog(column)">
                 <mat-icon class="material-symbols-outlined">edit</mat-icon>
                 <span>Edit subscription plan</span>
               </button>
