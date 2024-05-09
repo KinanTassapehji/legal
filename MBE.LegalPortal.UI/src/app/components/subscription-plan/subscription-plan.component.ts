@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddSubscriptionPlanComponent } from './add-subscription-plan/add-subscription-plan.component';
 import { IApplication } from '../../interfaces/application';
 import { ApplicationService } from '../../services/application.service';
+import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-subscription-plan',
@@ -143,5 +144,30 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   getConstraintValue(plan: ISubscriptionPlan, key: string): any {
     const constraint = plan.constraints.find(constraint => constraint.key === key);
     return constraint ? constraint.defaultValue : '-';
+  }
+
+  openDeleteSubscriptionPlanDialog(name: string) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      data: `"${name}" Subscription Plan`,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteSubscriptionPlan(name);
+      }
+    });
+  }
+
+  deleteSubscriptionPlan(name: string) {
+    // Call the delete service
+    let id = this.subscriptionPlans.find(x => x.name === name)?.id;
+    this.subscriptionPlanService.deleteSubscriptionPlan(id).subscribe({
+      next: () => {
+        // Update the UI
+        this.getSubscriptionPlans();
+      },
+      error: err => this.errorMessage = err
+    });
   }
 }

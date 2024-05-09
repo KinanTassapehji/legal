@@ -35,7 +35,7 @@
                 <mat-icon class="material-symbols-outlined">edit</mat-icon>
                 <span>Edit subscription plan</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="openDeleteSubscriptionPlanDialog(column)">
                 <mat-icon class="material-symbols-outlined">delete</mat-icon>
                 <span>Delete subscription plan</span>
               </button>

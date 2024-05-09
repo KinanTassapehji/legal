@@ -44,18 +44,18 @@ export class AccountService {
     return this.http.get<any>(`${Accounts_Url}`, { params })
       .pipe( catchError(error => this.errorHandlingService.handleError(error)));
   }
-  //
+  
   createAccounts(CreateAccountDto: any): Observable<any> {
     return this.http.post(Accounts_Url, CreateAccountDto).pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
-  //
+  
   deleteAccount(id: number): Observable<void> {
     return this.http.delete<void>(`${Accounts_Url}/${id}`)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
-  //
+  
   updateAccount(accountDto: any): Observable<any> {
     return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto)
       .pipe(
