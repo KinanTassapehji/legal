@@ -42,7 +42,7 @@
     <button *ngIf="!isLoading" mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
   </div>
   
-  <div class="card application-instance-table-card" *ngIf="ELEMENT_DATA.length > 0 && isLoading">
+  <div class="card application-instance-table-card" *ngIf="isLoading">
     <div class="application-instance-table-header dense-2">
       <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
     </div>

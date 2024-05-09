@@ -41,9 +41,13 @@ export class AccountsComponent {
   keyword?= '';
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  isLoading = true;
   constructor(private matDialog: MatDialog, private accountsService: AccountService) { }
   ngOnInit(): void {
     this.getAccounts();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   addAccount(){
