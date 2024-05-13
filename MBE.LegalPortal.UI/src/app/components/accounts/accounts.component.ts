@@ -11,21 +11,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateAccountComponent } from './update-account/update-account.component';
 
-export interface PeriodicElement {
-  accountname: string;
-  email: string;
-  phone: string;
-  applicationinstance: number;
-  action: string;
-}
-
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss'
 })
 export class AccountsComponent {
-  displayedColumns: string[] = ['accountname', 'email', 'phone', 'action'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'action'];
   sub!: Subscription;
   accounts: IAccount[] = [];
   selectedAccounts: IAccount | undefined;
