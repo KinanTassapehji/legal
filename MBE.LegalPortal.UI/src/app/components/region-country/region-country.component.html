@@ -2,20 +2,27 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="region-title-section">
-                <h2>Region</h2>
+                <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+                <h2 *ngIf="!isLoading">Region</h2>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-3" *ngFor="let region of regionData; let i = index;">
-            <div class="card region-card" (click)="regionCard(i)" [class.selected]="region.selected">
+        <div class="col-sm-12 col-md-3" *ngFor="let region of regionData; let i = index;">            
+        <ng-container *ngIf="isLoading">
+            <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'60px','border-radius': '6px','margin-bottom': '0.75rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line"  />
+        </ng-container>
+            <div class="card region-card" (click)="regionCard(i)" [class.selected]="region.selected" *ngIf="!isLoading">
                 <mat-icon class="material-symbols-outlined">globe</mat-icon>
                 <div class="title">{{ region.title }}</div>
                 <div class="count">{{ region.count }}</div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-3">
-            <div class="card add-new-region-card" (click)="addRegion()">
+        <div class="col-sm-12 col-md-3">            
+            <ng-container *ngIf="isLoading">
+                <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'60px','border-radius': '6px','margin-bottom': '0.75rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line"  />
+            </ng-container>
+            <div class="card add-new-region-card" (click)="addRegion()" *ngIf="!isLoading">
               <mat-icon class="material-symbols-outlined">add</mat-icon>
               <span>Add Region</span>
             </div>
@@ -24,11 +31,21 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="region-title-section">
-                <h2>Country</h2>
+                <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+                <h2 *ngIf="!isLoading">Country</h2>
             </div>
         </div>
         <div class="col-sm-12">
-            <div class="card region-country-table-card">                
+            <div class="card region-country-table-card" *ngIf="isLoading">
+                <div class="region-card-header dense-2">
+                  <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+                </div>
+                <ngx-skeleton-loader count="6" [theme]="{width:'100%',height:'36px','margin-bottom': '0.25rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+                <div class="region-card-header dense-2">
+                  <ngx-skeleton-loader count="1" [theme]="{width:'400px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+                </div>
+              </div>
+            <div class="card region-country-table-card" *ngIf="!isLoading">                
             <div class="region-card-header dense-2">      
                 <mat-form-field appearance="outline">
                 <input matInput placeholder="Search...">
