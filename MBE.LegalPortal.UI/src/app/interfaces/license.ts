@@ -8,8 +8,5 @@ export interface ILicense {
   environment: string,
   expiryDate: Date,
   expiryAction: string,
-  subscriptionPlan: ISubscriptionPlan,
-  tenant: ITenant,
-  account: IAccount,
-  application: IApplication
+  subscriptionPlan: ISubscriptionPlan
 }

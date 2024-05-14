@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map } from 'rxjs';
-import { License_Url, Tenants_Url, Application_Instances_Url } from '../constants/apis-constants';
+import { License_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { ILicense } from '../interfaces/license';
 import { Sort } from '@angular/material/sort';
@@ -45,11 +45,5 @@ export class LicenseService {
     }
     return this.http.get<any>(`${License_Url}`, { params })
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  getApplicationIntanceId(tenantId?: number): Observable<any> {
-    return this.http.get<any>(`${Tenants_Url}/${tenantId}`).pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  getApplicationAndAccount(applicationInstanceId?: number): Observable<any> {
-    return this.http.get<any>(`${Application_Instances_Url}/${applicationInstanceId}`).pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
 }

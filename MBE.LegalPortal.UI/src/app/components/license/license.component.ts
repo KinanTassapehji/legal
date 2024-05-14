@@ -31,8 +31,6 @@ export class LicenseComponent {
   displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'expirydate', 'expiryaction', 'action'];
   sub!: Subscription;
   license: ILicense[] = [];
-  selectedLicense: ILicense | undefined;
-  defaultLicense: ILicense | undefined;
   errorMessage = '';
   // Paginator
   totalCount = 0;
