@@ -107,6 +107,9 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
               return rowData;
             });
           }
+          else {
+            this.dataSource = [];
+          }
         },
         error: err => {
           this.errorMessage = err;

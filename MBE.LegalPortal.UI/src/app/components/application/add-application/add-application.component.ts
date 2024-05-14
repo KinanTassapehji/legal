@@ -70,8 +70,9 @@ export class AddApplicationComponent {
     this.applicationImageUrl = undefined;
   }
 
-  addNewConstraint() {
+  addNewConstraint(event: any) {
     this.constraints.push({ key: '', defaultAction: '' });
+    event.preventDefault();
   }
 
   removeConstraint(index: number) {

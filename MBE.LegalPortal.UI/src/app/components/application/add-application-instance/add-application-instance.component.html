@@ -7,71 +7,91 @@
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <mat-dialog-content>
-    <div class="row">
-      <div class="col-sm-12 dense-2">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="name">
-        </mat-form-field>
-      </div>
-      <div class="col-sm-12 dense-2">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Application</mat-label>
-          <mat-select [(ngModel)]="applicationId">
-            <mat-option *ngFor="let app of data.applications" [value]="app.id">{{ app.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-sm-12 dense-2">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Account</mat-label>
-          <mat-select [(ngModel)]="accountId">
-            <mat-option *ngFor="let acc of accounts" [value]="acc.id">{{ acc.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-sm-12">
-        <div class="add-application-constraints-row dense-2">
-          <div class="add-application-constraints-col" *ngFor="let tenant of tenants; let i=index">
-            <div class="row">
-              <div class="col-sm-12 col-md-4">
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Tenant</mat-label>
-                  <input matInput [(ngModel)]="tenant.name">
-                </mat-form-field>
+  <form novalidate (ngSubmit)="addApplicationInstance()" #f="ngForm">
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-sm-12 dense-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="name" name="applicationInstanceName" required>
+            <mat-error *ngIf="f.controls['applicationInstanceName'].invalid && (f.controls['applicationInstanceName'].dirty || f.controls['applicationInstanceName'].touched)">
+              Please enter a valid name.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 dense-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Application</mat-label>
+            <mat-select [(ngModel)]="applicationId" name="application_Id" required>
+              <mat-option *ngFor="let app of data.applications" [value]="app.id">{{ app.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f.controls['application_Id'].invalid && (f.controls['application_Id'].dirty || f.controls['application_Id'].touched)">
+              Please select an application.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 dense-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Account</mat-label>
+            <mat-select [(ngModel)]="accountId" name="account_Id" required>
+              <mat-option *ngFor="let acc of accounts" [value]="acc.id">{{ acc.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f.controls['account_Id'].invalid && (f.controls['account_Id'].dirty || f.controls['account_Id'].touched)">
+              Please select an account.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <div class="add-application-constraints-row dense-2">
+            <div class="add-application-constraints-col" *ngFor="let tenant of tenants; let i=index">
+              <div class="row">
+                <div class="col-sm-12 col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Tenant</mat-label>
+                    <input matInput [(ngModel)]="tenant.name" name="tenantName{{i}}" required>
+                    <mat-error *ngIf="f.controls['tenantName'+i].invalid && (f.controls['tenantName'+i].dirty || f.controls['tenantName'+i].touched)">
+                      Please enter a valid tenant name.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput [(ngModel)]="tenant.email" name="tenantEmail{{i}}" required email>
+                    <mat-error *ngIf="f.controls['tenantEmail'+i].invalid && (f.controls['tenantEmail'+i].dirty || f.controls['tenantEmail'+i].touched)">
+                      Please enter a valid email address.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>URL</mat-label>
+                    <input type="url" matInput [(ngModel)]="tenant.url" name="tenantUrl{{i}}" required pattern="https?://.+">
+                    <mat-error *ngIf="f.controls['tenantUrl'+i].invalid && (f.controls['tenantUrl'+i].dirty || f.controls['tenantUrl'+i].touched)">
+                      Please enter a valid URL starting with https://.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="col-sm-12 col-md-4">
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>Email</mat-label>
-                  <input matInput [(ngModel)]="tenant.email">
-                </mat-form-field>
+              <div class="aac-action">
+                <button mat-icon-button (click)="removeTenant(i)">
+                  <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                </button>
               </div>
-              <div class="col-sm-12 col-md-4">
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-label>URL</mat-label>
-                  <input matInput [(ngModel)]="tenant.url">
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="aac-action">
-              <button mat-icon-button (click)="removeTenant(i)">
-                <mat-icon class="material-symbols-outlined">delete</mat-icon>
-              </button>
             </div>
           </div>
-        </div>
-        <div class="add-application-constraints-col incremental">
-          <button mat-stroked-button (click)="addNewTenant()">
-            <mat-icon class="material-symbols-outlined">add</mat-icon>
-            <span>Add new Tenant</span>
-          </button>
+          <div class="add-application-constraints-col incremental">
+            <button mat-stroked-button (click)="addNewTenant($event)">
+              <mat-icon class="material-symbols-outlined">add</mat-icon>
+              <span>Add new Tenant</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button (click)="addApplicationInstance()">Add</button>
-  </mat-dialog-actions>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button type="submit" [disabled]="f.invalid">Add</button>
+    </mat-dialog-actions>
+  </form>
 </div>

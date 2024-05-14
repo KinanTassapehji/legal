@@ -94,8 +94,9 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
     this.applicationImageUrl = undefined;
   }
 
-  addNewConstraint() {
+  addNewConstraint(event: any) {
     this.application?.applicationConstraints.push({ key: '', defaultAction: '' });
+    event.preventDefault();
   }
 
   removeConstraint(index: number) {
