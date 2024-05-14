@@ -70,8 +70,9 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
     });
   }
 
-  addNewTenant() {
-    this.tenants.push({ name: '', email: '', url: ''});
+  addNewTenant(event: any) {
+    this.tenants.push({ name: '', email: '', url: '' });
+    event.preventDefault();
   }
 
   removeTenant(index: number) {
