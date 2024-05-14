@@ -68,30 +68,12 @@ export class LicenseComponent {
   getLicense(sort?: Sort, keyword?: string) {
     this.sub = this.licenseService.getLicense(this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
-        for (let i = 0; i < response.data.length; i++) {
-          let tenantId = response.data[i].tenant.id;
-          this.sub = this.licenseService.getApplicationIntanceId(tenantId).subscribe({
-            next: applicationIntanceResponse => {
-              let applicationInstanceId = applicationIntanceResponse.data.id;
-              this.sub = this.licenseService.getApplicationAndAccount(applicationInstanceId).subscribe({
-                next: applicationAccountResponse => {
-                  let account = applicationAccountResponse.data.account;
-                  let application = applicationAccountResponse.data.application;
-                  this.ELEMENT_DATA = response.data;
-                  this.ELEMENT_DATA[i].account = account;
-                  this.ELEMENT_DATA[i].application = application;
-                  this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-                  const pi = response; // Paginator Info
-                  this.totalCount = pi.totalCount;
-                  this.pageSize = pi.pageSize;
-                  this.pageIndex = pi.page - 1;
-                },
-                error: err => this.errorMessage = err //getApplicationAndAccount
-              });
-            },
-            error: err => this.errorMessage = err //getApplicationIntanceId
-          });
-        }
+        this.ELEMENT_DATA = response.data;
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        const pi = response; // Paginator Info
+        this.totalCount = pi.totalCount;
+        this.pageSize = pi.pageSize;
+        this.pageIndex = pi.page - 1;
       },
       error: err => this.errorMessage = err //getLicense
     });

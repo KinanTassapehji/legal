@@ -18,26 +18,26 @@
                   
                     <!-- Application Column -->
                     <ng-container matColumnDef="application">
-                        <th mat-header-cell *matHeaderCellDef> Application </th>
-                        <td mat-cell *matCellDef="let element"> {{element.application.name}} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header="application"> Application </th>
+                        <td mat-cell *matCellDef="let element"> {{element.applicationName}} </td>
                       </ng-container>
 
                       <!-- Account Column -->
                       <ng-container matColumnDef="accountname">
-                          <th mat-header-cell *matHeaderCellDef> Account </th>
-                          <td mat-cell *matCellDef="let element"> {{element.account.name}} </td>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header="accountname"> Account </th>
+                          <td mat-cell *matCellDef="let element"> {{element.accountName}} </td>
                       </ng-container>
 
                       <!-- Tenant Column -->
                       <ng-container matColumnDef="tenant">
-                          <th mat-header-cell *matHeaderCellDef> Tenant </th>
-                          <td mat-cell *matCellDef="let element"> {{element.tenant.name}} </td>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header="tenant"> Tenant </th>
+                          <td mat-cell *matCellDef="let element"> {{element.tennatName}} </td>
                       </ng-container>
                   
                     <!-- Subscription Column -->
-                    <ng-container matColumnDef="subscription">
-                      <th mat-header-cell *matHeaderCellDef> Subscription </th>
-                      <td mat-cell *matCellDef="let element"> {{element.subscriptionPlan.name}} </td>
+                    <ng-container matColumnDef="subscription" >
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header="subscription"> Subscription </th>
+                      <td mat-cell *matCellDef="let element"> {{element.subscriptionPlanName}} </td>
                     </ng-container>
                   
                     <!-- Environment Column -->
