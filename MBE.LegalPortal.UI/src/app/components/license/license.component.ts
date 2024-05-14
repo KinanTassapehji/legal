@@ -44,7 +44,7 @@ export class LicenseComponent {
   keyword?= '';
   ELEMENT_DATA: ILicense[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
+  isLoading = true;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private matDialog: MatDialog, private licenseService: LicenseService) { }
@@ -56,6 +56,9 @@ export class LicenseComponent {
 
   ngOnInit(): void {
     this.getLicense();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
   createLicense(){
     this.matDialog.open(CreateLicenseComponent, {

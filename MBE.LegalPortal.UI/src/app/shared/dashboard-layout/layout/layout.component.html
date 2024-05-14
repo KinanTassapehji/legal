@@ -1,6 +1,7 @@
 <div class="legal-main-container">
-    <mat-toolbar class="lp-header-section">
-        <button mat-icon-button (click)="drawer.toggle()">
+    <mat-toolbar class="lp-header-section" [ngClass]="{'mat-header-isloading': isLoading, '': !isLoading}">
+        <ngx-skeleton-loader [theme]="{width:'30px', height:'30px','margin':'0'}" appearance="line" *ngIf="isLoading" />
+        <button mat-icon-button (click)="drawer.toggle()" *ngIf="!isLoading">
             <mat-icon class="material-symbols-outlined">menu</mat-icon>
         </button>
         <app-header class="w-100"></app-header>

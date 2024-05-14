@@ -2,11 +2,23 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="reseller-title-section">
-                <h2>Reseller Dashboard</h2>
+                <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0', 'background-color': '#e7edf4', }" animation="pulse" appearance="line" *ngIf="isLoading" />
+                <h2 *ngIf="!isLoading">Reseller Dashboard</h2>
             </div>
         </div>
         <div class="col-sm-12 col-md-3">
-            <div class="card rd-profile-section-card">
+            <div class="card rd-profile-section-card" style="text-align: center;" *ngIf="isLoading">
+                <div class="rd-profile-header">
+                    <div class="rd-profile-img">
+                        <ngx-skeleton-loader count="1" [theme]="{width:'100px',height:'100px','margin-bottom': '0', 'background-color': '#e7edf4', animation: 'progress'}" appearance="circle" />
+                    </div>
+                    <div class="rd-profile-title">
+                        <ngx-skeleton-loader count="1" [theme]="{width:'120px',height:'20px','margin-bottom': '0', 'background-color': '#e7edf4', }" animation="pulse" appearance="line" />
+                    </div>
+                </div>
+                <ngx-skeleton-loader count="4" [theme]="{width:'90%',height:'30px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', }" animation="pulse" appearance="line" />
+            </div>
+            <div class="card rd-profile-section-card" *ngIf="!isLoading">
                 <div class="rd-profile-header">
                     <div class="rd-profile-img">
                         <img src="/assets/images/reseller-avatar.png">
@@ -35,7 +47,15 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-9">
-            <div class="card rd-details-section-card">
+            <div class="card rd-details-section-card" *ngIf="isLoading">
+                <ngx-skeleton-loader count="3" [theme]="{width:'100px',height:'40px','margin-bottom': '1rem','margin-right': '0.5rem', 'background-color': '#e7edf4', animation: 'progress'}" appearance="line" />
+                <div class="row">
+                    <div class="col-sm-12 col-md-3" *ngFor="let resellerLoader of resellerLoaderItems; let i = index">
+                        <ngx-skeleton-loader count="1" [theme]="{width:'240px',height:'115px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'progress'}" appearance="line" />
+                    </div>
+                </div>
+            </div>
+            <div class="card rd-details-section-card" *ngIf="!isLoading">
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="rd-details-tabs">
                     <mat-tab label="General">
                         <div class="tab-content">

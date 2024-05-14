@@ -1,18 +1,24 @@
 <div class="lp-header-container">
     <div class="left-area">
         <a href="#">
-            <img src="assets/images/mobiliyeye-licensing-logo.png" alt="Mobiliyeye Licensing Logo" />
+            <ngx-skeleton-loader [theme]="{width:'365px', height:'30px','margin':'0'}" appearance="line" *ngIf="isLoading" />
+            <img src="assets/images/mobiliyeye-licensing-logo.png" alt="Mobiliyeye Licensing Logo" *ngIf="!isLoading"/>
         </a>
     </div>    
     <div class="right-area">
         <button mat-button [matMenuTriggerFor]="menu" aria-label="user settings" class="user-profile-button-container">
         <div class="user-profile-button-section">
-            <div class="user-profile-text-cont">
+          <div class="user-profile-text-cont" *ngIf="isLoading">
+            <ngx-skeleton-loader [theme]="{width:'125px', height:'16px','margin':'0 0 5px'}" appearance="line" *ngIf="isLoading" />
+            <ngx-skeleton-loader [theme]="{width:'100px', height:'12px','margin':'0'}" appearance="line" *ngIf="isLoading" />
+          </div>
+            <div class="user-profile-text-cont" *ngIf="!isLoading">
                 <h2>{{ profile?.displayName }}</h2>
                 <h3>{{ profile?.userPrincipalName }}</h3>
             </div>
             <div class="user-profile-avatar">
-                <img src="assets/images/avatar.png" alt="user avatar">
+                <ngx-skeleton-loader [theme]="{width:'40px', height:'40px', 'margin': '0'}" appearance="circle" *ngIf="isLoading" />
+                <img src="assets/images/avatar.png" alt="user avatar" *ngIf="!isLoading">
             </div>
         </div>
       </button>

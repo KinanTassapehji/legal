@@ -21,6 +21,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './region-country.component.scss'
 })
 export class RegionCountryComponent {
+  isLoading = true;
   regionData = [
     { title: 'Africa', count: '0', selected: false},
     { title: 'Asia', count: '3', selected: false},
@@ -50,5 +51,10 @@ export class RegionCountryComponent {
     this.matDialog.open(AddRegionComponent, {
       width:"600px"
     });
+  }
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

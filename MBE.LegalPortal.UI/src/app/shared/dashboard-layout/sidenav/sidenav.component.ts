@@ -7,6 +7,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class SidenavComponent {
+  isLoading = true;
   sidenavData = [
     {name: 'On Boarding', link: 'onboarding', icon: 'editor_choice'},
     {name: 'Applications', link: 'applications', icon: 'apps'},
@@ -16,4 +17,9 @@ export class SidenavComponent {
     {name: 'Reseller', link: 'reseller', icon: 'work'},
     {name: 'Region/Country', link: 'region/country', icon: 'public'},
   ];
+  ngOnInit(): void{
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  }
 }
