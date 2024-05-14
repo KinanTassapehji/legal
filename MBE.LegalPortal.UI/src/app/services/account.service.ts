@@ -16,14 +16,14 @@ export class AccountService {
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
   getAccountsAll(): Observable<IAccount[]> {
-    return this.http.get<IApplication[]>(Accounts_GetAll_Url)
+    return this.http.get<IAccount[]>(Accounts_GetAll_Url)
       .pipe(
         map((response: any) => response),
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
-  getAccounts(page: number, pageSize: number, sort?: Sort, keyword?: string): Observable<any> {
 
+  getAccounts(page: number, pageSize: number, sort?: Sort, keyword?: string): Observable<any> {
     // Constructing query parameters
     let params = new HttpParams()
       .set('page', page.toString())
@@ -44,8 +44,22 @@ export class AccountService {
     return this.http.get<any>(`${Accounts_Url}`, { params })
       .pipe( catchError(error => this.errorHandlingService.handleError(error)));
   }
-  //
-  createAccounts(accountDto: any): Observable<any> {
-    return this.http.post(Accounts_Url, accountDto).pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  
+  createAccounts(CreateAccountDto: any): Observable<any> {
+    return this.http.post(Accounts_Url, CreateAccountDto).pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
+  
+  deleteAccount(id: number): Observable<void> {
+    return this.http.delete<void>(`${Accounts_Url}/${id}`)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+  
+  updateAccount(accountDto: any): Observable<any> {
+    return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
   }
 }

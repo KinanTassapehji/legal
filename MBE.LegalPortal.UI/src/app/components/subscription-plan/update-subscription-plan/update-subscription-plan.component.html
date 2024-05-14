@@ -1,21 +1,19 @@
 <div mat-dialog-container class="lp-common-modal-container add-subscription-plan-modal">
   <mat-toolbar>
     <mat-toolbar-row>
-      <span>Add Subscription Plan</span>
+      <span>Update Subscription Plan</span>
       <button mat-icon-button mat-dialog-close>
         <mat-icon class="material-symbols-outlined">close</mat-icon>
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <form novalidate (ngSubmit)="addSubscriptionPlan()" #f="ngForm">
+  <form novalidate (ngSubmit)="updateSubscriptionPlan()" #f="ngForm">
     <mat-dialog-content>
       <div class="row dense-2">
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Application name</mat-label>
-            <mat-select [(ngModel)]="applicationId" (selectionChange)="onApplicationSelectionChange()" name="applicationId">
-              <mat-option *ngFor="let app of data.applications" [value]="app.id">{{ app.name }}</mat-option>
-            </mat-select>
+            <input matInput value="{{ applicationName }}" name="applicationName" readonly>
           </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
@@ -57,7 +55,7 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button type="submit" [disabled]="f.invalid">Add</button>
+      <button mat-button type="submit" [disabled]="f.invalid">Update</button>
     </mat-dialog-actions>
   </form>
 </div>

@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map } from 'rxjs';
 import { Application_Instances_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
-import { IApplicationInstanceOverview } from '../interfaces/application-instance-overview';
-import { Sort, SortDirection } from '@angular/material/sort';
+import { IApplicationInstance } from '../interfaces/application-instance';
+import { Sort } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,7 @@ export class ApplicationInstanceService {
       );
   }
 
-  getApplicationInstanceById(id: number): Observable<IApplicationInstanceOverview> {
+  getApplicationInstanceById(id: number): Observable<IApplicationInstance> {
     return this.http.get<any>(`${Application_Instances_Url}/${id}`)
       .pipe(
         map(response => response.data),
@@ -50,6 +50,13 @@ export class ApplicationInstanceService {
 
   createApplicationInstance(applicationInstanceDto: any): Observable<any> {
     return this.http.post(Application_Instances_Url, applicationInstanceDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
+  updateApplicationInstance(applicationInstanceDto: any): Observable<any> {
+    return this.http.put(`${Application_Instances_Url}/${applicationInstanceDto.id}`, applicationInstanceDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );

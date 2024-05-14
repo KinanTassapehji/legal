@@ -24,7 +24,7 @@
     <!-- Subscription Plan section -->
     <h2 *ngIf="!isLoading">Application Subscription Plan</h2>
     <!-- Add Subscription Plan button -->
-    <button mat-raised-button *ngIf="!isLoading" color="primary" (click)="openDialog()">Add Subscription Plan</button>
+    <button mat-raised-button *ngIf="!isLoading" color="primary" (click)="openAddSubscriptionPlanDialog()">Add Subscription Plan</button>
   </div>
   <div class="card subscription-plan-table-card" *ngIf="isLoading">
     <ngx-skeleton-loader count="10" [theme]="{width:'100%',height:'40px','margin-bottom': '0.01rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
@@ -40,11 +40,11 @@
               <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>
+              <button mat-menu-item (click)="openUpdateSubscriptionPlanDialog(column)">
                 <mat-icon class="material-symbols-outlined">edit</mat-icon>
                 <span>Edit subscription plan</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="openDeleteSubscriptionPlanDialog(column)">
                 <mat-icon class="material-symbols-outlined">delete</mat-icon>
                 <span>Delete subscription plan</span>
               </button>

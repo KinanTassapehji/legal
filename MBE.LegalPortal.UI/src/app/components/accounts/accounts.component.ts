@@ -1,22 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AddAccountComponent } from './add-account/add-account.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { IAccount } from '../../interfaces/account';
 import { AccountService } from '../../services/account.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Sort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { Utils } from '../../utilities/sort.util';
-
-export interface PeriodicElement {
-  accountname: string;
-  email: string;
-  phone: string;
-  applicationinstance: number;
-  action: string;
-}
-
-
+import { MatPaginator } from '@angular/material/paginator';
+import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
+import { UpdateAccountComponent } from './update-account/update-account.component';
 
 @Component({
   selector: 'app-accounts',
@@ -24,7 +17,7 @@ export interface PeriodicElement {
   styleUrl: './accounts.component.scss'
 })
 export class AccountsComponent {
-  displayedColumns: string[] = ['accountname', 'email', 'phone', 'applicationinstance', 'action'];
+  displayedColumns: string[] = ['name', 'email', 'phone', 'action'];
   sub!: Subscription;
   accounts: IAccount[] = [];
   selectedAccounts: IAccount | undefined;
@@ -34,6 +27,7 @@ export class AccountsComponent {
   totalCount = 0;
   pageSize = 5;
   pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 20];
   // Sort
   sortDirection?= '';
   orderBy?= '';
@@ -42,7 +36,16 @@ export class AccountsComponent {
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private matDialog: MatDialog, private accountsService: AccountService) { }
+
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
   ngOnInit(): void {
     this.getAccounts();
     setTimeout(() => {
@@ -56,11 +59,9 @@ export class AccountsComponent {
     });
   }
 
-  //
   getAccounts(sort?: Sort, keyword?: string) {
     this.sub = this.accountsService.getAccounts(this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
-        console.log('response', response);
         this.ELEMENT_DATA = response.data;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         const pi = response; // Paginator Info
@@ -91,5 +92,38 @@ export class AccountsComponent {
     this.keyword = keyword;
     const sort = Utils.getSortObject(this.orderBy, this.sortDirection);
     this.getAccounts(sort, keyword);
+  }
+
+  openUpdateAccountDialog(element: any) {
+    const dialogRef = this.matDialog.open(UpdateAccountComponent, {
+      width: "800px",
+      data: element,
+    });
+    dialogRef.componentInstance.accountUpdated.subscribe(() => {
+      this.getAccounts(); // Refresh the list of applications
+    });
+  }
+  openDeleteAccountDialog(id: number) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" Account`,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteAccount(id);
+      }
+    });
+  }
+
+  deleteAccount(id: number) {
+    // Call the delete service
+    this.accountsService.deleteAccount(id).subscribe({
+      next: () => {
+        // Update the UI
+        this.getAccounts();
+      },
+      error: err => this.errorMessage = err
+    });
   }
 }

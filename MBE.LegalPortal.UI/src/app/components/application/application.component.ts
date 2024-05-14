@@ -15,6 +15,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ApplicationInstanceService } from '../../services/application-instance.service';
 import { Utils } from '../../utilities/sort.util';
 import { UpdateApplicationComponent } from './update-application/update-application.component';
+import { UpdateApplicationInstanceComponent } from './update-application-instance/update-application-instance.component';
 
 @Component({
   selector: 'app-application',
@@ -31,6 +32,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   totalCount = 0;
   pageSize = 5;
   pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 20];
   // Sort
   sortDirection?= '';
   orderBy?= '';
@@ -40,7 +42,6 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
-
   ELEMENT_DATA: IApplicationInstance[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
@@ -141,6 +142,24 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.componentInstance.applicationInstanceAdded.subscribe(() => {
+      if (this.selectedApplication) {
+        this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
+      } else {
+        console.error("selected Application is undefined");
+      }
+    });
+  }
+
+  openUpdateApplicationInstanceDialog(id: number) {
+    const dialogRef = this.matDialog.open(UpdateApplicationInstanceComponent, {
+      width: "800px",
+      data: {
+        id: id,
+        applications: this.applications // Pass applications data to the dialog component
+      }
+    });
+
+    dialogRef.componentInstance.applicationInstanceUpdated.subscribe(() => {
       if (this.selectedApplication) {
         this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
       } else {

@@ -1,0 +1,59 @@
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { AccountService } from '../../../services/account.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+@Component({
+  selector: 'app-update-account',
+  templateUrl: './update-account.component.html',
+  styleUrl: './update-account.component.scss'
+})
+export class UpdateAccountComponent {
+  @Output() accountUpdated: EventEmitter<void> = new EventEmitter<void>();
+  Name: string = '';
+  Email: string = '';
+  PhoneNumber: string = '';
+  accountId: number = 0;
+  sub!: Subscription;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private accountService: AccountService, private dialogRef: MatDialogRef<UpdateAccountComponent>) { }
+
+  ngOnInit(): void {
+    this.getAccountDetails(this.data);
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
+  getAccountDetails(data: any) {
+    if (data) {
+      this.Email = data.email;
+      this.Name = data.name;
+      this.PhoneNumber = data.phoneNumber;
+      this.accountId = data.id;
+    }
+  }
+
+  updateAccount(data: any) {
+    const requestBody = {
+      id: this.accountId,
+      name: data.Name,
+      email: data.Email,
+      phoneNumber: data.PhoneNumber
+    };
+    this.sub = this.accountService.updateAccount(requestBody).subscribe({
+      next: (response) => {
+        // Emit event to notify parent component
+        this.accountUpdated.emit();
+        // Close the dialog
+        this.dialogRef.close();
+      },
+      error: (err) => {
+        // Handle error response, maybe show an error message
+        console.error('Error creating application', err);
+      }
+    });
+  }
+}

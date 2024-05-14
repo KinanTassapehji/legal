@@ -1,5 +1,5 @@
 export interface ITenant {
-  id: number,
+  id?: number,
   name: string,
   email: string,
   url: string,

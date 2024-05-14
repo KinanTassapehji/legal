@@ -1,0 +1,26 @@
+.add-subscription-plan-modal {
+  .app-constraint-title {
+    font-size: 1rem;
+  }
+
+  .enable-application-constraints-row {
+    display: flex;
+    flex-direction: column;
+
+    .enable-application-constraints-col {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      width: 100%;
+      gap: 0.5rem;
+
+      .row {
+        width: 100%;
+      }
+
+      .aac-action {
+        margin-bottom: 1.25rem;
+      }
+    }
+  }
+}
