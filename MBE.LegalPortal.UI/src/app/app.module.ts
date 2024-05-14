@@ -37,6 +37,7 @@ import { RegionCountryComponent } from './components/region-country/region-count
 import { AddRegionComponent } from './components/region-country/add-region/add-region.component';
 import { CreateUserComponent } from './components/reseller/create-user/create-user.component';
 import { LicenseDetailsComponent } from './components/license/license-details/license-details.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { UpdateApplicationInstanceComponent } from './components/application/update-application-instance/update-application-instance.component';
 import { UpdateAccountComponent } from './components/accounts/update-account/update-account.component';
 import { UpdateSubscriptionPlanComponent } from './components/subscription-plan/update-subscription-plan/update-subscription-plan.component';
@@ -124,6 +125,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     FormsModule,
     MaterialModule,
     BrowserAnimationsModule,
+    NgxSkeletonLoaderModule,
     MsalModule.forRoot(new PublicClientApplication
       (
         {

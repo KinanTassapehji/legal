@@ -18,6 +18,9 @@
             flex-direction: column;
             align-items: flex-end;
             justify-content: flex-end;
+            ngx-skeleton-loader{
+                display: flex;
+            }
             h2 {
                 font-size: 1rem!important;
                 line-height: 1rem;

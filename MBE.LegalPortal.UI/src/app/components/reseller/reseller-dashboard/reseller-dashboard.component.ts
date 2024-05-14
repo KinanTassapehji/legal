@@ -22,6 +22,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   encapsulation: ViewEncapsulation.None
 })
 export class ResellerDashboardComponent {
+  isLoading = true;
   displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'country', 'action'];
   dataSource = ELEMENT_DATA;
   resellerName: string =  'Mobility Eye';
@@ -33,5 +34,11 @@ export class ResellerDashboardComponent {
     this.matDialog.open(CreateUserComponent, {
       width:"600px"
     });
+  }
+  resellerLoaderItems = new Array(4);
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

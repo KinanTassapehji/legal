@@ -35,6 +35,7 @@ export class AccountsComponent {
   keyword?= '';
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  isLoading = true;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -47,6 +48,9 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   addAccount(){

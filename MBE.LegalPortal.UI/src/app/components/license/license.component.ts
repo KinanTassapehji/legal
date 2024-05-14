@@ -26,10 +26,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class LicenseComponent {
   displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'expirydate',  'expiryaction', 'action'];
   dataSource = ELEMENT_DATA;
+  isLoading = true;
   constructor(private matDialog:MatDialog){}
   createLicense(){
     this.matDialog.open(CreateLicenseComponent, {
       width:"600px"
     });
+  }
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

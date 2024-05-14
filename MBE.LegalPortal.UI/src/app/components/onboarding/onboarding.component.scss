@@ -105,3 +105,28 @@
         }
     }
 }
+.on-boarding-skeleton-card{
+    display: flex;
+    flex-direction: column;
+    .obs-cont{
+        display: flex;
+        .obs-left{
+            flex: 0 0 30%;
+            padding: 1rem;
+        }        
+        .obs-right{
+            flex: 1;
+            padding: 1rem;
+            .obs-header{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+    .obs-footer{
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem;
+        border-top: 1px solid var(--lp-text-light);
+    }
+}

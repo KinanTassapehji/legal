@@ -23,10 +23,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ResellerComponent {
   displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'country', 'action'];
   dataSource = ELEMENT_DATA;
+  isLoading = true;
   constructor(private matDialog:MatDialog){}
   createReseller(){
     this.matDialog.open(CreateResellerComponent, {
       width:"600px"
     });
+  }
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

@@ -1,8 +1,12 @@
 <div class="main-container">
   <div class="row">
-    <h2>Applications</h2>
+    <div class="col-sm-12">
+      <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+      <h2 *ngIf="!isLoading">Applications</h2>
+    </div>
     <!-- Application cards -->
-    <div class="col-sm-12 col-md-3" *ngFor="let app of applications; let i = index">
+    <div class="col-sm-12 col-md-3" *ngFor="let app of applications; let i = index" >
+        <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'60px','border-radius': '6px','margin-bottom': '0.75rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading"  />
       <app-card [id]="app.id"
                 [title]="app.name"
                 [image]="app.image"
@@ -11,25 +15,42 @@
                 (update)="openUpdateApplicationDialog(app.id)"
                 (delete)="openDeleteApplicationDialog(app.id)"
                 (setAsDefault)="setApplicationAsDefault($event)"
-                (cardClick)="onCardClick(app.id)">
+                (cardClick)="onCardClick(app.id)"
+                *ngIf="!isLoading">
       </app-card>
     </div>
     <!-- Add new application button -->
     <div class="col-sm-12 col-md-3">
-      <div class="card add-new-application-card" (click)="openAddApplicationDialog()">
-        <mat-icon class="material-symbols-outlined">add</mat-icon>
-        <span>Add Application</span>
-      </div>
+      <ng-container *ngIf="isLoading">
+        <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'60px','border-radius': '6px','margin-bottom': '0.75rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line"  />
+      </ng-container>
+      <ng-container *ngIf="!isLoading">
+        <div class="card add-new-application-card" (click)="openAddApplicationDialog()">
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          <span>Add Application</span>
+        </div>
+      </ng-container>
     </div>
   </div>
-  <br />
   <div class="application-instance-title-section">
+    <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+    <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
     <!-- Application Instance section -->
-    <h2>Application Instance</h2>
+    <h2 *ngIf="!isLoading">Application Instance</h2>
     <!-- Add Application Instance button -->
-    <button mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
+    <button *ngIf="!isLoading" mat-raised-button color="primary" (click)="openAddApplicationInstanceDialog()">Add Application Instance</button>
   </div>
-  <div class="card application-instance-table-card" >
+  
+  <div class="card application-instance-table-card" *ngIf="isLoading">
+    <div class="application-instance-table-header dense-2">
+      <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+    </div>
+    <ngx-skeleton-loader count="6" [theme]="{width:'100%',height:'36px','margin-bottom': '0.25rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+    <div class="application-instance-table-header dense-2">
+      <ngx-skeleton-loader count="1" [theme]="{width:'400px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+    </div>
+  </div>
+  <div class="card application-instance-table-card" *ngIf="!isLoading">
     <div class="application-instance-table-header dense-2">      
       <mat-form-field appearance="outline">
         <input matInput placeholder="Search..." #keywordInput (input)="searchApplicationInstances(keywordInput.value)">
