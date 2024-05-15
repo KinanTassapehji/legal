@@ -19,6 +19,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './settings.component.scss'
 })
 export class SettingsComponent {
+  isLoading = true;
   displayedColumns: string[] = ['key', 'value', 'description', 'action'];
   dataSource = ELEMENT_DATA;  
   constructor(private matDialog:MatDialog){}
@@ -26,5 +27,10 @@ export class SettingsComponent {
     this.matDialog.open(AddSettingsComponent, {
       width:"600px"
     });
+  }  
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

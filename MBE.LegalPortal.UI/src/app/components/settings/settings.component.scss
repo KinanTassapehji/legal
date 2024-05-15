@@ -1,4 +1,4 @@
-.settingstitle-section{
+.settings-title-section{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -10,8 +10,15 @@
         background-color: var(--lp-primary);
     }
 }
-.settingscard-cont{
-    padding: 5px 10px;
+.settings-card-cont{
+    padding: 10px 10px 5px 10px;
+    .settings-card-header {
+        display: flex;
+        justify-content: flex-end;
+        mat-form-field {
+            margin-bottom: -1.25em;
+        }
+    }
     table{
         border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
         tr{
@@ -23,7 +30,7 @@
                 &:first-child{
                     font-weight: 500;
                 }                
-                .settingstable-action{
+                .settings-table-action{
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
