@@ -1,0 +1,39 @@
+.settingstitle-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    h2{
+        margin: 0;
+    }
+    button{
+        background-color: var(--lp-primary);
+    }
+}
+.settingscard-cont{
+    padding: 5px 10px;
+    table{
+        border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
+        tr{
+            th{
+                font-size: 1.1rem;
+                font-weight: 500;
+            }
+            td{
+                &:first-child{
+                    font-weight: 500;
+                }                
+                .settingstable-action{
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    mat-icon{
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

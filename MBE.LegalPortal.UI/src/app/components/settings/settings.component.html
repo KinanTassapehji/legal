@@ -1,0 +1,52 @@
+<div class="main-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="settingstitle-section">
+                <h2>Settings</h2>
+                <button mat-raised-button color="primary">Add Settings</button>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="card settingscard-cont">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+                  
+                    <!-- Key Column -->
+                    <ng-container matColumnDef="key">
+                      <th mat-header-cell *matHeaderCellDef> Key </th>
+                      <td mat-cell *matCellDef="let element"> {{element.key}} </td>
+                    </ng-container>
+                  
+                    <!-- Value Column -->
+                    <ng-container matColumnDef="value">
+                      <th mat-header-cell *matHeaderCellDef> Value </th>
+                      <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+                    </ng-container>
+                  
+                    <!-- Description Column -->
+                    <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef> Description </th>
+                      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                    </ng-container>
+                  
+                    <!-- Action Instance Column -->
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">                             
+                            <div class="settingstable-action">
+                                <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                            </div>
+                        </td>
+                      </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>                                    
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                    </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
