@@ -20,6 +20,7 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
   accounts: IAccount[] = [];
   sub!: Subscription;
   errorMessage = '';
+
   constructor(
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
@@ -83,7 +84,7 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
     });
   }
 
-  addNewTenant(applicationInstanceId: number) {
+  addNewTenant(applicationInstanceId: number, event: any) {
     const newTenant: ITenant = {
       name: '',
       email: '',
@@ -91,6 +92,7 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
       applicationInstanceId: applicationInstanceId
     };
     this.applicationInstance.tenants.push(newTenant);
+    event.preventDefault();
   }
 
   removeTenant(index: number) {

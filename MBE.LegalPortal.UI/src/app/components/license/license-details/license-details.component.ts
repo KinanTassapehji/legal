@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './license-details.component.scss'
 })
 export class LicenseDetailsComponent {
+  isLoading = true;
   licenseData = [
     { title: 'Tenant', details: 'Tenant name'},
     { title: 'Subscription Plan', details: 'Diamond'},
@@ -22,5 +23,11 @@ export class LicenseDetailsComponent {
     { title: 'Machine 1',},
     { title: 'Machine 2',},
     { title: 'Machine 3',},
-  ];
+  ]; 
+  licneseLoaderItems = new Array(2); 
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  }
 }

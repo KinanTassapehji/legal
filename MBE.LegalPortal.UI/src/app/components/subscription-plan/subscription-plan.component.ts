@@ -25,11 +25,15 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   defaultApplication: IApplication | undefined;
   constraints: IConstraint[] = [];
   errorMessage = '';
+  isLoading = true;
 
   constructor(private subscriptionPlanService: SubscriptionPlanService, private applicationService: ApplicationService, private matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getApplications();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   ngOnDestroy(): void {
@@ -106,6 +110,9 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
               });
               return rowData;
             });
+          }
+          else {
+            this.dataSource = [];
           }
         },
         error: err => {

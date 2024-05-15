@@ -1,6 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { CreateLicenseComponent } from './create-license/create-license.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { ILicense } from '../../interfaces/license';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LicenseService } from '../../services/license.service';
+import { Utils } from '../../utilities/sort.util';
 
 export interface PeriodicElement {
   application: string;
@@ -12,11 +19,7 @@ export interface PeriodicElement {
   expiryaction: string;
   action: string;
 }
-const ELEMENT_DATA: PeriodicElement[] = [
-  {application: 'datahub', accountname: 'Mubadala', tenant: 'Mubadala', subscription: 'Gold', environment: 'staging', expirydate: '01-01-2025', expiryaction: 'Auto Renew', action:''},
-  {application: 'datahub', accountname: 'PMO', tenant: 'PMO', subscription: 'Silver', environment: 'production', expirydate: '01-01-2025', expiryaction: 'Auto Renew', action:''},
-  {application: 'datahub', accountname: 'TEC', tenant: 'TEC', subscription: 'Diamond', environment: 'production', expirydate: '01-01-2025', expiryaction: 'Auto Renew', action:''},
-];
+const ELEMENT_DATA: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-license',
@@ -24,12 +27,78 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './license.component.scss'
 })
 export class LicenseComponent {
-  displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'expirydate',  'expiryaction', 'action'];
-  dataSource = ELEMENT_DATA;
-  constructor(private matDialog:MatDialog){}
+  @Output() licenseAdded: EventEmitter<void> = new EventEmitter<void>();
+  displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'expirydate', 'expiryaction', 'action'];
+  sub!: Subscription;
+  license: ILicense[] = [];
+  errorMessage = '';
+  // Paginator
+  totalCount = 0;
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 20];
+  // Sort
+  sortDirection?= '';
+  orderBy?= '';
+  // Search
+  keyword?= '';
+  ELEMENT_DATA: ILicense[] = [];
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  isLoading = true;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  constructor(private matDialog: MatDialog, private licenseService: LicenseService) { }
+
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+  ngOnInit(): void {
+    this.getLicense();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  }
   createLicense(){
     this.matDialog.open(CreateLicenseComponent, {
       width:"600px"
     });
   }
+
+  getLicense(sort?: Sort, keyword?: string) {
+    this.sub = this.licenseService.getLicense(this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
+      next: response => {
+        this.ELEMENT_DATA = response.data;
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        const pi = response; // Paginator Info
+        this.totalCount = pi.totalCount;
+        this.pageSize = pi.pageSize;
+        this.pageIndex = pi.page - 1;
+      },
+      error: err => this.errorMessage = err //getLicense
+    });
+  }
+
+  onPageChange(event: any) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getLicense();
+  }
+
+  sortLicense(sort: Sort) {
+    this.sortDirection = sort?.direction?.toString();
+    this.orderBy = sort?.active;
+    if (!sort.active || sort.direction === '') {
+      return;
+    }
+    this.getLicense(sort);
+  }
+
+  searchLicense(keyword: string) {
+    this.keyword = keyword;
+    const sort = Utils.getSortObject(this.orderBy, this.sortDirection);
+    this.getLicense(sort, keyword);
+  }
+  
 }

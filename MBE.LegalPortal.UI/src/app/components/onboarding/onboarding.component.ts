@@ -8,6 +8,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
   encapsulation: ViewEncapsulation.None
 })
 export class OnboardingComponent {
+  isLoading = true;
   // Current selected tab index
   selectedIndex: number = 0;
 
@@ -31,5 +32,11 @@ export class OnboardingComponent {
     if (this.selectedIndex > 0) {
       this.selectedIndex--;
     }
+  }
+  
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

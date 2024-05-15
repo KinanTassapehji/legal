@@ -3,7 +3,6 @@ import { AccountService } from '../../../services/account.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MatDialogRef } from '@angular/material/dialog';
 
-
 @Component({
   selector: 'app-add-account',
   templateUrl: './add-account.component.html',
@@ -15,15 +14,17 @@ export class AddAccountComponent implements  OnDestroy {
   Email: string = '';
   PhoneNumber: string = '';
   sub!: Subscription;
+
   constructor(private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
+
   addAccount(model: any) {
     let formData = { "Name": model.Name, "Email": model.Email, "PhoneNumber": model.PhoneNumber };
     this.sub = this.accountService.createAccounts(formData).subscribe({
-      next: (response) => {
+      next: () => {
         // Emit event to notify parent component
         this.accountsAdded.emit();
         // Close the dialog

@@ -7,30 +7,41 @@
       </button>
     </mat-toolbar-row>
   </mat-toolbar>
-  <mat-dialog-content>
-    <div class="row  dense-2">
-      <div class="col-sm-12">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Account Name</mat-label>
-          <input matInput [(ngModel)]="Name">
-        </mat-form-field>
+  <form novalidate (ngSubmit)="updateAccount(this)" #f="ngForm">
+    <mat-dialog-content>
+      <div class="row dense-2">
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Account Name</mat-label>
+            <input matInput [(ngModel)]="Name" name="Name" required>
+            <mat-error *ngIf="f.controls['accountName'].invalid && (f.controls['accountName'].dirty || f.controls['accountName'].touched)">
+              Account name is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput [(ngModel)]="Email" name="Email" required email>
+            <mat-error *ngIf="f.controls['accountEmail'].invalid && (f.controls['accountEmail'].dirty || f.controls['accountEmail'].touched)">
+              Please enter a valid email address.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Phone</mat-label>
+            <input type="tel" matInput [(ngModel)]="PhoneNumber" name="PhoneNumber" required pattern="^\+[0-9]{1,3}\s?[0-9]{9,}$">
+            <mat-error *ngIf="f.controls['accountPhone'].invalid && (f.controls['accountPhone'].dirty || f.controls['accountPhone'].touched)">
+              Please enter a valid 10-digit phone number.
+            </mat-error>
+          </mat-form-field>
+        </div>
       </div>
-      <div class="col-sm-12">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Email</mat-label>
-          <input type="email" matInput [(ngModel)]="Email">
-        </mat-form-field>
-      </div>
-      <div class="col-sm-12">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Phone</mat-label>
-          <input type="tel" matInput [(ngModel)]="PhoneNumber">
-        </mat-form-field>
-      </div>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button (click)="updateAccountDetail(accountId,this)">Edit</button>
-  </mat-dialog-actions>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button type="submit" [disabled]="f.invalid">Add</button>
+    </mat-dialog-actions>
+  </form>
 </div>

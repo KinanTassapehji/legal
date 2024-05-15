@@ -11,9 +11,13 @@ import { AzureAdService } from '../../../services/azure-ad.service';
 export class HeaderComponent implements OnInit {
   profile?: IProfile;
   constructor(private azureAdService: AzureAdService) { }
+  isLoading = true;
 
   ngOnInit(): void {
     this.getProfile();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
   getProfile() {

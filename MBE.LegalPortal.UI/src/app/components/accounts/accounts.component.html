@@ -2,12 +2,23 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="accounts-title-section">
-                <h2>Accounts</h2>
-                <button mat-raised-button color="primary" (click)="addAccount()">Add account</button>
+              <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+              <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+              <h2 *ngIf="!isLoading">Accounts</h2>
+              <button mat-raised-button *ngIf="!isLoading" color="primary" (click)="addAccount()">Add account</button>
             </div>
         </div>
         <div class="col-sm-12">
-            <div class="card accounts-card-cont">
+          <div class="card accounts-card-cont" *ngIf="isLoading">
+            <div class="accounts-card-header dense-2">
+              <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+            </div>
+            <ngx-skeleton-loader count="6" [theme]="{width:'100%',height:'36px','margin-bottom': '0.25rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+            <div class="accounts-card-header dense-2">
+              <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+            </div>
+          </div>
+            <div class="card accounts-card-cont" *ngIf="!isLoading">
               <div class="accounts-card-header dense-2">      
                 <mat-form-field appearance="outline">
                   <input matInput placeholder="Search..." #keywordInput (input)="searchAccounts(keywordInput.value)">
@@ -17,14 +28,14 @@
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort (matSortChange)="sortAccounts($event)" *ngIf="ELEMENT_DATA.length > 0">
                   
                     <!-- Account Name Column -->
-                    <ng-container matColumnDef="accountname">
-                      <th mat-header-cell *matHeaderCellDef> Account name </th>
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef  mat-sort-header="name"> Account name </th>
                       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                     </ng-container>
                   
                     <!-- Email Column -->
                     <ng-container matColumnDef="email">
-                      <th mat-header-cell *matHeaderCellDef> Email </th>
+                      <th mat-header-cell *matHeaderCellDef  mat-sort-header="email"> Email </th>
                       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
                     </ng-container>
                   

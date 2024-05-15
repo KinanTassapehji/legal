@@ -36,9 +36,9 @@ export class UpdateAccountComponent {
     }
   }
 
-  updateAccountDetail(id: number, data: any) {
+  updateAccount(data: any) {
     const requestBody = {
-      id: id,
+      id: this.accountId,
       name: data.Name,
       email: data.Email,
       phoneNumber: data.PhoneNumber
