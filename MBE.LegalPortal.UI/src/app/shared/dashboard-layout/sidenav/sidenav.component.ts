@@ -16,6 +16,7 @@ export class SidenavComponent {
     {name: 'License', link: 'license', icon: 'description'},
     {name: 'Reseller', link: 'reseller', icon: 'work'},
     {name: 'Region/Country', link: 'region/country', icon: 'public'},
+    {name: 'Settings', link: 'settings', icon: 'settings'},
   ];
   ngOnInit(): void{
     setTimeout(() => {
