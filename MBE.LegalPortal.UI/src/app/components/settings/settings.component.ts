@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddSettingsComponent } from './add-settings/add-settings.component';
 
 export interface PeriodicElement {
   key: string;
@@ -18,5 +20,11 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class SettingsComponent {
   displayedColumns: string[] = ['key', 'value', 'description', 'action'];
-  dataSource = ELEMENT_DATA;
+  dataSource = ELEMENT_DATA;  
+  constructor(private matDialog:MatDialog){}
+  addSettings(){
+    this.matDialog.open(AddSettingsComponent, {
+      width:"600px"
+    });
+  }
 }
