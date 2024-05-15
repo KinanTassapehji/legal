@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map } from 'rxjs';
-import {
-  License_Url,
-  Applications_Url,
-  Accounts_Url,
-  Application_Instances_Url,
-  SubscriptionPlans_Url,
-} from '../constants/apis-constants';
+import { License_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { ILicense } from '../interfaces/license';
 import { Sort } from '@angular/material/sort';
@@ -17,7 +11,6 @@ import { Sort } from '@angular/material/sort';
 })
 export class LicenseService {
   errorMessage = '';
-
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
   getLicenseByTenantId(id: number): Observable<ILicense> {
@@ -51,24 +44,5 @@ export class LicenseService {
     return this.http.get<any>(`${License_Url}`, { params })
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
-  getApplications(): Observable<any> {
-    return this.http.get<any>(`${Applications_Url}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  getAccounts(): Observable<any> {
-    return this.http.get<any>(`${Accounts_Url}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  getSubscriptionPlans(): Observable<any> {
-    return this.http.get<any>(`${SubscriptionPlans_Url}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  getApplicationInstance(accountId: number, applicationId: number): Observable<any> {
-    return this.http.get<any>(`${Application_Instances_Url}?ApplicationId=${applicationId}&AccountId=${accountId}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  getApplicationConstraints(SubscriptionPlanId: number): Observable<any> {
-    return this.http.get<any>(`${SubscriptionPlans_Url}/${SubscriptionPlanId}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
+ 
 }

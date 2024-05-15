@@ -7,6 +7,10 @@ import { IAccount } from '../../../interfaces/account';
 import { IApplicationInstance } from '../../../interfaces/application-instance';
 import { ITenant } from '../../../interfaces/tenant';
 import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
+import { ApplicationService } from '../../../services/application.service';
+import { AccountService } from '../../../services/account.service';
+import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
+import { ApplicationInstanceService } from '../../../services/application-instance.service';
 
 @Component({
   selector: 'app-create-license',
@@ -30,7 +34,12 @@ export class CreateLicenseComponent {
   expiryDate: string = '';
   expiryAction: string = '';
   applicationConstraints: any[] = [];
-  constructor(private licenseService: LicenseService, private dialogRef: MatDialogRef<CreateLicenseComponent>) { }
+  constructor(private licenseService: LicenseService,
+    private applicationService: ApplicationService,
+    private accountService: AccountService,
+    private subscriptionPlanService: SubscriptionPlanService,
+    private applicationInstanceService: ApplicationInstanceService,
+    private dialogRef: MatDialogRef<CreateLicenseComponent>) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -64,9 +73,9 @@ export class CreateLicenseComponent {
     this.expiryDate = value;
   }
   getApplications() {
-    this.sub = this.licenseService.getApplications().subscribe({
+    this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
-        this.applications = response.data;
+        this.applications = response;
         this.getAccounts();
         this.getSubscriptionPlans();
       }
@@ -74,17 +83,17 @@ export class CreateLicenseComponent {
   }
 
   getAccounts() {
-    this.sub = this.licenseService.getAccounts().subscribe({
+    this.sub = this.accountService.getAccountsAll().subscribe({
       next: response => {
-        this.accounts = response.data;
+        this.accounts = response;
       }
     });
   }
 
   getSubscriptionPlans() {
-    this.sub = this.licenseService.getSubscriptionPlans().subscribe({
+    this.sub = this.subscriptionPlanService.getSubscriptionPlans().subscribe({
       next: response => {
-        this.subscriptionPlans = response.data;
+        this.subscriptionPlans = response;
       }
     });
   }
@@ -93,7 +102,7 @@ export class CreateLicenseComponent {
     this.applicationInstance = [];
     this.tenants = [];
     if (this.accountId > 0 && this.applicationId > 0) {
-        this.sub = this.licenseService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
+      this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
         next: response => {
           if (response.data.length > 0) {
             this.applicationInstance = [response.data[0].application];
@@ -106,7 +115,7 @@ export class CreateLicenseComponent {
 
   getApplicationConstraints() {
     this.applicationConstraints = [];
-    this.sub = this.licenseService.getApplicationConstraints(this.subscriptionPlanId).subscribe({
+    this.sub = this.subscriptionPlanService.getSubscriptionPlansById(this.subscriptionPlanId).subscribe({
       next: response => {
         let applicationConstaintsList = response.data.applicationConstraints;
         if (applicationConstaintsList.length > 0) {

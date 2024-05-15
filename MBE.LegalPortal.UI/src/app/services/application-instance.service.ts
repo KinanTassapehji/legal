@@ -68,4 +68,8 @@ export class ApplicationInstanceService {
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
+  getApplicationInstance(accountId: number, applicationId: number): Observable<any> {
+    return this.http.get<any>(`${Application_Instances_Url}?ApplicationId=${applicationId}&AccountId=${accountId}`)
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
 }
