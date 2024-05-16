@@ -76,7 +76,7 @@
                             <div class="license-table-action">
                               <mat-icon class="material-symbols-outlined" routerLink="/license/details">visibility</mat-icon>
                               <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                              <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                              <mat-icon class="material-symbols-outlined" (click)="openDeleteLicenseDialog(element.id)">delete</mat-icon>
                             </div>
                         </td>
                       </ng-container>
