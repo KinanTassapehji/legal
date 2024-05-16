@@ -91,9 +91,9 @@ export class CreateLicenseComponent {
 
   getSubscriptionPlans() {
     this.subscriptionPlans = [];
-    this.sub = this.subscriptionPlanService.getSubscriptionPlansByApplicationId(this.applicationId).subscribe({
+    this.sub = this.subscriptionPlanService.getSubscriptionPlans(this.applicationId).subscribe({
       next: response => {
-        this.subscriptionPlans = response.data;
+        this.subscriptionPlans = response;
       }
     });
   }
