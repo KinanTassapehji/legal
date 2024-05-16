@@ -44,5 +44,12 @@ export class LicenseService {
     return this.http.get<any>(`${License_Url}`, { params })
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
+
+  deleteLicense(id: number) {
+    return this.http.delete<void>(`${License_Url}/${id}`)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
  
 }

@@ -8,6 +8,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LicenseService } from '../../services/license.service';
 import { Utils } from '../../utilities/sort.util';
+import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 
 export interface PeriodicElement {
   application: string;
@@ -100,5 +101,29 @@ export class LicenseComponent {
     const sort = Utils.getSortObject(this.orderBy, this.sortDirection);
     this.getLicense(sort, keyword);
   }
-  
+
+
+  openDeleteLicenseDialog(id: number) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      data:  `License`,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteLicense(id);
+      }
+    });
+  }
+
+  deleteLicense(id: number) {
+    // Call the delete service
+    this.licenseService.deleteLicense(id).subscribe({
+      next: () => {
+        // Update the UI
+        this.getLicense();
+      },
+      error: err => this.errorMessage = err
+    });
+  }
 }
