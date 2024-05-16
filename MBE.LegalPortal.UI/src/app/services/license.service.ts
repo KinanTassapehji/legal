@@ -11,7 +11,6 @@ import { Sort } from '@angular/material/sort';
 })
 export class LicenseService {
   errorMessage = '';
-
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
   getLicenseByTenantId(id: number): Observable<ILicense> {
@@ -21,7 +20,6 @@ export class LicenseService {
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
-
   createLicense(data: any): Observable<any> {
     return this.http.post(License_Url, data).pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
@@ -46,4 +44,5 @@ export class LicenseService {
     return this.http.get<any>(`${License_Url}`, { params })
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
+ 
 }

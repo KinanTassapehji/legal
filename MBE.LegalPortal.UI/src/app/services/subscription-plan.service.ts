@@ -46,4 +46,10 @@ export class SubscriptionPlanService {
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
+
+  getSubscriptionPlansById(subscriptionPlanId: number): Observable<any> {
+    return this.http.get<any>(`${SubscriptionPlans_Url}/${subscriptionPlanId}`)
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
+
 }

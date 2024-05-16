@@ -1,71 +1,85 @@
 <div mat-dialog-container class="lp-common-modal-container">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <span>Create License</span>
-        <button mat-icon-button mat-dialog-close>
-          <mat-icon class="material-symbols-outlined">close</mat-icon>
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Create License</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <form novalidate (ngSubmit)="addLicense()" #f="ngForm">
     <mat-dialog-content>
       <div class="row  dense-2">
         <div class="col-sm-12">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Application</mat-label>
-            <input matInput>
+            <mat-select matInput [(ngModel)]="applicationId" name="applicationId" required (selectionChange)="getApplicationInstance()">
+              <mat-option *ngFor="let app of applications" [value]="app.id">{{app.name}}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Account</mat-label>
-            <input matInput>
+            <mat-select matInput [(ngModel)]="accountId" name="accountId" required (selectionChange)="getApplicationInstance()">
+              <mat-option *ngFor="let account of accounts" [value]="account.id">{{account.name}}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Application Instance</mat-label>
+            <mat-select matInput [(ngModel)]="applicationInstanceId" name="applicationInstanceId" required>
+              <mat-option *ngFor="let appInstance of applicationInstance" [value]="appInstance.id">{{appInstance.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Tenant</mat-label>
-            <input matInput>
+            <mat-select matInput [(ngModel)]="tenantId" name="tenantId" required>
+              <mat-option *ngFor="let tenant of tenants" [value]="tenant.id">{{tenant.name}}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Subscription plan</mat-label>
-                <mat-select>
-                  <mat-option value="silver">Silver</mat-option>
-                  <mat-option value="gold">Gold</mat-option>
-                  <mat-option value="diamond">Diamond</mat-option>
-                </mat-select>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Subscription plan</mat-label>
+            <mat-select matInput required [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId" (selectionChange)="getApplicationConstraints()">
+              <mat-option *ngFor="let subscriptionPlan of subscriptionPlans" [value]="subscriptionPlan.id">{{subscriptionPlan.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Environment</mat-label>
-                <mat-select>
-                  <mat-option value="staging">Staging</mat-option>
-                  <mat-option value="production">Production</mat-option>
-                </mat-select>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Environment</mat-label>
+            <mat-select matInput required [(ngModel)]="environment" name="environment">
+              <mat-option value="staging">Staging</mat-option>
+              <mat-option value="production">Production</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Expiry Date</mat-label>
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>              
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Expiry Date</mat-label>
+            <input matInput [matDatepicker]="picker" (dateInput)="OnDateChange($event.value)" name="expiryDate" required>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
         </div>
         <div class="col-sm-12 col-md-6">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Expiry Action</mat-label>
-                <mat-select>
-                  <mat-option value="DefaultPolicy">Default Policy</mat-option>
-                </mat-select>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Expiry Action</mat-label>
+            <mat-select matInput required [(ngModel)]="expiryAction" name="expiryAction">
+              <mat-option value="DefaultPolicy">Default Policy</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button >Create</button>
+      <button mat-button type="submit" [disabled]="f.invalid">Create</button>
     </mat-dialog-actions>
-  </div>
+  </form>
+</div>
