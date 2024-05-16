@@ -76,8 +76,7 @@ export class CreateLicenseComponent {
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
         this.applications = response;
-        this.getAccounts();
-        this.getSubscriptionPlans();
+        this.getAccounts();        
       }
     });
   }
@@ -91,9 +90,10 @@ export class CreateLicenseComponent {
   }
 
   getSubscriptionPlans() {
-    this.sub = this.subscriptionPlanService.getSubscriptionPlans().subscribe({
+    this.subscriptionPlans = [];
+    this.sub = this.subscriptionPlanService.getSubscriptionPlansByApplicationId(this.applicationId).subscribe({
       next: response => {
-        this.subscriptionPlans = response;
+        this.subscriptionPlans = response.data;
       }
     });
   }
@@ -101,8 +101,11 @@ export class CreateLicenseComponent {
   getApplicationInstance() {
     this.applicationInstance = [];
     this.tenants = [];
+    if (this.applicationId > 0) {
+      this.getSubscriptionPlans();
+    }
     if (this.accountId > 0 && this.applicationId > 0) {
-      this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
+       this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
         next: response => {
           if (response.data.length > 0) {
             this.applicationInstance = [response.data[0].application];

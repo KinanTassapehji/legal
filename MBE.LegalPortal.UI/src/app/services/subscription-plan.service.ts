@@ -47,8 +47,12 @@ export class SubscriptionPlanService {
       );
   }
 
-  getSubscriptionPlansById(SubscriptionPlanId: number): Observable<any> {
-    return this.http.get<any>(`${SubscriptionPlans_Url}/${SubscriptionPlanId}`)
+  getSubscriptionPlansById(subscriptionPlanId: number): Observable<any> {
+    return this.http.get<any>(`${SubscriptionPlans_Url}/${subscriptionPlanId}`)
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
+  getSubscriptionPlansByApplicationId(applicationId: number): Observable<any> {
+    return this.http.get<any>(`${SubscriptionPlans_Url}?ApplicationId=${applicationId}`)
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
 }
