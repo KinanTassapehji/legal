@@ -57,8 +57,6 @@ export class UpdateLicenseComponent {
 
   ngOnInit(): void {
     this.getLicenseDetails(this.data);
-    this.getApplications();
-    this.getAccounts();
   }
 
   ngOnDestroy(): void {
@@ -85,6 +83,8 @@ export class UpdateLicenseComponent {
             if(licenseData){
               this.accountId = licenseData.accountId;
               this.applicationId = licenseData.applicationId;
+              this.getApplications();
+              this.getAccounts();
               this.getSubscriptionPlans();
               this.getApplicationConstraints();
               this.getTenantsApplicationInstance(this.tenantId);
@@ -98,7 +98,8 @@ export class UpdateLicenseComponent {
   getApplications() {
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
-        this.applications = response;
+        let application = response.filter(x => { return x.id === this.applicationId; });
+        this.applications = application;
       }
     });
   }
@@ -106,7 +107,8 @@ export class UpdateLicenseComponent {
   getAccounts() {
     this.sub = this.accountService.getAccountsAll().subscribe({
       next: response => {
-        this.accounts = response;
+        let account = response.filter(x => { return x.id === this.accountId; });
+        this.accounts = account;
       }
     });
   }
@@ -124,25 +126,6 @@ export class UpdateLicenseComponent {
     })
   }
 
-  getApplicationInstance() {
-    this.applicationInstance = [];
-    this.tenants = [];
-    if (this.applicationId > 0) {
-      this.getSubscriptionPlans();
-    }
-    if (this.accountId > 0 && this.applicationId > 0) {
-       this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
-        next: response => {
-          if (response.data.length > 0) {
-            let data = response.data[0];
-            this.applicationInstance = [data];
-            this.tenants = data.tenants;
-          }
-        }
-      });
-    }
-  }
-
   getSubscriptionPlans() {
     this.subscriptionPlans = [];
     this.sub = this.subscriptionPlanService.getSubscriptionPlans(this.applicationId).subscribe({
@@ -157,7 +140,6 @@ export class UpdateLicenseComponent {
     this.sub = this.subscriptionPlanService.getSubscriptionPlansById(this.subscriptionPlanId).subscribe({
       next: response => {
         let applicationConstaintsList = response.data.applicationConstraints;
-        console.log('getSubscriptionPlansById',applicationConstaintsList);
         this.creatApplicationConstraints(applicationConstaintsList);
       }
     });
