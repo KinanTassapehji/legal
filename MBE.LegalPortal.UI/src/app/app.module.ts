@@ -43,6 +43,8 @@ import { UpdateAccountComponent } from './components/accounts/update-account/upd
 import { UpdateSubscriptionPlanComponent } from './components/subscription-plan/update-subscription-plan/update-subscription-plan.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AddSettingsComponent } from './components/settings/add-settings/add-settings.component';
+import { UpdateLicenseComponent } from './components/license/update-license/update-license.component';
+import { MatSelectModule } from '@angular/material/select';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -121,6 +123,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     UpdateSubscriptionPlanComponent,
     SettingsComponent,
     AddSettingsComponent,
+    UpdateLicenseComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,6 +133,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MaterialModule,
     BrowserAnimationsModule,
     NgxSkeletonLoaderModule,
+    MatSelectModule,
     MsalModule.forRoot(new PublicClientApplication
       (
         {

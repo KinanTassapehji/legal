@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { LicenseService } from '../../services/license.service';
 import { Utils } from '../../utilities/sort.util';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
+import { UpdateLicenseComponent } from './update-license/update-license.component';
 
 export interface PeriodicElement {
   application: string;
@@ -61,6 +62,7 @@ export class LicenseComponent {
       this.isLoading = false;
     }, 2000);
   }
+
   createLicense(){
     this.matDialog.open(CreateLicenseComponent, {
       width:"600px"
@@ -113,6 +115,17 @@ export class LicenseComponent {
       if (result) {
         this.deleteLicense(id);
       }
+    });
+  }
+
+  openUpdateLicenseDialog(id: number) {
+    const dialogRef = this.matDialog.open(UpdateLicenseComponent, {
+      width: "800px",
+      data: id
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getLicense();
     });
   }
 
