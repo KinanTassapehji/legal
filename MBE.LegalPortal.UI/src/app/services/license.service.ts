@@ -20,9 +20,27 @@ export class LicenseService {
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
+
+  getLicenseById(id: number): Observable<any> {
+    return this.http.get<any>(`${License_Url}/${id}`)
+      .pipe(
+        map(response => response.data),
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
+  getLicenseBySubscriptionPlanId(id: number): Observable<any> {
+    return this.http.get<any>(`${License_Url}?SubscriptionPlanId=${id}`)
+      .pipe(
+        map(response => response.data),
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
+
   createLicense(data: any): Observable<any> {
     return this.http.post(License_Url, data).pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
+
   getLicense(page: number, pageSize: number, sort?: Sort, keyword?: string): Observable<any> {
     // Constructing query parameters
     let params = new HttpParams()
@@ -45,11 +63,18 @@ export class LicenseService {
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
 
+   updateLicense(id:any,licenseDto:any):Observable<any> {
+    return this.http.put(`${License_Url}/${id}`, licenseDto)
+    .pipe(
+      catchError(error => this.errorHandlingService.handleError(error))
+    );
+   }
+
   deleteLicense(id: number) {
     return this.http.delete<void>(`${License_Url}/${id}`)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
- 
+
 }
