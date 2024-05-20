@@ -63,9 +63,12 @@ export class LicenseComponent {
     }, 2000);
   }
 
-  createLicense(){
-    this.matDialog.open(CreateLicenseComponent, {
+  onCreateLicenseDialog(){
+    const dialogRef = this.matDialog.open(CreateLicenseComponent, {
       width:"600px"
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getLicense();
     });
   }
 

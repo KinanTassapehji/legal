@@ -5,7 +5,7 @@
               <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
               <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
                 <h2 *ngIf="!isLoading">License</h2>
-                <button mat-raised-button  *ngIf="!isLoading" color="primary" (click)="createLicense()">Create License</button>
+                <button mat-raised-button  *ngIf="!isLoading" color="primary" (click)="onCreateLicenseDialog()">Create License</button>
             </div>
         </div>
         <div class="col-sm-12">
