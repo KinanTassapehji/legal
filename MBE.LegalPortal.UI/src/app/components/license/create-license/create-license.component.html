@@ -71,7 +71,10 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Expiry Action</mat-label>
             <mat-select matInput required [(ngModel)]="expiryAction" name="expiryAction">
-              <mat-option value="DefaultPolicy">Default Policy</mat-option>
+              <mat-option value="NoViolation">No Violation Policy</mat-option>
+              <mat-option value="Slient">Slient Policy</mat-option>
+              <mat-option value="Default">Default Policy</mat-option>
+              <mat-option value="Breach">Breach Policy</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
