@@ -2,12 +2,14 @@ import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { IApplication } from '../../interfaces/application';
-import { ITenant } from '../../interfaces/tenant';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { ApplicationService } from '../../services/application.service';
 import { IConstraint, ISubscriptionPlan } from '../../interfaces/subscription-plan';
 import { SubscriptionPlanService } from '../../services/subscription-plan.service';
+import { IOnBoard } from '../../interfaces/onboard';
+import { IAccount } from '../../interfaces/account';
+import { IApplicationInstance } from '../../interfaces/application-instance';
+import { formatDate } from '@angular/common';
+import { ILicense } from '../../interfaces/license';
 
 @Component({
   selector: 'app-onboarding',
@@ -50,6 +52,11 @@ export class OnboardingComponent {
   environment: string = '';
   expiryDate: string = '';
   expiryAction: string = '';
+  //oboard interface
+  onBoard: IOnBoard | undefined;
+  account: IAccount | undefined;
+  applicationInstance: IApplicationInstance | undefined;
+  license: ILicense | undefined;
   // Array to hold tab labels
   tabLabels: string[] = ['Account', 'Application', 'Subscription Plan', 'License'];
   constructor(private applicationService: ApplicationService,
@@ -152,6 +159,7 @@ export class OnboardingComponent {
     this.errorMessage = '';
   }
 
+  // get date.
   OnDateChange(value: any) {
     this.expiryDate = value;
   }
@@ -166,10 +174,15 @@ export class OnboardingComponent {
   }
 
   // get applicationInstance....
-  getApplicationInstance(isInvalid: any) {
+  onSelectCheckApplicationValidation(isInvalid: any) {
     this.isSelectionChanged = true;
     this.checkApplicationFields(isInvalid);
     this.onApplicationSelectionClick();
+  }
+
+  // create application instance...
+  createApplicationInstance() {
+ 
   }
 
   // select the application details while selecting the application name from dropdown.
@@ -190,8 +203,6 @@ export class OnboardingComponent {
   getSubscriptionPlans(applicationId: number) {
     this.sub = this.subscriptionPlanService.getSubscriptionPlans(applicationId).subscribe({
       next: subscriptionPlans => {
-        console.log('subscriptionPlans', subscriptionPlans)
-        console.log('selectedApplication', this.selectedApplication)
         this.subscriptionPlans = subscriptionPlans;
         this.generateDataSource(); // Generate dataSource and displayedColumns
       },
@@ -258,5 +269,48 @@ export class OnboardingComponent {
   getConstraintValue(plan: ISubscriptionPlan, key: string): any {
     const constraint = plan.constraints.find(constraint => constraint.key === key);
     return constraint && constraint.defaultValue !== undefined && constraint.defaultValue > 0 ? constraint.defaultValue : '-';
+  }
+
+  //submit the onboard details
+  finished() {
+
+    this.tenant.push({
+      name: this.tenantName,
+      email: this.tenantEmail,
+      Url: this.tenantUrl
+    });
+
+    this.account = {
+      id: 0,
+      name: this.Name,
+      email: this.Email,
+      phoneNumber: this.PhoneNumber
+    };
+
+    this.license = {
+      id: 0,
+      environment: this.environment,
+      expiryDate: new Date(this.expiryDate),
+      expiryAction: this.expiryAction,
+      subscriptionPlan: this.subscriptionPlans[0],
+    };
+
+    this.applicationInstance = {
+      id: 0,
+      name: this.Name,
+      application: this.applications[0],
+      account: this.account,
+      tenants: this.tenant,
+      createdOn: new Date(),
+    };
+
+    this.onBoard = {
+      account: this.account,
+      applicationId: this.applicationId,
+      applicationInstance: this.applicationInstance,
+      license: this.license,
+      subscriptionPlanId: this.subscriptionPlans[0].id,
+      tenants: this.tenant,
+    };
   }
 }
