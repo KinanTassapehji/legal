@@ -45,6 +45,7 @@ export class OnboardingComponent {
   tenantUrl: string = '';
   //Subscription Plan tab...
   subscriptionPlans: ISubscriptionPlan[] = [];
+  selectedsubscriptionPlan: ISubscriptionPlan = { id: 0, name:'', constraints: [], };
   constraints: IConstraint[] = [];
   displayedColumns: string[] = [];
   dataSource: any[] = [];
@@ -213,7 +214,7 @@ export class OnboardingComponent {
   // generate the datasource for show the details of subscription plan in table view.
   generateDataSource(): void {
     if (this.selectedApplication) {
-      console.log('subscriptionPlans1', this.selectedApplication);
+      
       this.sub = this.applicationService.getApplicationById(this.selectedApplication?.id).subscribe({
         next: application => {
           if (application && application.applicationConstraints && application.applicationConstraints.length > 0) {
@@ -222,7 +223,6 @@ export class OnboardingComponent {
               key: constraint.key,
               defaultValue: constraint.value || 0
             }));
-            console.log('constraints', this.constraints);
             // Iterate over existing constraints
             this.constraints.forEach(existingConstraint => {
               // Check if corresponding constraint exists in plan.constraints
@@ -245,7 +245,7 @@ export class OnboardingComponent {
             this.subscriptionPlans.forEach(plan => {
               this.displayedColumns.push(plan.name);
             });
-
+            console.log('subscriptionPlans1', this.subscriptionPlans);
             this.dataSource = this.constraints.map(constraint => {
               const rowData: any = { Constraints: constraint.key };
               this.subscriptionPlans.forEach(plan => {
@@ -271,46 +271,28 @@ export class OnboardingComponent {
     return constraint && constraint.defaultValue !== undefined && constraint.defaultValue > 0 ? constraint.defaultValue : '-';
   }
 
+  //Get Selected Plan
+  selectedPlan(PlanName: any) {
+    this.selectedsubscriptionPlan = this.subscriptionPlans.filter(x => { return x.name === PlanName; })[0];
+  }
+
   //submit the onboard details
   finished() {
 
-    this.tenant.push({
-      name: this.tenantName,
-      email: this.tenantEmail,
-      Url: this.tenantUrl
-    });
-
-    this.account = {
-      id: 0,
-      name: this.Name,
-      email: this.Email,
-      phoneNumber: this.PhoneNumber
-    };
-
-    this.license = {
-      id: 0,
-      environment: this.environment,
-      expiryDate: new Date(this.expiryDate),
-      expiryAction: this.expiryAction,
-      subscriptionPlan: this.subscriptionPlans[0],
-    };
-
-    this.applicationInstance = {
-      id: 0,
-      name: this.Name,
-      application: this.applications[0],
-      account: this.account,
-      tenants: this.tenant,
-      createdOn: new Date(),
-    };
-
     this.onBoard = {
-      account: this.account,
-      applicationId: this.applicationId,
-      applicationInstance: this.applicationInstance,
-      license: this.license,
-      subscriptionPlanId: this.subscriptionPlans[0].id,
-      tenants: this.tenant,
+      AccountName: this.Name,
+      AccountEmail: this.Email,
+      AccountPhoneNumber: this.Email,
+      ApplicationInstanceName: this.Name,
+      ApplicationId: this.applicationId,
+      TenantName: this.tenantName,
+      TenantEmail: this.tenantEmail,
+      TenantUrl: this.tenantUrl,
+      ExpiryDate: new Date(this.expiryDate),
+      ExpiryAction: this.expiryAction,
+      Environment: this.environment,
+      SubscriptionPlanId: this.selectedsubscriptionPlan.id,
+      CreateConstraints: this.constraints
     };
   }
 }
