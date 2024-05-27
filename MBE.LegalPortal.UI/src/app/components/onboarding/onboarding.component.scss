@@ -177,6 +177,18 @@ table.subscription-plan-table {
   overflow: hidden;
   border-radius: 0;
   box-shadow: none;
+  table{
+    &.subscription-plan-table {
+      tr{
+        th, td{
+          &.selected{
+            background-color: rgba(var(--lp-success-rgb), .75) !important;
+            border-bottom: 1px solid var(--lp-success);
+          }
+        }
+      }
+    }
+  }
 }
 
 .subscription-plan-title-section {
