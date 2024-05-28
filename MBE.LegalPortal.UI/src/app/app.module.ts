@@ -45,6 +45,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { AddSettingsComponent } from './components/settings/add-settings/add-settings.component';
 import { UpdateLicenseComponent } from './components/license/update-license/update-license.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ViolationConstraintsComponent } from './components/license/violation-constraints/violation-constraints.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -124,6 +125,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     SettingsComponent,
     AddSettingsComponent,
     UpdateLicenseComponent,
+    ViolationConstraintsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ViolationConstraintsComponent } from '../violation-constraints/violation-constraints.component';
 
 export interface PeriodicElement {
   violationid: string;
@@ -55,5 +57,11 @@ export class LicenseDetailsComponent {
     setTimeout(() => {
       this.isLoading = false;
     }, 2000);
+  }
+  constructor(private matDialog:MatDialog){}
+  violationConstraints(){
+    this.matDialog.open(ViolationConstraintsComponent, {
+      width:"600px"
+    });
   }
 }

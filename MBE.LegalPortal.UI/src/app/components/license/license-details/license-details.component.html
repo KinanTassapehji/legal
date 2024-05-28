@@ -69,8 +69,8 @@
                         <th mat-header-cell *matHeaderCellDef> Action </th>
                         <td mat-cell *matCellDef="let element">                             
                             <div class="license-table-action">
-                                <mat-icon class="material-symbols-outlined">info</mat-icon>
                                 <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                <mat-icon class="material-symbols-outlined" (click)="violationConstraints()">info</mat-icon>
                             </div>
                         </td>
                       </ng-container>
