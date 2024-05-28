@@ -1,29 +1,12 @@
-.license-title-section{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    h2{
-        margin: 0;
-    }
-    button{
-        background-color: var(--lp-primary);
-    }
-}
-.license-card-cont{
-    padding: 10px 10px 5px 10px;
-    .license-card-header {
-        display: flex;
-        justify-content: flex-end;
-        mat-form-field {
-            margin-bottom: -1.25em;
-        }
+.violation-constraints-modal{
+    .mat-mdc-dialog-content{
+        padding: 0!important;
     }
     table{
         border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
         tr{
             th{
-                font-size: 1.1rem;
+                font-size: 1rem;
                 font-weight: 500;
             }
             td{
@@ -68,7 +51,39 @@
                         color: var(--lp-white);
                     }
                 }
+                .violation-message {
+                    max-width: 450px;
+                }
             }
+        }
+    }
+    
+    .violation-tag{
+        width: auto;
+        height: 26px;
+        padding: 5px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        float: left;
+        font-size: 0.8rem;
+        font-weight: 500;
+        &.silent{
+            background-color: var(--lp-grey);
+            color: var(--lp-white);
+        }
+        &.default{
+            background-color: var(--lp-text-warning);
+            color: var(--lp-black);
+        }
+        &.breach{
+            background-color: var(--lp-warning);
+            color: var(--lp-white);
+        }
+        &.no-violation{
+            background-color: var(--lp-success);
+            color: var(--lp-white);
         }
     }
 }

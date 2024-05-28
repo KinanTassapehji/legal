@@ -15,22 +15,7 @@
         font-weight: 500;
         border-bottom: 2px solid var(--lp-text-light);
         padding: 0.75rem;
-    }
-    .license-details-list{
-        mat-list-item{
-            border-bottom: 1px solid var(--lp-text-light);            
-            .ld-container{
-                display: flex;
-                .ld-title, .ld-details {
-                    flex:1;
-                    font-size: 1.1rem;
-                }
-                .ld-title{
-                    font-weight: 500;
-                }
-            }
-        }
-    }    
+    }  
     .license-constraints-list{
         mat-list-item{
             border-bottom: 1px solid var(--lp-text-light);            
@@ -53,14 +38,103 @@
                     flex:1;
                     font-size: 1.1rem;
                 }
-                .ld-details{
-                    button{
-                        background-color: var(--lp-warning);
-                        color: var(--lp-white);
-                    }
-                }
+                // .ld-details{
+                //     button{
+                //         background-color: var(--lp-warning);
+                //         color: var(--lp-white);
+                //     }
+                // }
 
             }
         }
+    }
+    
+    table{
+        border-bottom: 1px solid rgba(var(--lp-text-light-rgb),0.8);
+        tr{
+            th{
+                font-size: 1.1rem;
+                font-weight: 500;
+            }
+            td{
+                &:first-child{
+                    font-weight: 500;
+                }                
+                .license-table-action{
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    mat-icon{
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .violation-tag{
+                    width: auto;
+                    height: 26px;
+                    padding: 5px 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 22px;
+                    float: left;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    &.silent{
+                        background-color: var(--lp-grey);
+                        color: var(--lp-white);
+                    }
+                    &.default{
+                        background-color: var(--lp-text-warning);
+                        color: var(--lp-black);
+                    }
+                    &.breach{
+                        background-color: var(--lp-warning);
+                        color: var(--lp-white);
+                    }
+                    &.no-violation{
+                        background-color: var(--lp-success);
+                        color: var(--lp-white);
+                    }
+                }
+                .violation-message {
+                    max-width: 450px;
+                }
+            }
+            &.violation-breach-row {
+                background: rgba(var(--lp-warning-rgb), 0.15);
+            }
+        }
+    }
+}
+.license-details-top-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 1rem;
+    .ldt-content{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        .ldt-label{
+            font-size: 0.9rem;
+            color: var(--lp-grey);
+        }
+        .ldt-title{
+            font-size: 1.25rem;
+        }
+    }
+    .ldt-icon{
+        width: 40px;
+        height: 40px;
+        background-color: var(--lp-primary);
+        color: var(--lp-white);
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
