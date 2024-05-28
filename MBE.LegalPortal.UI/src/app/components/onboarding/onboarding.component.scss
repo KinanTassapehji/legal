@@ -137,6 +137,24 @@ table.subscription-plan-table {
     font-size: 1.15rem !important;
   }
 
+  .choose-plan-button {
+    padding: 10px;
+    border: 0;
+    color: #000;
+    background: #fff;
+    border-radius: 8px;
+    margin: 10px 0px;
+  }
+
+  .selected-choose-plan-button {
+    padding: 10px;
+    background: var(--bs-green);
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    margin: 10px 0px;
+  }
+
   tr {
     td, th {
       &:first-child {

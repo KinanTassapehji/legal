@@ -1,6 +1,6 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { Subscription, isSubscription } from 'rxjs/internal/Subscription';
 import { IApplication } from '../../interfaces/application';
 import { ApplicationService } from '../../services/application.service';
 import { IConstraint, ISubscriptionPlan } from '../../interfaces/subscription-plan';
@@ -10,7 +10,15 @@ import { IAccount } from '../../interfaces/account';
 import { IApplicationInstance } from '../../interfaces/application-instance';
 import { formatDate } from '@angular/common';
 import { ILicense } from '../../interfaces/license';
+import { OnboardService } from '../../services/onboard.service';
 
+export enum ViolationPolicy {
+  NoViolation,
+  Slient,
+  Default,
+  Breach,
+
+}
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
@@ -24,6 +32,8 @@ export class OnboardingComponent {
   isSubscriptionPlanDisabled = true;
   isSelectionChanged = false;
   isLicenseDisabled = true;
+  isSubscriptionPlanSelected = false;
+  buttonEvent: any;
   errorMessage: string ='';
   // Current selected tab index
   selectedIndex: number = 0;
@@ -52,7 +62,7 @@ export class OnboardingComponent {
   //License Tab Fields....
   environment: string = '';
   expiryDate: string = '';
-  expiryAction: string = '';
+  expiryAction: number = 0;
   //oboard interface
   onBoard: IOnBoard | undefined;
   account: IAccount | undefined;
@@ -61,7 +71,8 @@ export class OnboardingComponent {
   // Array to hold tab labels
   tabLabels: string[] = ['Account', 'Application', 'Subscription Plan', 'License'];
   constructor(private applicationService: ApplicationService,
-    private subscriptionPlanService: SubscriptionPlanService) { }
+    private subscriptionPlanService: SubscriptionPlanService,
+    private onBoardService: OnboardService) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -77,13 +88,12 @@ export class OnboardingComponent {
 
   // Method to navigate to the next tab
   nextTab(): void {
-    console.log('nextTab', this.selectedIndex);
     this.checkTabValidation();
-    
   }
 
   // Method to navigate to the previous tab
   previousTab(): void {
+    this.isnextTab = true;
     if (this.selectedIndex > 0) {
       this.selectedIndex--;
       this.errorMessage = '';
@@ -127,7 +137,14 @@ export class OnboardingComponent {
         this.isLicenseDisabled = false;
       }
     }
+
     //
+    if (this.selectedIndex + 1 === 3 && !this.isSubscriptionPlanSelected) {
+      this.errorMessage = 'Please choose your subscription plan';
+      this.isnextTab = false;
+    }
+
+    //next tab....
     if (this.isnextTab) {
       if (this.selectedIndex < this.tabLabels.length - 1) {
         this.selectedIndex++;
@@ -138,7 +155,9 @@ export class OnboardingComponent {
 
   //show error message for invalid data.
   showErrorMessage(tabName: any) {
-    this.errorMessage = tabName === 'SubscriptionPlan' ? 'Subscription plan not found': `${tabName} fields are required!`
+    this.errorMessage = tabName === 'SubscriptionPlan' ?
+                      'Subscription plan not found' :
+                      `${tabName} fields are required!`
   }
 
   // check account fields validations.
@@ -161,7 +180,7 @@ export class OnboardingComponent {
   }
 
   // get date.
-  OnDateChange(value: any) {
+  onDateChange(value: any) {
     this.expiryDate = value;
   }
 
@@ -179,11 +198,6 @@ export class OnboardingComponent {
     this.isSelectionChanged = true;
     this.checkApplicationFields(isInvalid);
     this.onApplicationSelectionClick();
-  }
-
-  // create application instance...
-  createApplicationInstance() {
- 
   }
 
   // select the application details while selecting the application name from dropdown.
@@ -240,12 +254,10 @@ export class OnboardingComponent {
                 });
               }
             });
-
             this.displayedColumns = ['Constraints'];
             this.subscriptionPlans.forEach(plan => {
               this.displayedColumns.push(plan.name);
             });
-            console.log('subscriptionPlans1', this.subscriptionPlans);
             this.dataSource = this.constraints.map(constraint => {
               const rowData: any = { Constraints: constraint.key };
               this.subscriptionPlans.forEach(plan => {
@@ -272,27 +284,66 @@ export class OnboardingComponent {
   }
 
   //Get Selected Plan
-  selectedPlan(PlanName: any) {
-    this.selectedsubscriptionPlan = this.subscriptionPlans.filter(x => { return x.name === PlanName; })[0];
+  selectPlan(planName: any,event:any) {
+    if (planName) {
+
+      // clear the previous button and set as default....
+      if (this.buttonEvent) {
+        this.buttonEvent.srcElement.classList.remove("selected-choose-plan-button");
+        this.buttonEvent.srcElement.classList.add("choose-plan-button");
+      }
+      // check the subscription plan...
+      this.selectedsubscriptionPlan = this.subscriptionPlans.filter(x => { return x.name === planName; })[0];
+      if (this.selectedsubscriptionPlan) {
+        // show active button
+        event.srcElement.classList.remove("choose-plan-button");
+        setTimeout(() => {
+          event.srcElement.classList.add("selected-choose-plan-button");
+        }, 0);
+        this.buttonEvent = event;
+        //
+        this.isSubscriptionPlanSelected = true;
+        this.nextTab();
+      } else {
+        this.errorMessage = 'Subscription plan not found';
+        this.isSubscriptionPlanSelected = false;
+      }
+    }
   }
 
   //submit the onboard details
   finished() {
-
+    //get application constraints from selected plan...
+    let applicationConstraints = this.selectedsubscriptionPlan.constraints[0] as any;
+    // create new constraints with new object...
+    let createConstraint = {
+      "applicationConstraintId": applicationConstraints.id,
+      "value": applicationConstraints.defaultValue,
+      "action": ViolationPolicy[this.expiryAction].toString()
+    }
+    // create onboard Dto...
     this.onBoard = {
-      AccountName: this.Name,
-      AccountEmail: this.Email,
-      AccountPhoneNumber: this.Email,
-      ApplicationInstanceName: this.Name,
-      ApplicationId: this.applicationId,
-      TenantName: this.tenantName,
-      TenantEmail: this.tenantEmail,
-      TenantUrl: this.tenantUrl,
-      ExpiryDate: new Date(this.expiryDate),
-      ExpiryAction: this.expiryAction,
-      Environment: this.environment,
-      SubscriptionPlanId: this.selectedsubscriptionPlan.id,
-      CreateConstraints: this.constraints
+      "accountName": this.Name,
+      "accountEmail": this.Email,
+      "accountPhoneNumber": this.PhoneNumber,
+      "applicationInstanceName": this.Name,
+      "applicationId": this.applicationId,
+      "tenantName": this.tenantName,
+      "tenantEmail": this.tenantEmail,
+      "tenantUrl": this.tenantUrl,
+      "expiryDate": new Date(this.expiryDate),
+      "expiryAction": ViolationPolicy[this.expiryAction],
+      "environment": this.environment,
+      "subscriptionPlanId": this.selectedsubscriptionPlan.id,
+      "createConstraints": [createConstraint]
     };
+    //post the results using onboard service...
+    this.sub = this.onBoardService.createOnBoardService(this.onBoard).subscribe({
+      next: response => {
+        if (response.data?.id > 0) {
+
+        }
+      }
+    });
   }
 }

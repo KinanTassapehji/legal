@@ -3,17 +3,17 @@ import { IApplicationInstance } from "./application-instance";
 import { ILicense } from "./license";
 
 export interface IOnBoard {
-  AccountName: string,
-  AccountEmail: string,
-  AccountPhoneNumber: string,
-  ApplicationInstanceName: string,
-  ApplicationId:number,
-  TenantName: string,
-  TenantEmail: string,
-  TenantUrl: string,
-  ExpiryDate: Date,
-  ExpiryAction: string,
-  Environment: string,
-  SubscriptionPlanId: number | undefined,
-  CreateConstraints: any[]
+  accountName: string,
+  accountEmail: string,
+  accountPhoneNumber: string,
+  applicationInstanceName: string,
+  applicationId:number,
+  tenantName: string,
+  tenantEmail: string,
+  tenantUrl: string,
+  expiryDate: Date,
+  expiryAction: string,
+  environment: string,
+  subscriptionPlanId: number | undefined,
+  createConstraints: any
 }
