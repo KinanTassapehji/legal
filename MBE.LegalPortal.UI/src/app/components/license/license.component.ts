@@ -17,6 +17,7 @@ export interface PeriodicElement {
   tenant: string;
   subscription: string;
   environment: string;
+  violation: string;
   expirydate: string;
   expiryaction: string;
   action: string;
@@ -30,7 +31,7 @@ const ELEMENT_DATA: PeriodicElement[] = [];
 })
 export class LicenseComponent {
   @Output() licenseAdded: EventEmitter<void> = new EventEmitter<void>();
-  displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'expirydate', 'expiryaction', 'action'];
+  displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'expirydate', 'expiryaction', 'action'];
   sub!: Subscription;
   license: ILicense[] = [];
   errorMessage = '';

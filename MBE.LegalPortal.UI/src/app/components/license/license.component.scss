@@ -40,6 +40,34 @@
                         }
                     }
                 }
+                .violation-tag{
+                    width: auto;
+                    height: 26px;
+                    padding: 5px 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 22px;
+                    float: left;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    &.silent{
+                        background-color: var(--lp-grey);
+                        color: var(--lp-white);
+                    }
+                    &.default{
+                        background-color: var(--lp-text-warning);
+                        color: var(--lp-black);
+                    }
+                    &.breach{
+                        background-color: var(--lp-warning);
+                        color: var(--lp-white);
+                    }
+                    &.no-violation{
+                        background-color: var(--lp-success);
+                        color: var(--lp-white);
+                    }
+                }
             }
         }
     }
