@@ -72,6 +72,7 @@ export class CreateLicenseComponent {
   OnDateChange(value: any) {
     this.expiryDate = value;
   }
+
   getApplications() {
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
