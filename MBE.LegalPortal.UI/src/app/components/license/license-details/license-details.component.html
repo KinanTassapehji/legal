@@ -7,7 +7,10 @@
             </div>
         </div>        
         <div class="col-sm-12 col-md-3" *ngFor="let LicenseDetails of licenseDetailsCardData; let i = index;">
-            <div class="card license-details-top-card">
+            <ng-container *ngIf="isLoading">
+                <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'72px','margin-bottom': '10px', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+            </ng-container>
+            <div class="card license-details-top-card" *ngIf="!isLoading">
                 <div class="ldt-content">
                     <div class="ldt-label">{{LicenseDetails.label}}</div>                    
                     <div class="ldt-title">{{LicenseDetails.title}}</div>
