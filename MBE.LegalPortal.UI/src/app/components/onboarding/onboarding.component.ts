@@ -11,20 +11,15 @@ import { IApplicationInstance } from '../../interfaces/application-instance';
 import { formatDate } from '@angular/common';
 import { ILicense } from '../../interfaces/license';
 import { OnboardService } from '../../services/onboard.service';
+import { Router } from '@angular/router';
 
-export enum ViolationPolicy {
-  NoViolation,
-  Slient,
-  Default,
-  Breach,
-
-}
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
   styleUrl: './onboarding.component.scss',
   encapsulation: ViewEncapsulation.None
 })
+
 export class OnboardingComponent {
   isLoading = true;
   isnextTab = true;
@@ -62,7 +57,7 @@ export class OnboardingComponent {
   //License Tab Fields....
   environment: string = '';
   expiryDate: string = '';
-  expiryAction: number = 0;
+  expiryAction: string = '';
   //oboard interface
   onBoard: IOnBoard | undefined;
   account: IAccount | undefined;
@@ -72,7 +67,8 @@ export class OnboardingComponent {
   tabLabels: string[] = ['Account', 'Application', 'Subscription Plan', 'License'];
   constructor(private applicationService: ApplicationService,
     private subscriptionPlanService: SubscriptionPlanService,
-    private onBoardService: OnboardService) { }
+    private onBoardService: OnboardService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -147,8 +143,8 @@ export class OnboardingComponent {
     //next tab....
     if (this.isnextTab) {
       if (this.selectedIndex < this.tabLabels.length - 1) {
-        this.selectedIndex++;
-        this.errorMessage = '';
+          this.selectedIndex++;
+          this.errorMessage = '';
       }
     }
   }
@@ -286,7 +282,6 @@ export class OnboardingComponent {
   //Get Selected Plan
   selectPlan(planName: any,event:any) {
     if (planName) {
-
       // clear the previous button and set as default....
       if (this.buttonEvent) {
         this.buttonEvent.srcElement.classList.remove("selected-choose-plan-button");
@@ -299,7 +294,7 @@ export class OnboardingComponent {
         event.srcElement.classList.remove("choose-plan-button");
         setTimeout(() => {
           event.srcElement.classList.add("selected-choose-plan-button");
-        }, 0);
+        }, 100);
         this.buttonEvent = event;
         //
         this.isSubscriptionPlanSelected = true;
@@ -319,7 +314,7 @@ export class OnboardingComponent {
     let createConstraint = {
       "applicationConstraintId": applicationConstraints.id,
       "value": applicationConstraints.defaultValue,
-      "action": ViolationPolicy[this.expiryAction].toString()
+      "action": this.expiryAction
     }
     // create onboard Dto...
     this.onBoard = {
@@ -332,7 +327,7 @@ export class OnboardingComponent {
       "tenantEmail": this.tenantEmail,
       "tenantUrl": this.tenantUrl,
       "expiryDate": new Date(this.expiryDate),
-      "expiryAction": ViolationPolicy[this.expiryAction],
+      "expiryAction": this.expiryAction,
       "environment": this.environment,
       "subscriptionPlanId": this.selectedsubscriptionPlan.id,
       "createConstraints": [createConstraint]
@@ -341,7 +336,7 @@ export class OnboardingComponent {
     this.sub = this.onBoardService.createOnBoardService(this.onBoard).subscribe({
       next: response => {
         if (response.data?.id > 0) {
-
+          this.router.navigate(['/license']);
         }
       }
     });

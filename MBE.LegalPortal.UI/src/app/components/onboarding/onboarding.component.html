@@ -227,10 +227,10 @@
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Expiry action</mat-label>
                         <mat-select  matInput required [(ngModel)]="expiryAction" name="expiryAction" (selectionChange)="checkLicenseFields(fLicense?.invalid)">
-                          <mat-option value="0">No Violation Policy</mat-option>
-                          <mat-option value="1">Slient Policy</mat-option>
-                          <mat-option value="2">Default Policy</mat-option>
-                          <mat-option value="3">Breach Policy</mat-option>
+                          <mat-option value="NoViolation">No Violation Policy</mat-option>
+                          <mat-option value="Slient">Slient Policy</mat-option>
+                          <mat-option value="Default">Default Policy</mat-option>
+                          <mat-option value="Breach">Breach Policy</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>
