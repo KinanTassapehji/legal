@@ -17,7 +17,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Application Name</mat-label>
             <input matInput [(ngModel)]="application.name" name="applicationName" required>
-            <mat-error *ngIf="f.controls['applicationName'].invalid && (f.controls['applicationName'].dirty || f.controls['applicationName'].touched)">
+            <mat-error *ngIf="f.controls['applicationName']?.invalid && (f.controls['applicationName'].dirty || f.controls['applicationName'].touched)">
               Application Name is required.
             </mat-error>
           </mat-form-field>
@@ -45,7 +45,7 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Constraints Title</mat-label>
                     <input matInput [(ngModel)]="constraint.key" name="constraintTitle{{i}}" required>
-                    <mat-error *ngIf="f.controls['constraintTitle'+i].invalid && (f.controls['constraintTitle'+i].dirty || f.controls['constraintTitle'+i].touched)">
+                    <mat-error *ngIf="f.controls['constraintTitle'+i]?.invalid && (f.controls['constraintTitle'+i].dirty || f.controls['constraintTitle'+i].touched)">
                       Constraints Title is required.
                     </mat-error>
                   </mat-form-field>
@@ -55,11 +55,11 @@
                     <mat-label>Default Action</mat-label>
                     <mat-select [(ngModel)]="constraint.defaultAction" name="defaultAction{{i}}" required>
                       <mat-option value="NoViolation">No Violation Policy</mat-option>
-                      <mat-option value="Slient">Slient Policy</mat-option>
+                      <mat-option value="Silent">Silent Policy</mat-option>
                       <mat-option value="Default">Default Policy</mat-option>
                       <mat-option value="Breach">Breach Policy</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="f.controls['defaultAction'+i].invalid && (f.controls['defaultAction'+i].dirty || f.controls['defaultAction'+i].touched)">
+                    <mat-error *ngIf="f.controls['defaultAction'+i]?.invalid && (f.controls['defaultAction'+i].dirty || f.controls['defaultAction'+i].touched)">
                       Default Action is required.
                     </mat-error>
                   </mat-form-field>
@@ -83,7 +83,7 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button type="submit" [disabled]="f.invalid">Update</button>
+      <button mat-button type="submit" [disabled]="f?.invalid">Update</button>
     </mat-dialog-actions>
   </form>
 </div>
