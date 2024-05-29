@@ -130,3 +130,96 @@
         border-top: 1px solid var(--lp-text-light);
     }
 }
+table.subscription-plan-table {
+  font-size: 1rem;
+
+  .mat-mdc-header-cell {
+    font-size: 1.15rem !important;
+  }
+
+  .choose-plan-button {
+    padding: 10px;
+    border: 0;
+    color: #000;
+    background: #fff;
+    border-radius: 8px;
+    margin: 10px 0px;
+  }
+
+  .selected-choose-plan-button {
+    padding: 10px;
+    background: var(--bs-green);
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    margin: 10px 0px;
+  }
+
+  tr {
+    td, th {
+      &:first-child {
+        font-size: 1rem;
+        font-weight: 400;
+        background-color: var(--lp-white) !important;
+      }
+
+      $var: 0.05;
+
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          background-color: rgba(var(--lp-secondary-rgb), #{$var});
+          $var: $var + 0.05;
+        }
+      }
+    }
+
+    th {
+      .subscription-table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      &:first-child {
+        .subscription-table-header {
+          button {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.subscription-plan-table-card {
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  table{
+    &.subscription-plan-table {
+      tr{
+        th, td{
+          &.selected{
+            background-color: rgba(var(--lp-success-rgb), .75) !important;
+            border-bottom: 1px solid var(--lp-success);
+          }
+        }
+      }
+    }
+  }
+}
+
+.subscription-plan-title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+  }
+
+  button {
+    background-color: var(--lp-primary);
+  }
+}
