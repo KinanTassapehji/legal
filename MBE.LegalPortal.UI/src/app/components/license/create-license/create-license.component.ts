@@ -35,6 +35,7 @@ export class CreateLicenseComponent {
   expiryDate: string = '';
   expiryAction: string = '';
   applicationConstraints: any[] = [];
+  progressBar = false;
   constructor(private licenseService: LicenseService,
     private applicationService: ApplicationService,
     private accountService: AccountService,
@@ -78,10 +79,12 @@ export class CreateLicenseComponent {
   }
 
   getApplications() {
+    this.progressBar = true;
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
         this.applications = response;
-        this.getAccounts();        
+        this.getAccounts();
+        this.progressBar = false;
       }
     });
   }
