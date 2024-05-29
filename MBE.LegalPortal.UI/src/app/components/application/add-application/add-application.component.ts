@@ -4,6 +4,7 @@ import { ApplicationService } from '../../../services/application.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-application',
@@ -18,9 +19,13 @@ export class AddApplicationComponent {
   applicationImageUrl: string | undefined;
   constraints: any[] = [{}];
   sub!: Subscription;
-  constructor(private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<AddApplicationComponent>) { }
+  constructor(private applicationService: ApplicationService,
+    private mediaService: MediaService,
+    private dialogRef: MatDialogRef<AddApplicationComponent>,
+    private commonService: CommonService) { }
 
   addApplication() {
+    this.commonService.showAndHideProgressBar(true);
     const requestBody = {
       name: this.applicationName,
       image: this.applicationImage,
@@ -31,7 +36,7 @@ export class AddApplicationComponent {
       next: () => {
         // Emit event to notify parent component
         this.applicationAdded.emit();
-
+        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
       },

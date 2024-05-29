@@ -47,7 +47,7 @@ import { UpdateLicenseComponent } from './components/license/update-license/upda
 import { MatSelectModule } from '@angular/material/select';
 import { ViolationConstraintsComponent } from './components/license/violation-constraints/violation-constraints.component';
 import { UpdateViolationComponent } from './components/license/update-violation/update-violation.component';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }
@@ -138,6 +138,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     BrowserAnimationsModule,
     NgxSkeletonLoaderModule,
     MatSelectModule,
+    MatProgressBarModule,
     MsalModule.forRoot(new PublicClientApplication
       (
         {

@@ -1,13 +1,16 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-account',
   templateUrl: './add-account.component.html',
   styleUrl: './add-account.component.scss'
 })
+
+
 export class AddAccountComponent implements  OnDestroy {
   @Output() accountsAdded: EventEmitter<void> = new EventEmitter<void>();
   Name: string = '';
@@ -15,13 +18,14 @@ export class AddAccountComponent implements  OnDestroy {
   PhoneNumber: string = '';
   sub!: Subscription;
 
-  constructor(private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
+  constructor(public commonService: CommonService, private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
   addAccount(model: any) {
+    this.commonService.showAndHideProgressBar(true);
     let formData = { "Name": model.Name, "Email": model.Email, "PhoneNumber": model.PhoneNumber };
     this.sub = this.accountService.createAccounts(formData).subscribe({
       next: () => {
@@ -29,6 +33,7 @@ export class AddAccountComponent implements  OnDestroy {
         this.accountsAdded.emit();
         // Close the dialog
         this.dialogRef.close();
+        this.commonService.showAndHideProgressBar(false);
       },
       error: (err) => {
         // Handle error response, maybe show an error message
