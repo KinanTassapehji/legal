@@ -14,7 +14,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Account Name</mat-label>
             <input matInput [(ngModel)]="Name" name="Name" required>
-            <mat-error *ngIf="f.controls['Name'].invalid && (f.controls['Name'].dirty || f.controls['Name'].touched)">
+            <mat-error *ngIf="f.controls['Name']?.invalid && (f.controls['Name'].dirty || f.controls['Name'].touched)">
               Please enter a valid account name.
             </mat-error>
           </mat-form-field>
@@ -23,7 +23,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Email</mat-label>
             <input type="email" matInput [(ngModel)]="Email" name="Email" required email>
-            <mat-error *ngIf="f.controls['Email'].invalid && (f.controls['Email'].dirty || f.controls['Email'].touched)">
+            <mat-error *ngIf="f.controls['Email']?.invalid && (f.controls['Email'].dirty || f.controls['Email'].touched)">
               Please enter a valid email address.
             </mat-error>
           </mat-form-field>
@@ -39,7 +39,7 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button type="submit" [disabled]="f.invalid">Add</button>
+      <button mat-button type="submit" [disabled]="f?.invalid">Add</button>
     </mat-dialog-actions>
   </form>
 </div>

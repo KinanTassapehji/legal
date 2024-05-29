@@ -6,6 +6,7 @@ import { ApplicationService } from '../../../services/application.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplication } from '../../../interfaces/application';
 import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-update-subscription-plan',
@@ -20,15 +21,17 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   applicationId: number = 0;
   applicationName: string = '';
   applicationConstraints: IApplicationConstraint[] = [];
-
+  progressBar = false;
   constructor(
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<UpdateSubscriptionPlanComponent>,
+    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { subscriptionPlan: ISubscriptionPlan, selectedApplication: IApplication }) {
   }
 
   ngOnInit(): void {
+    this.progressBar = true;
     this.name = this.data.subscriptionPlan.name;
     this.applicationId = this.data.selectedApplication.id;
     this.applicationName = this.data.selectedApplication.name;
@@ -50,6 +53,7 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   updateSubscriptionPlan() {
+    this.commonService.showAndHideProgressBar(true);
     const subscriptionPlanApplicationConstraint = this.applicationConstraints.map(constraint => ({
       applicationConstraintId: constraint.id,
       defaultValue: constraint.value
@@ -66,7 +70,7 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.subscriptionPlanUpdated.emit(response.data.id);
-
+        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
       },
@@ -84,7 +88,7 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (constraints) => {
             this.applicationConstraints = constraints;
-
+            this.progressBar = false;
             this.bindDefaultValue();
           },
           error: (err) => {

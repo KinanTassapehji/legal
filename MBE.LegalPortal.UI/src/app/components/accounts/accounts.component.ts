@@ -10,6 +10,7 @@ import { Utils } from '../../utilities/sort.util';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateAccountComponent } from './update-account/update-account.component';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-accounts',
@@ -36,10 +37,10 @@ export class AccountsComponent {
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
-
+  progressBar = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private matDialog: MatDialog, private accountsService: AccountService) { }
+  constructor(private commonSerivce: CommonService, private matDialog: MatDialog, private accountsService: AccountService) { }
 
 
   ngAfterViewInit() {
@@ -50,12 +51,13 @@ export class AccountsComponent {
     this.getAccounts();
     setTimeout(() => {
       this.isLoading = false;
+      this.commonSerivce.changeEmitted$.subscribe(data => this.progressBar = data);
     }, 2000);
   }
 
   addAccount(){
     this.matDialog.open(AddAccountComponent, {
-      width:"600px"
+      width: "600px"
     });
   }
 

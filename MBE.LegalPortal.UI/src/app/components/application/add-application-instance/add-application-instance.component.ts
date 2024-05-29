@@ -5,6 +5,7 @@ import { IApplication } from '../../../interfaces/application';
 import { AccountService } from '../../../services/account.service';
 import { IAccount } from '../../../interfaces/account';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-application-instance',
@@ -26,6 +27,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<AddApplicationInstanceComponent>,
+    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[] })
   {
   }
@@ -48,6 +50,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   }
 
   addApplicationInstance() {
+    this.commonService.showAndHideProgressBar(true);
     const requestBody = {
       name: this.name,
       applicationId: this.applicationId,
@@ -59,7 +62,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.applicationInstanceAdded.emit(response.data.id);
-
+        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
       },

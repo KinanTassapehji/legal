@@ -1,4 +1,7 @@
 <div mat-dialog-container class="lp-common-modal-container add-application-modal-conrailer">
+  <div *ngIf="progressBar">
+    <mat-progress-bar mode="indeterminate" value="30"></mat-progress-bar>
+  </div>
   <mat-toolbar>
     <mat-toolbar-row>
       <span>Update Application</span>
