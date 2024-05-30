@@ -12,6 +12,7 @@ import { formatDate } from '@angular/common';
 import { ILicense } from '../../interfaces/license';
 import { OnboardService } from '../../services/onboard.service';
 import { Router } from '@angular/router';
+import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
 
 @Component({
   selector: 'app-onboarding',
@@ -68,7 +69,28 @@ export class OnboardingComponent {
   constructor(private applicationService: ApplicationService,
     private subscriptionPlanService: SubscriptionPlanService,
     private onBoardService: OnboardService,
-    private router: Router) { }
+    private router: Router,
+    // toast message samples
+    // private snackbarService: SnackbarService
+    // toast message samples
+  ) { }
+
+    // toast message samples
+
+    // showSuccess() {
+    //   this.snackbarService.show('This is a success message', 'success');
+    // }  
+    // showError() {
+    //   this.snackbarService.show('This is an error message This is an error message This is an error message This is an error message This is an error message ', 'error');
+    // }  
+    // showWarning() {
+    //   this.snackbarService.show('This is a warning message', 'warning');
+    // }  
+    // showInfo() {
+    //   this.snackbarService.show('This is an info message', 'info');
+    // }
+
+    // toast message samples
 
   ngOnInit(): void {
     this.getApplications();
