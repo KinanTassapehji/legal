@@ -136,25 +136,13 @@ table.subscription-plan-table {
   .mat-mdc-header-cell {
     font-size: 1.15rem !important;
   }
-
-  .choose-plan-button {
-    padding: 10px;
-    border: 0;
-    color: #000;
-    background: #fff;
-    border-radius: 8px;
-    margin: 10px 0px;
+  button{
+    white-space: nowrap;
+    &.selected-choose-plan-button{
+      background-color: var(--lp-primary);
+      color: var(--lp-white);
+    }
   }
-
-  .selected-choose-plan-button {
-    padding: 10px;
-    background: var(--bs-green);
-    color: white;
-    border: 0;
-    border-radius: 8px;
-    margin: 10px 0px;
-  }
-
   tr {
     td, th {
       &:first-child {
@@ -222,4 +210,16 @@ table.subscription-plan-table {
   button {
     background-color: var(--lp-primary);
   }
+}
+.onbording-subscription-header{
+  display: flex;
+  margin-bottom: 0.5rem;
+  button{
+    margin-left: auto;    
+    background-color: var(--lp-primary);
+    color: var(--lp-white);
+  }
+}
+.onbording-subscription-body{
+  overflow: auto;
 }
