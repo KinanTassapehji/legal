@@ -49,6 +49,7 @@ import { ViolationConstraintsComponent } from './components/license/violation-co
 import { UpdateViolationComponent } from './components/license/update-violation/update-violation.component';
 import { CustomSnackbarComponent } from './shared/custom-snackbar/custom-snackbar.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ErrorPopupComponent } from './shared/popups/error-popup/error-popup.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -131,6 +132,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     ViolationConstraintsComponent,
     UpdateViolationComponent,
     CustomSnackbarComponent,
+    ErrorPopupComponent,
   ],
   imports: [
     BrowserModule,
