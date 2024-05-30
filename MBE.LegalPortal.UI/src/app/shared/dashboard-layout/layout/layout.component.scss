@@ -25,7 +25,8 @@
         padding-top: 64px;
         &.mat-drawer-opened{
             width: 300px;
-            box-shadow: var(--lp-card-shadow);   
+            box-shadow: var(--lp-card-shadow);
+            transition: width 0.3s;   
         }
         &:not(.mat-drawer-opened){
             transform: translate3d(0, 0, 0) !important;
@@ -33,13 +34,21 @@
             width: 60px !important;
             overflow: hidden;
             display: block;
-            box-shadow: var(--lp-card-shadow)!important;            
+            box-shadow: var(--lp-card-shadow)!important;
+            transition: width 0.3s;            
             .lp-mat-nav-list{
                 .mdc-list-item__primary-text{
                     span {
                         display: none;
                     }
                 }
+            }
+        }
+        .mat-drawer-inner-container{
+            display: flex;
+            align-items: center;
+            app-sidenav{
+                width: 100%;
             }
         }
     }

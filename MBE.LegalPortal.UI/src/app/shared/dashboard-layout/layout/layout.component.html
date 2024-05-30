@@ -2,12 +2,14 @@
     <mat-toolbar class="lp-header-section" [ngClass]="{'mat-header-isloading': isLoading, '': !isLoading}">
         <ngx-skeleton-loader [theme]="{width:'30px', height:'30px','margin':'0'}" appearance="line" *ngIf="isLoading" />
         <button mat-icon-button (click)="drawer.toggle()" *ngIf="!isLoading">
-            <mat-icon class="material-symbols-outlined">menu</mat-icon>
+            <mat-icon class="material-symbols-outlined" (mouseenter)="openSidenav()">menu</mat-icon>
         </button>
         <app-header class="w-100"></app-header>
     </mat-toolbar>
     <mat-drawer-container autosize class="legal-mat-drawer-container">
-        <mat-drawer mode="over" #drawer class="legal-mat-drawer-sidenav">
+        <mat-drawer mode="over" #drawer [opened]="isSidenavOpened"
+        (mouseenter)="openSidenav()"
+        (mouseleave)="closeSidenav()" class="legal-mat-drawer-sidenav">
             <app-sidenav></app-sidenav>
         </mat-drawer>
         <mat-drawer-content class="legal-mat-drawer-content">
