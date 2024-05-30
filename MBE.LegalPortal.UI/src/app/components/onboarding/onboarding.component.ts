@@ -12,6 +12,11 @@ import { formatDate } from '@angular/common';
 import { ILicense } from '../../interfaces/license';
 import { OnboardService } from '../../services/onboard.service';
 import { Router } from '@angular/router';
+// common error snackbar and popup
+// import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
+// import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
+// import { MatDialog } from '@angular/material/dialog';
+// common error snackbar and popup
 import { CommonService } from '../../services/common.service';
 
 @Component({
@@ -70,8 +75,40 @@ export class OnboardingComponent {
   constructor(private applicationService: ApplicationService,
     private subscriptionPlanService: SubscriptionPlanService,
     private onBoardService: OnboardService,
-    private router: Router) { }
+    private router: Router,
+    // common error popup
+    // private matDialog:MatDialog,
+    // common error popup
 
+    // toast message samples
+    // private snackbarService: SnackbarService
+    // toast message samples
+  ) { }
+
+    // toast message samples
+
+    // showSuccess() {
+    //   this.snackbarService.show('This is a success message', 'success');
+    // }  
+    // showError() {
+    //   this.snackbarService.show('This is an error message This is an error message This is an error message This is an error message This is an error message ', 'error');
+    // }  
+    // showWarning() {
+    //   this.snackbarService.show('This is a warning message', 'warning');
+    // }  
+    // showInfo() {
+    //   this.snackbarService.show('This is an info message', 'info');
+    // }
+    // toast message samples
+
+    // common error popup
+    // errorPopup(){
+    //   this.matDialog.open(ErrorPopupComponent, {
+    //     width:"500px"
+    //   });
+    // }
+    // common error popup
+    
   ngOnInit(): void {
     this.getApplications();
     setTimeout(() => {

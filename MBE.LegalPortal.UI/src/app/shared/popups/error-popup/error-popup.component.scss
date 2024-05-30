@@ -1,0 +1,41 @@
+.common-error-popup{
+    .error-popup-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        .ep-icon{
+            mat-icon{
+                color: var(--lp-warning);
+                font-size: 5rem;
+                width: 5rem;
+                height: 5rem;
+            }
+        }
+        .ep-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--lp-black);
+            text-shadow: none;
+        }
+        .ep-description {
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            a{
+                font-weight: 600;
+                text-decoration: underline;
+                color: var(--lp-primary);
+                &:hover{
+                    cursor: pointer;
+                    text-decoration: none;                    
+                }
+            }
+        }
+        button {
+            background: var(--lp-primary);
+            color: var(--lp-white);
+        }
+    }
+}

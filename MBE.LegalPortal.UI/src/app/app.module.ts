@@ -47,6 +47,9 @@ import { UpdateLicenseComponent } from './components/license/update-license/upda
 import { MatSelectModule } from '@angular/material/select';
 import { ViolationConstraintsComponent } from './components/license/violation-constraints/violation-constraints.component';
 import { UpdateViolationComponent } from './components/license/update-violation/update-violation.component';
+import { CustomSnackbarComponent } from './shared/custom-snackbar/custom-snackbar.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ErrorPopupComponent } from './shared/popups/error-popup/error-popup.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -128,6 +131,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     UpdateLicenseComponent,
     ViolationConstraintsComponent,
     UpdateViolationComponent,
+    CustomSnackbarComponent,
+    ErrorPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -172,7 +177,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         )
       },
     ),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [
     {
