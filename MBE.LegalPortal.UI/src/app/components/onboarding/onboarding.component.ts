@@ -18,6 +18,8 @@ import { Router } from '@angular/router';
 // import { MatDialog } from '@angular/material/dialog';
 // common error snackbar and popup
 import { CommonService } from '../../services/common.service';
+import { AddSubscriptionPlanComponent } from '../subscription-plan/add-subscription-plan/add-subscription-plan.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-onboarding',
@@ -75,7 +77,8 @@ export class OnboardingComponent {
   constructor(private applicationService: ApplicationService,
     private subscriptionPlanService: SubscriptionPlanService,
     private onBoardService: OnboardService,
-    private router: Router,
+    private router: Router,    
+    private matDialog: MatDialog,
     // common error popup
     // private matDialog:MatDialog,
     // common error popup
@@ -114,6 +117,24 @@ export class OnboardingComponent {
     setTimeout(() => {
       this.isLoading = false;
     }, 2000);
+  }
+
+  openAddSubscriptionPlanDialog() {
+    const dialogRef = this.matDialog.open(AddSubscriptionPlanComponent, {
+      width: "800px",
+      data: {
+        applications: this.applications, // Pass applications data to the child component
+        selectedApplicationId: this.selectedApplication?.id
+      }
+    });
+
+    dialogRef.componentInstance.subscriptionPlanAdded.subscribe(() => {
+      if (this.selectedApplication) {
+        this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
+      } else {
+        console.error("selected Application is undefined");
+      }
+    });
   }
 
   // Method to handle tab change event
