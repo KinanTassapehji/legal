@@ -41,16 +41,22 @@
           <div class="add-application-constraints-row dense-2">
             <div class="add-application-constraints-col" *ngFor="let constraint of application.applicationConstraints; let i=index">
               <div class="row">
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-4">
                   <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Constraints Title</mat-label>
+                    <mat-label>Constraint key</mat-label>
                     <input matInput [(ngModel)]="constraint.key" name="constraintTitle{{i}}" required>
                     <mat-error *ngIf="f.controls['constraintTitle'+i]?.invalid && (f.controls['constraintTitle'+i].dirty || f.controls['constraintTitle'+i].touched)">
-                      Constraints Title is required.
+                      Constraint key is required.
                     </mat-error>
                   </mat-form-field>
+                </div>                                
+                <div class="col-sm-12 col-md-4">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Constraint Label</mat-label>
+                    <input matInput>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-4">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Default Action</mat-label>
                     <mat-select [(ngModel)]="constraint.defaultAction" name="defaultAction{{i}}" required>
