@@ -8,7 +8,13 @@ import { Component, ViewEncapsulation } from '@angular/core';
 })
 export class LayoutComponent {
 isLoading = true;
-
+isSidenavOpened = false;
+  openSidenav() {
+    this.isSidenavOpened = true;
+  }
+  closeSidenav() {
+    this.isSidenavOpened = false;
+  }
 ngOnInit(): void{
   setTimeout(() => {
     this.isLoading = false;
