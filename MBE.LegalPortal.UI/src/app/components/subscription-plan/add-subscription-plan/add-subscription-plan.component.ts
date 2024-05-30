@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationService } from '../../../services/application.service';
 import { IApplicationConstraint } from '../../../interfaces/application-constraint';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-subscription-plan',
@@ -24,6 +25,7 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<AddSubscriptionPlanComponent>,
+    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[], selectedApplicationId: number }) {
   }
 
@@ -37,6 +39,7 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   addSubscriptionPlan() {
+    this.commonService.showAndHideProgressBar(true);
     const subscriptionPlanApplicationConstraint = this.applicationConstraints.map(constraint => ({
       applicationConstraintId: constraint.id,
       defaultValue: constraint.value
@@ -52,7 +55,7 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.subscriptionPlanAdded.emit(response.data.id);
-
+        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
       },

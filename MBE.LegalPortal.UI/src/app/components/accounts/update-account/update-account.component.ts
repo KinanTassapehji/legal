@@ -15,6 +15,7 @@ export class UpdateAccountComponent {
   PhoneNumber: string = '';
   accountId: number = 0;
   sub!: Subscription;
+  progressBar = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private accountService: AccountService, private dialogRef: MatDialogRef<UpdateAccountComponent>) { }
 
   ngOnInit(): void {
@@ -37,6 +38,7 @@ export class UpdateAccountComponent {
   }
 
   updateAccount(data: any) {
+    this.progressBar = true;
     const requestBody = {
       id: this.accountId,
       name: data.Name,
@@ -47,6 +49,7 @@ export class UpdateAccountComponent {
       next: (response) => {
         // Emit event to notify parent component
         this.accountUpdated.emit();
+        this.progressBar = false;
         // Close the dialog
         this.dialogRef.close();
       },

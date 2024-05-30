@@ -16,6 +16,7 @@ import { ApplicationInstanceService } from '../../services/application-instance.
 import { Utils } from '../../utilities/sort.util';
 import { UpdateApplicationComponent } from './update-application/update-application.component';
 import { UpdateApplicationInstanceComponent } from './update-application-instance/update-application-instance.component';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-application',
@@ -38,7 +39,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   orderBy?= '';
   // Search
   keyword?= '';
-
+  progressBar = false;
   isLoading = true;
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
@@ -51,12 +52,17 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
-  constructor(private matDialog: MatDialog, private applicationService: ApplicationService, private applicationInstanceService: ApplicationInstanceService, private bottomSheet: MatBottomSheet) { }
+  constructor(private matDialog: MatDialog,
+    private applicationService: ApplicationService,
+    private applicationInstanceService: ApplicationInstanceService,
+    private bottomSheet: MatBottomSheet,
+    private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.getApplications();
     setTimeout(() => {
       this.isLoading = false;
+      this.commonService.changeEmitted$.subscribe(data => { this.progressBar = data; });
     }, 2000);
   }
 

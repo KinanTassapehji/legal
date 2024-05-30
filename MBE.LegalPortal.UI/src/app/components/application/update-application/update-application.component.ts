@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplicationDetails } from '../../../interfaces/application-details';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-update-application',
@@ -17,10 +18,14 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   applicationImageUrl: string | undefined;
   application: IApplicationDetails = {} as IApplicationDetails;
   sub!: Subscription;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
+  progressBar = false;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>,
+    private commonService: CommonService) { }
 
   ngOnInit(): void {
+    this.progressBar = true;
     this.getApplicationById(this.data);
+    
   }
 
   ngOnDestroy(): void {
@@ -34,6 +39,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
         if (response) {
           this.application = response;
           this.applicationImageUrl = this.application.image;
+          this.progressBar = false;
         } else {
           console.error('Application details not found');
         }
@@ -45,6 +51,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   }
 
   updateApplication() {
+    this.commonService.showAndHideProgressBar(true);
     const requestBody = {
       id: this.application?.id,
       name: this.application?.name,
@@ -56,7 +63,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
       next: () => {
         // Emit event to notify parent component
         this.applicationUpdated.emit();
-
+        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
       },

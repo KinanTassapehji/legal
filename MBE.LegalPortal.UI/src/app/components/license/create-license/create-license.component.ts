@@ -11,6 +11,7 @@ import { ApplicationService } from '../../../services/application.service';
 import { AccountService } from '../../../services/account.service';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-create-license',
@@ -34,18 +35,21 @@ export class CreateLicenseComponent {
   expiryDate: string = '';
   expiryAction: string = '';
   applicationConstraints: any[] = [];
+  progressBar = false;
   constructor(private licenseService: LicenseService,
     private applicationService: ApplicationService,
     private accountService: AccountService,
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationInstanceService: ApplicationInstanceService,
-    private dialogRef: MatDialogRef<CreateLicenseComponent>) { }
+    private dialogRef: MatDialogRef<CreateLicenseComponent>,
+    private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.getApplications();
   }
 
   addLicense() {
+    this.commonService.showAndHideProgressBar(true);
     let requestBody = {
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,
@@ -58,6 +62,7 @@ export class CreateLicenseComponent {
       next: (response) => {
         // Emit event to notify parent component
         this.licenseAdded.emit(response.data);
+        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
       },
@@ -74,10 +79,12 @@ export class CreateLicenseComponent {
   }
 
   getApplications() {
+    this.progressBar = true;
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
         this.applications = response;
-        this.getAccounts();        
+        this.getAccounts();
+        this.progressBar = false;
       }
     });
   }

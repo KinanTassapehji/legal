@@ -50,7 +50,7 @@ import { UpdateViolationComponent } from './components/license/update-violation/
 import { CustomSnackbarComponent } from './shared/custom-snackbar/custom-snackbar.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorPopupComponent } from './shared/popups/error-popup/error-popup.component';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }
@@ -143,6 +143,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     BrowserAnimationsModule,
     NgxSkeletonLoaderModule,
     MatSelectModule,
+    MatProgressBarModule,
     MsalModule.forRoot(new PublicClientApplication
       (
         {

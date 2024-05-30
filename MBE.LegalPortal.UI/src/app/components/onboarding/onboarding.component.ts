@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 // import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 // import { MatDialog } from '@angular/material/dialog';
 // common error snackbar and popup
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-onboarding',
@@ -28,6 +29,7 @@ import { Router } from '@angular/router';
 export class OnboardingComponent {
   isLoading = true;
   isnextTab = true;
+  progressBar = false;
   isApplicationDisabled = true;
   isSubscriptionPlanDisabled = true;
   isSelectionChanged = false;
@@ -345,6 +347,7 @@ export class OnboardingComponent {
 
   //submit the onboard details
   finished() {
+    this.progressBar = true;
     //get application constraints from selected plan...
     let applicationConstraints = this.selectedsubscriptionPlan.constraints[0] as any;
     // create new constraints with new object...
@@ -374,6 +377,7 @@ export class OnboardingComponent {
       next: response => {
         if (response.data?.id > 0) {
           this.router.navigate(['/license']);
+          this.progressBar = false;
         }
       }
     });

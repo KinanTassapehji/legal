@@ -13,6 +13,7 @@ import { ITenant } from '../../../interfaces/tenant';
 import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
 import { TenantService } from '../../../services/tenant.service';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-update-license',
@@ -41,6 +42,7 @@ export class UpdateLicenseComponent {
   expiryDate: string = '';
   expiryAction: string = '';
   //
+  progressBar = false;
   environment = [ { environmentId:"Staging", environmentName:"Staging" },
                   { environmentId:"Production", environmentName:"Production" }
                 ];
@@ -51,7 +53,7 @@ export class UpdateLicenseComponent {
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private accountService: AccountService,
-    private applicationInstanceService: ApplicationInstanceService,
+    private commonService: CommonService,
     private tenantService: TenantService,
     private dialogRef: MatDialogRef<UpdateLicenseComponent>) { }
 
@@ -66,6 +68,7 @@ export class UpdateLicenseComponent {
   }
 
   getLicenseDetails(id: any) {
+    this.progressBar = true;
     this.sub = this.licenseService.getLicenseById(id).subscribe({
       next: response => {
         this.applicationConstraints = [];
@@ -88,6 +91,7 @@ export class UpdateLicenseComponent {
               this.getSubscriptionPlans();
               this.getApplicationConstraints();
               this.getTenantsApplicationInstance(this.tenantId);
+              this.progressBar = false;
             }
           }
         });
@@ -166,6 +170,7 @@ export class UpdateLicenseComponent {
   }
 
   updateLicense() {
+    this.commonService.showAndHideProgressBar(true);
     let requestBody = {
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,
@@ -180,7 +185,8 @@ export class UpdateLicenseComponent {
       next: response =>
         {
          // Emit event to notify parent component
-         this.licenseUpdated.emit(response);
+        this.licenseUpdated.emit(response);
+        this.commonService.showAndHideProgressBar(false);
          // Close the dialog
          this.dialogRef.close();
         }

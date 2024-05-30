@@ -8,6 +8,7 @@ import { IApplication } from '../../interfaces/application';
 import { ApplicationService } from '../../services/application.service';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateSubscriptionPlanComponent } from './update-subscription-plan/update-subscription-plan.component';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-subscription-plan',
@@ -26,13 +27,17 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   constraints: IConstraint[] = [];
   errorMessage = '';
   isLoading = true;
-
-  constructor(private subscriptionPlanService: SubscriptionPlanService, private applicationService: ApplicationService, private matDialog: MatDialog) { }
+  progressBar = false;
+  constructor(private subscriptionPlanService: SubscriptionPlanService,
+    private applicationService: ApplicationService,
+    private matDialog: MatDialog,
+    private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.getApplications();
     setTimeout(() => {
       this.isLoading = false;
+      this.commonService.changeEmitted$.subscribe(data => { this.progressBar = data });
     }, 2000);
   }
 

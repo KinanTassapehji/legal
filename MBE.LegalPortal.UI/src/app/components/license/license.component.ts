@@ -48,6 +48,7 @@ export class LicenseComponent {
   ELEMENT_DATA: ILicense[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
+  progressBar = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private matDialog: MatDialog, private licenseService: LicenseService) { }
