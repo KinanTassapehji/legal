@@ -11,7 +11,7 @@
     color: var(--lp-grey);
     cursor: pointer;
 }
-.application-instance-title-section{
+.application-instance-title-section, .application-title-section{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,6 +21,7 @@
     }
     button{
         background-color: var(--lp-primary);
+        color: var(--lp-white);
     }
 }
 .application-instance-table-card{

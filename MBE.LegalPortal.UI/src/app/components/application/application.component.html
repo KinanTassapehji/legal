@@ -1,8 +1,13 @@
 <div class="main-container">
   <div class="row">
     <div class="col-sm-12">
-      <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
-      <h2 *ngIf="!isLoading">Applications</h2>
+      <div class="application-title-section">
+        <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+        <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
+        <!-- Application section -->
+        <h2 *ngIf="!isLoading">Applications</h2>
+        <button mat-raised-button *ngIf="!isLoading" (click)="openAddApplicationDialog()">Add Application</button>
+      </div>
     </div>
     <!-- Application cards -->
     <div class="col-sm-12 col-md-3" *ngFor="let app of applications; let i = index">
@@ -18,18 +23,6 @@
                 (cardClick)="onCardClick(app.id)"
                 *ngIf="!isLoading">
       </app-card>
-    </div>
-    <!-- Add new application button -->
-    <div class="col-sm-12 col-md-3">
-      <ng-container *ngIf="isLoading">
-        <ngx-skeleton-loader count="1" [theme]="{width:'100%',height:'60px','border-radius': '6px','margin-bottom': '0.75rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
-      </ng-container>
-      <ng-container *ngIf="!isLoading">
-        <div class="card add-new-application-card" (click)="openAddApplicationDialog()">
-          <mat-icon class="material-symbols-outlined">add</mat-icon>
-          <span>Add Application</span>
-        </div>
-      </ng-container>
     </div>
   </div>
   <div class="application-instance-title-section">
