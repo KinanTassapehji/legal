@@ -114,9 +114,6 @@ export class OnboardingComponent {
     
   ngOnInit(): void {
     this.getApplications();
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
   }
 
   openAddSubscriptionPlanDialog() {
@@ -245,6 +242,15 @@ export class OnboardingComponent {
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
         this.applications = response;
+
+        // Set isLoading to false
+        this.isLoading = false;
+      },
+      error: err => {
+        this.errorMessage = err;
+
+        // Set isLoading to false 
+        this.isLoading = false;
       }
     });
   }

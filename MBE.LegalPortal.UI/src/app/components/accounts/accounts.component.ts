@@ -40,8 +40,8 @@ export class AccountsComponent {
   progressBar = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private commonSerivce: CommonService, private matDialog: MatDialog, private accountsService: AccountService) { }
 
+  constructor(private commonService: CommonService, private matDialog: MatDialog, private accountsService: AccountService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -49,10 +49,7 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
-    setTimeout(() => {
-      this.isLoading = false;
-      this.commonSerivce.changeEmitted$.subscribe(data => this.progressBar = data);
-    }, 2000);
+    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
   addAccount(){
@@ -70,8 +67,18 @@ export class AccountsComponent {
         this.totalCount = pi.totalCount;
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
+
+        // Set isLoading to false and emit progress bar state after successful response
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        this.errorMessage = err;
+
+        // Set isLoading to false and emit progress bar state on error
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
+      }
     });
   }
 
@@ -105,6 +112,7 @@ export class AccountsComponent {
       this.getAccounts(); // Refresh the list of applications
     });
   }
+
   openDeleteAccountDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",

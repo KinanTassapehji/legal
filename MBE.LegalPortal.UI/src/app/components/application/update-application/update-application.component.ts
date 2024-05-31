@@ -25,7 +25,6 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.progressBar = true;
     this.getApplicationById(this.data);
-    
   }
 
   ngOnDestroy(): void {

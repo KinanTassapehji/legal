@@ -10,6 +10,7 @@ import { LicenseService } from '../../services/license.service';
 import { Utils } from '../../utilities/sort.util';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateLicenseComponent } from './update-license/update-license.component';
+import { CommonService } from '../../services/common.service';
 
 export interface PeriodicElement {
   application: string;
@@ -22,7 +23,6 @@ export interface PeriodicElement {
   expiryaction: string;
   action: string;
 }
-const ELEMENT_DATA: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-license',
@@ -51,8 +51,8 @@ export class LicenseComponent {
   progressBar = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  constructor(private matDialog: MatDialog, private licenseService: LicenseService) { }
 
+  constructor(private commonService: CommonService, private matDialog: MatDialog, private licenseService: LicenseService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -60,16 +60,14 @@ export class LicenseComponent {
 
   ngOnInit(): void {
     this.getLicense();
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
+    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
-  onCreateLicenseDialog(){
+  onCreateLicenseDialog() {
     const dialogRef = this.matDialog.open(CreateLicenseComponent, {
-      width:"600px"
+      width: "600px"
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.getLicense();
     });
   }
@@ -83,8 +81,18 @@ export class LicenseComponent {
         this.totalCount = pi.totalCount;
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
+
+        // Set isLoading to false and emit progress bar state after successful response
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
       },
-      error: err => this.errorMessage = err //getLicense
+      error: err => {
+        this.errorMessage = err;
+
+        // Set isLoading to false and emit progress bar state on error
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
+      }
     });
   }
 
@@ -113,7 +121,7 @@ export class LicenseComponent {
   openDeleteLicenseDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data:  `License`,
+      data: `License`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
