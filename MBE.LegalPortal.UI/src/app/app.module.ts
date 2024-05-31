@@ -51,6 +51,7 @@ import { CustomSnackbarComponent } from './shared/custom-snackbar/custom-snackba
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorPopupComponent } from './shared/popups/error-popup/error-popup.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NoDataTemplateComponent } from './shared/no-data-template/no-data-template.component';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }
@@ -133,6 +134,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     UpdateViolationComponent,
     CustomSnackbarComponent,
     ErrorPopupComponent,
+    NoDataTemplateComponent,
   ],
   imports: [
     BrowserModule,
