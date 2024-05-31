@@ -10,7 +10,7 @@
   <form novalidate (ngSubmit)="addApplication()" #f="ngForm">
     <mat-dialog-content>
       <div class="row">
-        <div class="col-sm-12 dense-2">
+        <div class="col-sm-12 col-md-6" style="padding-top: 1.35rem;">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Application Name</mat-label>
             <input matInput [(ngModel)]="applicationName" name="applicationName" required>
@@ -19,25 +19,26 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-md-6">
           <h5 class="upload-application-icon-title">
             Application logo icon
           </h5>
           <div class="upload-application-icon-container" [class.img-uploaded]="applicationImageUrl">
-            <button mat-icon-button class="remove-img" (click)="removeImage()"><mat-icon class="material-symbols-outlined">delete</mat-icon></button>
             <div class="img-preview" *ngIf="applicationImageUrl" [ngStyle]="{'background-image': 'url(' + applicationImageUrl + ')'}">
             </div>
             <input type="file" (change)="handleImageInput($event)" style="display: none;" #fileInput required>
-            <mat-error *ngIf="f.controls['applicationName']?.invalid && (f.controls['applicationName'].dirty || f.controls['applicationName'].touched)">
-              Application Logo is required.
-            </mat-error>
-            <mat-icon class="material-symbols-outlined">upload</mat-icon>
-            <div class="title">Upload application icon</div>
-            <button (click)="fileInput.click()" mat-raised-button class="upload-icon">Upload Icon</button>
+            <div class="upload-application-icon">
+              <mat-icon class="material-symbols-outlined">upload</mat-icon>
+            </div>          
+            <button (click)="fileInput.click()" mat-raised-button class="upload-icon">Upload Icon</button>            
+            <button mat-icon-button class="remove-img" (click)="removeImage()"><mat-icon class="material-symbols-outlined">delete</mat-icon></button>
           </div>
-          <h5 class="app-constraint-title">Constraints</h5>
+          <mat-error class="upload-application-icon-error" *ngIf="f.controls['applicationName']?.invalid && (f.controls['applicationName'].dirty || f.controls['applicationName'].touched)">
+            Application Logo is required.
+          </mat-error>
         </div>
         <div class="col-sm-12">
+          <h5 class="app-constraint-title">Constraints</h5>
           <div class="add-application-constraints-row dense-2">
             <div class="add-application-constraints-col" *ngFor="let constraint of constraints; let i=index">
               <div class="row">
