@@ -46,7 +46,7 @@ export class UpdateAccountComponent {
       phoneNumber: data.PhoneNumber
     };
     this.sub = this.accountService.updateAccount(requestBody).subscribe({
-      next: (response) => {
+      next: () => {
         // Emit event to notify parent component
         this.accountUpdated.emit();
         this.progressBar = false;

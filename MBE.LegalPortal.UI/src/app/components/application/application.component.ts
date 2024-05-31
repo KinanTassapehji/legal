@@ -60,10 +60,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getApplications();
-    setTimeout(() => {
-      this.isLoading = false;
-      this.commonService.changeEmitted$.subscribe(data => { this.progressBar = data; });
-    }, 2000);
+    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
   ngOnDestroy(): void {
@@ -83,10 +80,20 @@ export class ApplicationComponent implements OnInit, OnDestroy {
           this.applications[0].selected = true;
           this.applications[0].isDefault = true;
           this.getApplicationInstances(this.applications[0].id);
+
+          // Set isLoading to false and emit progress bar state after successful response
+          this.isLoading = false;
+          this.commonService.showAndHideProgressBar(false);
         }
       },
-      error: err => this.errorMessage = err
-    });
+        error: err => {
+          this.errorMessage = err;
+
+          // Set isLoading to false and emit progress bar state on error
+          this.isLoading = false;
+          this.commonService.showAndHideProgressBar(false);
+        }
+      });
   }
 
   sortApplicationInstances(sort: Sort) {
