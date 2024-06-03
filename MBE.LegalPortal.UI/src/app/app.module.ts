@@ -52,6 +52,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorPopupComponent } from './shared/popups/error-popup/error-popup.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoDataTemplateComponent } from './shared/no-data-template/no-data-template.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }
@@ -180,9 +181,12 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
       },
     ),
     BrowserAnimationsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
-  providers: [
+  providers: [    
+    provideNgxMask(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
