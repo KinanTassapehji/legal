@@ -47,6 +47,7 @@
         .mat-drawer-inner-container{
             display: flex;
             align-items: center;
+            height: calc(100vh - 64px);
             app-sidenav{
                 width: 100%;
             }
