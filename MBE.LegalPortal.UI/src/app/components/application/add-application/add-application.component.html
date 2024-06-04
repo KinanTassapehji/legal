@@ -55,7 +55,7 @@
                 <div class="col-sm-12 col-md-4">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Constraint Label</mat-label>
-                    <input matInput>
+                    <input matInput [(ngModel)]="constraint.label" name="constraintLabel{{i}}" required>
                   </mat-form-field>
                 </div>
                 <div class="col-sm-12 col-md-4">

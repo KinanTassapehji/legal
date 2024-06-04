@@ -1,6 +1,6 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Subscription, isSubscription } from 'rxjs/internal/Subscription';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { IApplication } from '../../interfaces/application';
 import { ApplicationService } from '../../services/application.service';
 import { IConstraint, ISubscriptionPlan } from '../../interfaces/subscription-plan';
@@ -8,18 +8,14 @@ import { SubscriptionPlanService } from '../../services/subscription-plan.servic
 import { IOnBoard } from '../../interfaces/onboard';
 import { IAccount } from '../../interfaces/account';
 import { IApplicationInstance } from '../../interfaces/application-instance';
-import { formatDate } from '@angular/common';
 import { ILicense } from '../../interfaces/license';
 import { OnboardService } from '../../services/onboard.service';
 import { Router } from '@angular/router';
-// common error snackbar and popup
-// import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-// import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
-// import { MatDialog } from '@angular/material/dialog';
-// common error snackbar and popup
-import { CommonService } from '../../services/common.service';
 import { AddSubscriptionPlanComponent } from '../subscription-plan/add-subscription-plan/add-subscription-plan.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
+import { GetCreateSuccessfullyMessage } from '../../constants/messages-constants';
+import { MessageType } from '../../enums/messageType';
 
 @Component({
   selector: 'app-onboarding',
@@ -38,7 +34,8 @@ export class OnboardingComponent {
   isLicenseDisabled = true;
   isSubscriptionPlanSelected = false;
   buttonEvent: any;
-  errorMessage: string ='';
+  errorMessage: string = '';
+  modelName : string = 'License';
   // Current selected tab index
   selectedIndex: number = 0;
   // import Subscription...
@@ -59,7 +56,7 @@ export class OnboardingComponent {
   tenantUrl: string = '';
   //Subscription Plan tab...
   subscriptionPlans: ISubscriptionPlan[] = [];
-  selectedsubscriptionPlan: ISubscriptionPlan = { id: 0, name:'', constraints: [], };
+  selectedsubscriptionPlan: ISubscriptionPlan = { id: 0, name: '', constraints: [], };
   constraints: IConstraint[] = [];
   displayedColumns: string[] = [];
   dataSource: any[] = [];
@@ -77,41 +74,9 @@ export class OnboardingComponent {
   constructor(private applicationService: ApplicationService,
     private subscriptionPlanService: SubscriptionPlanService,
     private onBoardService: OnboardService,
-    private router: Router,    
-    private matDialog: MatDialog,
-    // common error popup
-    // private matDialog:MatDialog,
-    // common error popup
+    private router: Router,
+    private matDialog: MatDialog, private snackbarService: SnackbarService) { }
 
-    // toast message samples
-    // private snackbarService: SnackbarService
-    // toast message samples
-  ) { }
-
-    // toast message samples
-
-    // showSuccess() {
-    //   this.snackbarService.show('This is a success message', 'success');
-    // }  
-    // showError() {
-    //   this.snackbarService.show('This is an error message This is an error message This is an error message This is an error message This is an error message ', 'error');
-    // }  
-    // showWarning() {
-    //   this.snackbarService.show('This is a warning message', 'warning');
-    // }  
-    // showInfo() {
-    //   this.snackbarService.show('This is an info message', 'info');
-    // }
-    // toast message samples
-
-    // common error popup
-    // errorPopup(){
-    //   this.matDialog.open(ErrorPopupComponent, {
-    //     width:"500px"
-    //   });
-    // }
-    // common error popup
-    
   ngOnInit(): void {
     this.getApplications();
   }
@@ -128,6 +93,9 @@ export class OnboardingComponent {
     dialogRef.componentInstance.subscriptionPlanAdded.subscribe(() => {
       if (this.selectedApplication) {
         this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
+        if (this.subscriptionPlans.length > 0) {
+          this.selectPlan(this.subscriptionPlans[this.subscriptionPlans.length - 1].name);
+        }
       } else {
         console.error("selected Application is undefined");
       }
@@ -200,8 +168,8 @@ export class OnboardingComponent {
     //next tab....
     if (this.isnextTab) {
       if (this.selectedIndex < this.tabLabels.length - 1) {
-          this.selectedIndex++;
-          this.errorMessage = '';
+        this.selectedIndex++;
+        this.errorMessage = '';
       }
     }
   }
@@ -209,8 +177,8 @@ export class OnboardingComponent {
   //show error message for invalid data.
   showErrorMessage(tabName: any) {
     this.errorMessage = tabName === 'SubscriptionPlan' ?
-                      'Subscription plan not found' :
-                      `${tabName} fields are required!`
+      'Subscription plan not found' :
+      `${tabName} fields are required!`
   }
 
   // check account fields validations.
@@ -290,7 +258,7 @@ export class OnboardingComponent {
   // generate the datasource for show the details of subscription plan in table view.
   generateDataSource(): void {
     if (this.selectedApplication) {
-      
+
       this.sub = this.applicationService.getApplicationById(this.selectedApplication?.id).subscribe({
         next: application => {
           if (application && application.applicationConstraints && application.applicationConstraints.length > 0) {
@@ -346,7 +314,7 @@ export class OnboardingComponent {
   }
 
   //Get Selected Plan
-  selectPlan(planName: any,event:any) {
+  selectPlan(planName: any, event: any = null) {
     if (planName) {
       // clear the previous button and set as default....
       if (this.buttonEvent) {
@@ -356,13 +324,14 @@ export class OnboardingComponent {
       // check the subscription plan...
       this.selectedsubscriptionPlan = this.subscriptionPlans.filter(x => { return x.name === planName; })[0];
       if (this.selectedsubscriptionPlan) {
-        // show active button
-        event.srcElement.classList.remove("choose-plan-button");
-        setTimeout(() => {
-          event.srcElement.classList.add("selected-choose-plan-button");
-        }, 100);
-        this.buttonEvent = event;
-        //
+        if (event) {
+          // show active button
+          event.srcElement.classList.remove("choose-plan-button");
+          setTimeout(() => {
+            event.srcElement.classList.add("selected-choose-plan-button");
+          }, 100);
+          this.buttonEvent = event;
+        }
         this.isSubscriptionPlanSelected = true;
         this.nextTab();
       } else {
@@ -403,6 +372,7 @@ export class OnboardingComponent {
     this.sub = this.onBoardService.createOnBoardService(this.onBoard).subscribe({
       next: response => {
         if (response.data?.id > 0) {
+          this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
           this.router.navigate(['/license']);
           this.progressBar = false;
         }
