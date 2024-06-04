@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map } from 'rxjs';
-import { License_Url } from '../constants/apis-constants';
+import { License_Url, OfflineLicense_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { ILicense } from '../interfaces/license';
 import { Sort } from '@angular/material/sort';
@@ -86,5 +86,9 @@ export class LicenseService {
 
   deleteLicense(id: number) {
     return this.http.delete<void>(`${License_Url}/${id}`);
+  }
+  getOfflineLicense(id:number) {
+    return this.http.get(`${OfflineLicense_Url}/GetOfflineLicense?Id=${id}`, { responseType: 'blob' })
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
 }

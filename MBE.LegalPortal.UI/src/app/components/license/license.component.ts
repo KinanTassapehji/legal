@@ -173,4 +173,21 @@ export class LicenseComponent {
       }
     });
   }
+
+
+  downloadOfflineLicense(id: number) {
+    this.sub = this.licenseService.getOfflineLicense(id).subscribe({
+      next: response => {
+        console.log('File', response);
+        const blob = new Blob([response], { type: 'application/octet-stream' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'MBE.LegalPortal.ECL.dll';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.commonService.showAndHideProgressBar(false);
+      }
+    });
+  }
 }

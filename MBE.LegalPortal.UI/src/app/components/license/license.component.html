@@ -93,7 +93,7 @@
                         <mat-icon class="material-symbols-outlined">visibility</mat-icon>
                         <span>View License</span>
                       </button>
-                      <button mat-menu-item>
+                      <button mat-menu-item (click)="downloadOfflineLicense(element.id)">
                         <mat-icon class="material-symbols-outlined">download</mat-icon>
                         <span>Download License</span>
                       </button>
