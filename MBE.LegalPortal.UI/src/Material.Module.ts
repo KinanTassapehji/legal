@@ -19,6 +19,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSortModule} from '@angular/material/sort';
 import { MatPaginatorModule } from "@angular/material/paginator";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 
 
 
@@ -45,7 +46,8 @@ exports:[
     MatNativeDateModule,
     MatSortModule,
     MatPaginatorModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
 ]
 })
 export class MaterialModule{}

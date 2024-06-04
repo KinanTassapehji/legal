@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { LicenseService } from '../../../services/license.service';
@@ -19,6 +19,7 @@ import { CommonService } from '../../../services/common.service';
   selector: 'app-update-license',
   templateUrl: './update-license.component.html',
   styleUrl: './update-license.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class UpdateLicenseComponent {
   @Output() licenseUpdated: EventEmitter<void> = new EventEmitter<void>();

@@ -1,7 +1,20 @@
 .readonly-wrapper {
   cursor: not-allowed;
 }
-
 .readonly-wrapper .readonly-block {
   pointer-events: none;
+}
+.license-type-container{
+  margin-bottom: 0.75rem;
+  h5{
+      margin: 0;
+  }
+  mat-radio-group {
+      display: flex;
+      gap: 1rem;
+  }
+  .mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled:checked+.mdc-radio__background .mdc-radio__outer-circle,
+  .mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle{
+      border-color: var(--lp-primary);
+  }
 }

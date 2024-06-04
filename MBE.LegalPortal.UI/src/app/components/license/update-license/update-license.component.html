@@ -37,7 +37,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Tenant</mat-label>
             <mat-select matInput [(ngModel)]="tenantId" name="tenantId" required>
@@ -60,6 +60,21 @@
               <mat-option *ngFor="let envir of environment" [value]="envir.environmentId">{{envir.environmentName}}</mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>No of Machines</mat-label>
+            <input type="number" matInput>
+          </mat-form-field>
+        </div>        
+        <div class="col-sm-12">
+          <div class="license-type-container">
+            <h5>License Type</h5>
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="1">Limited</mat-radio-button>
+              <mat-radio-button value="2">Unlimited</mat-radio-button>
+            </mat-radio-group>
+          </div>
         </div>
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
