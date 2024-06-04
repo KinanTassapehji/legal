@@ -18,6 +18,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSortModule} from '@angular/material/sort';
 import { MatPaginatorModule } from "@angular/material/paginator";
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 
 
@@ -42,7 +44,8 @@ exports:[
     MatDatepickerModule,
     MatNativeDateModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCheckboxModule
 ]
 })
 export class MaterialModule{}
