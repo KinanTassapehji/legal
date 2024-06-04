@@ -55,7 +55,7 @@ export class UpdateAccountComponent {
       },
       error: (err) => {
         // Handle error response, maybe show an error message
-        console.error('Error creating application', err);
+        console.error('Error creating account', err);
       }
     });
   }

@@ -48,6 +48,11 @@ export class ApplicationInstanceService {
       );
   }
 
+  getApplicationInstance(accountId: number, applicationId: number): Observable<any> {
+    return this.http.get<any>(`${Application_Instances_Url}?ApplicationId=${applicationId}&AccountId=${accountId}`)
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
+
   createApplicationInstance(applicationInstanceDto: any): Observable<any> {
     return this.http.post(Application_Instances_Url, applicationInstanceDto)
       .pipe(
@@ -63,13 +68,6 @@ export class ApplicationInstanceService {
   }
 
   deleteApplicationInstance(id: number): Observable<void> {
-    return this.http.delete<void>(`${Application_Instances_Url}/${id}`)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
-  }
-  getApplicationInstance(accountId: number, applicationId: number): Observable<any> {
-    return this.http.get<any>(`${Application_Instances_Url}?ApplicationId=${applicationId}&AccountId=${accountId}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+    return this.http.delete<void>(`${Application_Instances_Url}/${id}`);
   }
 }

@@ -4,12 +4,12 @@
         <div class="ep-icon">
           <mat-icon class="material-symbols-outlined">cancel</mat-icon>
         </div>
-        <div class="ep-title">Error title</div>
+        <div class="ep-title">{{data.title}}</div>
         <div class="ep-description">
-            Lorem Ipsum is simply dummy text of the <a href="#">printing</a>  and typesetting industry.
+          <!--Lorem Ipsum is simply dummy text of the <a href="#">printing</a>  and typesetting industry.-->
+          {{data.message}}
         </div>
         <button mat-raised-button mat-dialog-close>Ok</button>
       </div>
     </mat-dialog-content>
   </div>
-  

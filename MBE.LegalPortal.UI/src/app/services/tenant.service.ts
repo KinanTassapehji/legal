@@ -19,5 +19,4 @@ export class TenantService {
       catchError(error => this.errorHandlingService.handleError(error))
     )
   }
-
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from '../../../services/common.service';
 
 @Component({
@@ -9,7 +9,6 @@ import { CommonService } from '../../../services/common.service';
   templateUrl: './add-account.component.html',
   styleUrl: './add-account.component.scss'
 })
-
 
 export class AddAccountComponent implements  OnDestroy {
   @Output() accountsAdded: EventEmitter<void> = new EventEmitter<void>();
@@ -37,9 +36,8 @@ export class AddAccountComponent implements  OnDestroy {
       },
       error: (err) => {
         // Handle error response, maybe show an error message
-        console.error('Error creating application instance', err);
+        console.error('Error creating account', err);
       }
     });
   }
-
 }
