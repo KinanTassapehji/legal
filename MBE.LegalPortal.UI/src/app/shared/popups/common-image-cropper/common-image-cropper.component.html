@@ -1,0 +1,36 @@
+<div mat-dialog-container class="lp-common-modal-container common-confirmation-popup">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <span>Crop Image</span>
+        <button mat-icon-button mat-dialog-close>
+          <mat-icon class="material-symbols-outlined">close</mat-icon>
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-sm-12">
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="4 / 3"
+                [resizeToWidth]="128"
+                format="png"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()"
+                (cropperReady)="cropperReady()"
+                (loadImageFailed)="loadImageFailed()">
+                </image-cropper>
+
+                <input type="file" (change)="fileChangeEvent($event)" />
+                <img [src]="croppedImage" />
+
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button mat-dialog-close>Crop</button>
+    </mat-dialog-actions>
+  </div>
+  
