@@ -1,0 +1,10 @@
+image-cropper{
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  margin: auto;
+  img.ngx-ic-source-image{    
+    max-width: 100%;
+    max-height: 400px!important;
+  }
+}

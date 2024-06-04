@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { LicenseService } from '../../../services/license.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,8 @@ import { CommonService } from '../../../services/common.service';
 @Component({
   selector: 'app-create-license',
   templateUrl: './create-license.component.html',
-  styleUrl: './create-license.component.scss'
+  styleUrl: './create-license.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateLicenseComponent {
   sub!: Subscription

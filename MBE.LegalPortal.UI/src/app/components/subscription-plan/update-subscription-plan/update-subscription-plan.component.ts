@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IApplicationConstraint } from '../../../interfaces/application-constraint';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
@@ -11,7 +11,8 @@ import { CommonService } from '../../../services/common.service';
 @Component({
   selector: 'app-update-subscription-plan',
   templateUrl: './update-subscription-plan.component.html',
-  styleUrl: './update-subscription-plan.component.scss'
+  styleUrl: './update-subscription-plan.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   @Output() subscriptionPlanUpdated: EventEmitter<void> = new EventEmitter<void>();

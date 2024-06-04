@@ -21,16 +21,17 @@
         </div>
         <div class="col-sm-12 col-md-6">
           <h5 class="upload-application-icon-title">
-            Application logo icon
+            Application logo
           </h5>
           <div class="upload-application-icon-container" [class.img-uploaded]="applicationImageUrl">
             <div class="img-preview" *ngIf="applicationImageUrl" [ngStyle]="{'background-image': 'url(' + applicationImageUrl + ')'}">
             </div>
             <input type="file" (change)="handleImageInput($event)" style="display: none;" #fileInput required>
-            <div class="upload-application-icon">
+            <!-- <div class="upload-application-icon">
               <mat-icon class="material-symbols-outlined">upload</mat-icon>
-            </div>          
-            <button (click)="fileInput.click()" mat-raised-button class="upload-icon">Upload Icon</button>            
+            </div>           -->
+            <button (click)="fileInput.click()" mat-raised-button class="upload-icon">Upload</button>
+            <div class="title"> Choose Application logo</div>          
             <button mat-icon-button class="remove-img" (click)="removeImage()"><mat-icon class="material-symbols-outlined">delete</mat-icon></button>
           </div>
           <mat-error class="upload-application-icon-error" *ngIf="f.controls['applicationName']?.invalid && (f.controls['applicationName'].dirty || f.controls['applicationName'].touched)">

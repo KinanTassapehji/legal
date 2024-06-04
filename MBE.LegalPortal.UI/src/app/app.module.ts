@@ -52,6 +52,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorPopupComponent } from './shared/popups/error-popup/error-popup.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoDataTemplateComponent } from './shared/no-data-template/no-data-template.component';
+import { CommonImageCropperComponent } from './shared/popups/common-image-cropper/common-image-cropper.component';
+import { ImageCropperComponent } from 'ngx-image-cropper';
+
+
+
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }
@@ -135,6 +140,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     CustomSnackbarComponent,
     ErrorPopupComponent,
     NoDataTemplateComponent,
+    CommonImageCropperComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,7 +151,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     BrowserAnimationsModule,
     NgxSkeletonLoaderModule,
     MatSelectModule,
-    MatProgressBarModule,
+    MatProgressBarModule,    
+    ImageCropperComponent,
     MsalModule.forRoot(new PublicClientApplication
       (
         {
@@ -180,7 +187,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
       },
     ),
     BrowserAnimationsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   providers: [
     {

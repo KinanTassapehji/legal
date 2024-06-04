@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { IApplication } from '../../../interfaces/application';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,8 @@ import { CommonService } from '../../../services/common.service';
 @Component({
   selector: 'app-add-subscription-plan',
   templateUrl: './add-subscription-plan.component.html',
-  styleUrl: './add-subscription-plan.component.scss'
+  styleUrl: './add-subscription-plan.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 
 export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
