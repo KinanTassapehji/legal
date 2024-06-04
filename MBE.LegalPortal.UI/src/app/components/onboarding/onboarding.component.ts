@@ -38,7 +38,7 @@ export class OnboardingComponent {
   isLicenseDisabled = true;
   isSubscriptionPlanSelected = false;
   buttonEvent: any;
-  errorMessage: string ='';
+  errorMessage: string = '';
   // Current selected tab index
   selectedIndex: number = 0;
   // import Subscription...
@@ -59,7 +59,7 @@ export class OnboardingComponent {
   tenantUrl: string = '';
   //Subscription Plan tab...
   subscriptionPlans: ISubscriptionPlan[] = [];
-  selectedsubscriptionPlan: ISubscriptionPlan = { id: 0, name:'', constraints: [], };
+  selectedsubscriptionPlan: ISubscriptionPlan = { id: 0, name: '', constraints: [], };
   constraints: IConstraint[] = [];
   displayedColumns: string[] = [];
   dataSource: any[] = [];
@@ -77,7 +77,7 @@ export class OnboardingComponent {
   constructor(private applicationService: ApplicationService,
     private subscriptionPlanService: SubscriptionPlanService,
     private onBoardService: OnboardService,
-    private router: Router,    
+    private router: Router,
     private matDialog: MatDialog,
     // common error popup
     // private matDialog:MatDialog,
@@ -88,30 +88,30 @@ export class OnboardingComponent {
     // toast message samples
   ) { }
 
-    // toast message samples
+  // toast message samples
 
-    // showSuccess() {
-    //   this.snackbarService.show('This is a success message', 'success');
-    // }  
-    // showError() {
-    //   this.snackbarService.show('This is an error message This is an error message This is an error message This is an error message This is an error message ', 'error');
-    // }  
-    // showWarning() {
-    //   this.snackbarService.show('This is a warning message', 'warning');
-    // }  
-    // showInfo() {
-    //   this.snackbarService.show('This is an info message', 'info');
-    // }
-    // toast message samples
+  // showSuccess() {
+  //   this.snackbarService.show('This is a success message', 'success');
+  // }  
+  // showError() {
+  //   this.snackbarService.show('This is an error message This is an error message This is an error message This is an error message This is an error message ', 'error');
+  // }  
+  // showWarning() {
+  //   this.snackbarService.show('This is a warning message', 'warning');
+  // }  
+  // showInfo() {
+  //   this.snackbarService.show('This is an info message', 'info');
+  // }
+  // toast message samples
 
-    // common error popup
-    // errorPopup(){
-    //   this.matDialog.open(ErrorPopupComponent, {
-    //     width:"500px"
-    //   });
-    // }
-    // common error popup
-    
+  // common error popup
+  // errorPopup(){
+  //   this.matDialog.open(ErrorPopupComponent, {
+  //     width:"500px"
+  //   });
+  // }
+  // common error popup
+
   ngOnInit(): void {
     this.getApplications();
   }
@@ -200,8 +200,8 @@ export class OnboardingComponent {
     //next tab....
     if (this.isnextTab) {
       if (this.selectedIndex < this.tabLabels.length - 1) {
-          this.selectedIndex++;
-          this.errorMessage = '';
+        this.selectedIndex++;
+        this.errorMessage = '';
       }
     }
   }
@@ -209,8 +209,8 @@ export class OnboardingComponent {
   //show error message for invalid data.
   showErrorMessage(tabName: any) {
     this.errorMessage = tabName === 'SubscriptionPlan' ?
-                      'Subscription plan not found' :
-                      `${tabName} fields are required!`
+      'Subscription plan not found' :
+      `${tabName} fields are required!`
   }
 
   // check account fields validations.
@@ -290,7 +290,7 @@ export class OnboardingComponent {
   // generate the datasource for show the details of subscription plan in table view.
   generateDataSource(): void {
     if (this.selectedApplication) {
-      
+
       this.sub = this.applicationService.getApplicationById(this.selectedApplication?.id).subscribe({
         next: application => {
           if (application && application.applicationConstraints && application.applicationConstraints.length > 0) {
@@ -346,7 +346,7 @@ export class OnboardingComponent {
   }
 
   //Get Selected Plan
-  selectPlan(planName: any,event:any) {
+  selectPlan(planName: any, event: any) {
     if (planName) {
       // clear the previous button and set as default....
       if (this.buttonEvent) {
@@ -387,12 +387,12 @@ export class OnboardingComponent {
     this.onBoard = {
       "accountName": this.Name,
       "accountEmail": this.Email,
-      "accountPhoneNumber": this.PhoneNumber,
+      "accountPhoneNumber": '+' + this.PhoneNumber,
       "applicationInstanceName": this.Name,
       "applicationId": this.applicationId,
       "tenantName": this.tenantName,
       "tenantEmail": this.tenantEmail,
-      "tenantUrl": this.tenantUrl,
+      "tenantUrl": 'https://' + this.tenantUrl,
       "expiryDate": new Date(this.expiryDate),
       "expiryAction": this.expiryAction,
       "environment": this.environment,

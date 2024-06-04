@@ -44,6 +44,15 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
     this.sub = this.applicationInstanceService.getApplicationInstanceById(applicationInstanceId).subscribe(
       (response: IApplicationInstance | undefined) => {
         if (response) {
+          // Remove 'https://' from each URL of each tenant
+          if (response.tenants) {
+            response.tenants.forEach(tenant => {
+              if (tenant.url.startsWith('https://')) {
+                tenant.url = tenant.url.slice(8);  // Remove 'https://'
+              }
+            });
+          }
+
           this.applicationInstance = response;
         } else {
           console.error('Application Instance details not found');

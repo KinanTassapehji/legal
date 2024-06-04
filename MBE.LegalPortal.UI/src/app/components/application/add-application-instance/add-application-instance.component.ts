@@ -22,14 +22,13 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   accounts: IAccount[] = [];
   sub!: Subscription;
   errorMessage = '';
-  
+
   constructor(
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<AddApplicationInstanceComponent>,
     private commonService: CommonService,
-    @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[] })
-  {
+    @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[] }) {
   }
 
   ngOnInit(): void {
@@ -55,7 +54,10 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
       name: this.name,
       applicationId: this.applicationId,
       accountId: this.accountId,
-      tenants: this.tenants
+      tenants: this.tenants.map(tenant => ({
+        ...tenant,
+        url: `https://${tenant.url}`  // Add 'https://' to the url
+      }))
     };
 
     this.sub = this.applicationInstanceService.createApplicationInstance(requestBody).subscribe({

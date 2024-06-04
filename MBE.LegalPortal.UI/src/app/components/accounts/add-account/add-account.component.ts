@@ -26,7 +26,12 @@ export class AddAccountComponent implements  OnDestroy {
 
   addAccount(model: any) {
     this.commonService.showAndHideProgressBar(true);
-    let formData = { "Name": model.Name, "Email": model.Email, "PhoneNumber": model.PhoneNumber };
+    let formData = {
+      "Name": model.Name,
+      "Email": model.Email,
+      "PhoneNumber": '+' + model.PhoneNumber
+    };
+
     this.sub = this.accountService.createAccounts(formData).subscribe({
       next: () => {
         // Emit event to notify parent component
@@ -41,5 +46,4 @@ export class AddAccountComponent implements  OnDestroy {
       }
     });
   }
-
 }

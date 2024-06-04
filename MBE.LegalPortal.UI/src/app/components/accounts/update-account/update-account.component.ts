@@ -43,7 +43,7 @@ export class UpdateAccountComponent {
       id: this.accountId,
       name: data.Name,
       email: data.Email,
-      phoneNumber: data.PhoneNumber
+      phoneNumber: '+' +data.PhoneNumber
     };
     this.sub = this.accountService.updateAccount(requestBody).subscribe({
       next: () => {
