@@ -11,6 +11,10 @@ import { Utils } from '../../utilities/sort.util';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateLicenseComponent } from './update-license/update-license.component';
 import { CommonService } from '../../services/common.service';
+import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
+import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { MessageType } from '../../enums/messageType';
+import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
 export interface PeriodicElement {
   application: string;
@@ -29,12 +33,14 @@ export interface PeriodicElement {
   templateUrl: './license.component.html',
   styleUrl: './license.component.scss'
 })
+
 export class LicenseComponent {
   @Output() licenseAdded: EventEmitter<void> = new EventEmitter<void>();
-  displayedColumns: string[] = ['application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'expirydate', 'expiryaction', 'action'];
+  displayedColumns: string[] = ['id', 'application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'expirydate', 'action'];
   sub!: Subscription;
   license: ILicense[] = [];
   errorMessage = '';
+  modelName: string = 'License';
   // Paginator
   totalCount = 0;
   pageSize = 5;
@@ -52,7 +58,7 @@ export class LicenseComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService, private matDialog: MatDialog, private licenseService: LicenseService) { }
+  constructor(private commonService: CommonService, private matDialog: MatDialog, private licenseService: LicenseService, private snackbarService: SnackbarService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -67,8 +73,10 @@ export class LicenseComponent {
     const dialogRef = this.matDialog.open(CreateLicenseComponent, {
       width: "600px"
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getLicense();
+
+    dialogRef.componentInstance.licenseAdded.subscribe(() => {
+      this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
+      this.getLicense(); // Refresh the list of licenses
     });
   }
 
@@ -117,11 +125,22 @@ export class LicenseComponent {
     this.getLicense(sort, keyword);
   }
 
+  openUpdateLicenseDialog(id: number) {
+    const dialogRef = this.matDialog.open(UpdateLicenseComponent, {
+      width: "800px",
+      data: id
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.snackbarService.show(GetUpdateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
+      this.getLicense();
+    });
+  }
 
   openDeleteLicenseDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data: `License`,
+      data: `${this.modelName}`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -131,25 +150,44 @@ export class LicenseComponent {
     });
   }
 
-  openUpdateLicenseDialog(id: number) {
-    const dialogRef = this.matDialog.open(UpdateLicenseComponent, {
-      width: "800px",
-      data: id
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.getLicense();
-    });
-  }
-
   deleteLicense(id: number) {
     // Call the delete service
     this.licenseService.deleteLicense(id).subscribe({
       next: () => {
+        this.snackbarService.show(GetDeleteSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
         // Update the UI
         this.getLicense();
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        // Extract the detailed error message if available
+        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          data: { title: 'Error', message: errorMessage }
+        });
+      }
+    });
+  }
+
+
+  downloadOfflineLicense(id: number) {
+    this.sub = this.licenseService.getOfflineLicense(id).subscribe({
+      next: response => {
+        console.log('File', response);
+        const blob = new Blob([response], { type: 'application/octet-stream' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'MBE.LegalPortal.ECL.dll';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.commonService.showAndHideProgressBar(false);
+      }
     });
   }
 }

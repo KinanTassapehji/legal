@@ -17,6 +17,10 @@ import { Utils } from '../../utilities/sort.util';
 import { UpdateApplicationComponent } from './update-application/update-application.component';
 import { UpdateApplicationInstanceComponent } from './update-application-instance/update-application-instance.component';
 import { CommonService } from '../../services/common.service';
+import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
+import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { MessageType } from '../../enums/messageType';
+import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-application',
@@ -29,6 +33,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   selectedApplication: IApplication | undefined;
   defaultApplication: IApplication | undefined;
   errorMessage = '';
+  applicationModelName: string = 'Application';
+  applicationInstanceModelName : string = 'Application Instance';
   // Paginator
   totalCount = 0;
   pageSize = 5;
@@ -56,7 +62,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     private applicationInstanceService: ApplicationInstanceService,
     private bottomSheet: MatBottomSheet,
-    private commonService: CommonService) { }
+    private commonService: CommonService, private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -86,14 +92,14 @@ export class ApplicationComponent implements OnInit, OnDestroy {
           this.commonService.showAndHideProgressBar(false);
         }
       },
-        error: err => {
-          this.errorMessage = err;
+      error: err => {
+        this.errorMessage = err;
 
-          // Set isLoading to false and emit progress bar state on error
-          this.isLoading = false;
-          this.commonService.showAndHideProgressBar(false);
-        }
-      });
+        // Set isLoading to false and emit progress bar state on error
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
+      }
+    });
   }
 
   sortApplicationInstances(sort: Sort) {
@@ -142,6 +148,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.componentInstance.applicationAdded.subscribe(() => {
+      this.snackbarService.show(GetCreateSuccessfullyMessage(this.applicationModelName), MessageType.SUCCESS);
       this.getApplications(); // Refresh the list of applications
     });
   }
@@ -156,6 +163,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.applicationInstanceAdded.subscribe(() => {
       if (this.selectedApplication) {
+        this.snackbarService.show(GetCreateSuccessfullyMessage(this.applicationInstanceModelName), MessageType.SUCCESS);
         this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
       } else {
         console.error("selected Application is undefined");
@@ -174,6 +182,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.applicationInstanceUpdated.subscribe(() => {
       if (this.selectedApplication) {
+        this.snackbarService.show(GetUpdateSuccessfullyMessage(this.applicationInstanceModelName), MessageType.SUCCESS);
         this.getApplicationInstances(this.selectedApplication.id); // Refresh the list of application instances
       } else {
         console.error("selected Application is undefined");
@@ -226,6 +235,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.componentInstance.applicationUpdated.subscribe(() => {
+      this.snackbarService.show(GetUpdateSuccessfullyMessage(this.applicationModelName), MessageType.SUCCESS);
       this.getApplications(); // Refresh the list of applications
     });
   }
@@ -233,7 +243,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openDeleteApplicationDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data: `"${this.applications.find(app => app.id === id)?.name}" Application`,
+      data: `"${this.applications.find(app => app.id === id)?.name}" ${this.applicationModelName}`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -247,17 +257,30 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     // Call the delete service
     this.applicationService.deleteApplication(id).subscribe({
       next: () => {
+        this.snackbarService.show(GetDeleteSuccessfullyMessage(this.applicationModelName), MessageType.SUCCESS);
         // Update the UI
         this.getApplications();
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        // Extract the detailed error message if available
+        let errorMessage = GetDeleteSuccessfullyMessage(this.applicationModelName);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          data: { title: 'Error', message: errorMessage }
+        });
+      }
     });
   }
 
   openDeleteApplicationInstanceDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" Application Instance`,
+      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" ${this.applicationInstanceModelName}`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -271,10 +294,23 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     // Call the delete service
     this.applicationInstanceService.deleteApplicationInstance(id).subscribe({
       next: () => {
+          this.snackbarService.show(GetDeleteSuccessfullyMessage(this.applicationInstanceModelName), MessageType.SUCCESS);
         // Update the UI
         this.getApplications();
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        // Extract the detailed error message if available
+        let errorMessage = GetDeleteSuccessfullyMessage(this.applicationInstanceModelName);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          data: { title: 'Error', message: errorMessage }
+        });
+      }
     });
   }
 }

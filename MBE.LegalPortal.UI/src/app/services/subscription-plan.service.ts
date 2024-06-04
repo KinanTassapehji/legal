@@ -26,6 +26,11 @@ export class SubscriptionPlanService {
       );
   }
 
+  getSubscriptionPlansById(subscriptionPlanId: number): Observable<any> {
+    return this.http.get<any>(`${SubscriptionPlans_Url}/${subscriptionPlanId}`)
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
+
   createSubscriptionPlan(subscriptionPlanDto: any): Observable<any> {
     return this.http.post(SubscriptionPlans_Url, subscriptionPlanDto)
       .pipe(
@@ -41,15 +46,6 @@ export class SubscriptionPlanService {
   }
 
   deleteSubscriptionPlan(id?: number): Observable<void> {
-    return this.http.delete<void>(`${SubscriptionPlans_Url}/${id}`)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.delete<void>(`${SubscriptionPlans_Url}/${id}`);
   }
-
-  getSubscriptionPlansById(subscriptionPlanId: number): Observable<any> {
-    return this.http.get<any>(`${SubscriptionPlans_Url}/${subscriptionPlanId}`)
-      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-
 }

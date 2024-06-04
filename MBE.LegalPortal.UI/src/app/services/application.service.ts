@@ -63,9 +63,6 @@ export class ApplicationService {
   }
 
   deleteApplication(id: number): Observable<void> {
-    return this.http.delete<void>(`${Applications_Url}/${id}`)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.delete<void>(`${Applications_Url}/${id}`);
   }
 }

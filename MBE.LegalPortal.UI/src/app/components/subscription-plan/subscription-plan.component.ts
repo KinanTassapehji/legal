@@ -9,6 +9,10 @@ import { ApplicationService } from '../../services/application.service';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateSubscriptionPlanComponent } from './update-subscription-plan/update-subscription-plan.component';
 import { CommonService } from '../../services/common.service';
+import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
+import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { MessageType } from '../../enums/messageType';
+import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-subscription-plan',
@@ -25,13 +29,14 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   selectedApplication: IApplication | undefined;
   defaultApplication: IApplication | undefined;
   constraints: IConstraint[] = [];
+  modelName : string = 'Subscription Plan';
   errorMessage = '';
   isLoading = true;
   progressBar = false;
   constructor(private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private matDialog: MatDialog,
-    private commonService: CommonService) { }
+    private commonService: CommonService, private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -180,6 +185,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.subscriptionPlanAdded.subscribe(() => {
       if (this.selectedApplication) {
+        this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
         this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
       } else {
         console.error("selected Application is undefined");
@@ -200,6 +206,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.subscriptionPlanUpdated.subscribe(() => {
       if (this.selectedApplication) {
+        this.snackbarService.show(GetUpdateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
         this.getSubscriptionPlans(this.selectedApplication.id); // Refresh the list of subscription plans
       } else {
         console.error("selected Application is undefined");
@@ -210,7 +217,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   openDeleteSubscriptionPlanDialog(name: string) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data: `"${name}" Subscription Plan`,
+      data: `"${name}" ${this.modelName}`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -227,10 +234,23 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
       next: () => {
         // Update the UI
         if (this.selectedApplication) {
+          this.snackbarService.show(GetDeleteSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
           this.getSubscriptionPlans(this.selectedApplication.id);
         }
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        // Extract the detailed error message if available
+        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          data: { title: 'Error', message: errorMessage }
+        });
+      }
     });
   }
 }

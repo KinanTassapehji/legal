@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ErrorHandlingService } from './error-handling-service';
 import { HttpClient } from '@angular/common/http';
-import { IOnBoard } from '../interfaces/onboard';
 import { OnBoard_Url } from '../constants/apis-constants';
 import { Observable, catchError } from 'rxjs';
 

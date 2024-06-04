@@ -101,7 +101,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   }
 
   addNewConstraint(event: any) {
-    this.application?.applicationConstraints.push({ key: '', defaultAction: '' });
+    this.application?.applicationConstraints.push({ key: '', label: '', defaultAction: '' });
     event.preventDefault();
   }
 
