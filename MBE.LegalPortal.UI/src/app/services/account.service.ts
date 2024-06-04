@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map } from 'rxjs';
-import { IApplication } from '../interfaces/application';
 import { Accounts_GetAll_Url, Accounts_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { IAccount } from '../interfaces/account';
@@ -16,7 +15,13 @@ export class AccountService {
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
   getAccountsAll(): Observable<IAccount[]> {
-    return this.http.get<IAccount[]>(Accounts_GetAll_Url)
+    // Constructing query parameters
+    let params = new HttpParams();
+    const direction = 'Desc';
+    params = params.set('sortDirection', direction);
+    params = params.set('orderBy', 'id');
+
+    return this.http.get<IAccount[]>(Accounts_GetAll_Url, { params })
       .pipe(
         map((response: any) => response),
         catchError(error => this.errorHandlingService.handleError(error))
@@ -33,33 +38,40 @@ export class AccountService {
       const direction = sort.direction === 'asc' ? 'Asc' : 'Desc';
       params = params.set('sortDirection', direction);
     }
+    else {
+      const direction = 'Desc';
+      params = params.set('sortDirection', direction);
+    }
 
     if (sort?.active !== undefined) {
       params = params.set('orderBy', sort.active);
+    }
+    else {
+      params = params.set('orderBy', 'id');
     }
 
     if (keyword !== undefined && keyword.trim() !== '') {
       params = params.set('keyword', keyword.trim());
     }
-    return this.http.get<any>(`${Accounts_Url}`, { params })
-      .pipe( catchError(error => this.errorHandlingService.handleError(error)));
+    return this.http.get<any>(Accounts_Url, { params })
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
-  
+
   createAccounts(CreateAccountDto: any): Observable<any> {
-    return this.http.post(Accounts_Url, CreateAccountDto).pipe(catchError(error => this.errorHandlingService.handleError(error)));
-  }
-  
-  deleteAccount(id: number): Observable<void> {
-    return this.http.delete<void>(`${Accounts_Url}/${id}`)
+    return this.http.post(Accounts_Url, CreateAccountDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
-  
+
   updateAccount(accountDto: any): Observable<any> {
     return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );
+  }
+
+  deleteAccount(id: number): Observable<void> {
+    return this.http.delete<void>(`${Accounts_Url}/${id}`);
   }
 }

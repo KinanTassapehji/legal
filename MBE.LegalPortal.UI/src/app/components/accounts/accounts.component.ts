@@ -11,6 +11,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateAccountComponent } from './update-account/update-account.component';
 import { CommonService } from '../../services/common.service';
+import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
+import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { MessageType } from '../../enums/messageType';
+import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-accounts',
@@ -24,6 +28,7 @@ export class AccountsComponent {
   selectedAccounts: IAccount | undefined;
   defaultAccounts: IAccount | undefined;
   errorMessage = '';
+  modelName : string = 'Account';
   // Paginator
   totalCount = 0;
   pageSize = 5;
@@ -41,7 +46,7 @@ export class AccountsComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService, private matDialog: MatDialog, private accountsService: AccountService) { }
+  constructor(private commonService: CommonService, private matDialog: MatDialog, private accountsService: AccountService, private snackbarService: SnackbarService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -52,9 +57,14 @@ export class AccountsComponent {
     this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
-  addAccount(){
-    this.matDialog.open(AddAccountComponent, {
-      width: "600px"
+  openAddAccountDialog() {
+    const dialogRef = this.matDialog.open(AddAccountComponent, {
+      width: "600px",
+    });
+
+    dialogRef.componentInstance.accountsAdded.subscribe(() => {
+      this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
+      this.getAccounts(); // Refresh the list of accounts
     });
   }
 
@@ -105,18 +115,20 @@ export class AccountsComponent {
 
   openUpdateAccountDialog(element: any) {
     const dialogRef = this.matDialog.open(UpdateAccountComponent, {
-      width: "800px",
+      width: "600px",
       data: element,
     });
+
     dialogRef.componentInstance.accountUpdated.subscribe(() => {
-      this.getAccounts(); // Refresh the list of applications
+      this.snackbarService.show(GetUpdateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
+      this.getAccounts(); // Refresh the list of accounts
     });
   }
 
   openDeleteAccountDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
-      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" Account`,
+      data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" ${this.modelName}`,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -130,10 +142,23 @@ export class AccountsComponent {
     // Call the delete service
     this.accountsService.deleteAccount(id).subscribe({
       next: () => {
+        this.snackbarService.show(GetDeleteSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
         // Update the UI
         this.getAccounts();
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        // Extract the detailed error message if available
+        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          data: { title: 'Error', message: errorMessage }
+        });
+      }
     });
   }
 }
