@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddSettingsComponent } from './add-settings/add-settings.component';
+import { CommonImageCropperComponent } from '../../shared/popups/common-image-cropper/common-image-cropper.component';
 
 export interface PeriodicElement {
   key: string;
@@ -28,6 +29,13 @@ export class SettingsComponent {
       width:"600px"
     });
   }  
+   // common image crop popup
+  //  imageCropPopup(){
+  //   this.matDialog.open(CommonImageCropperComponent, {
+  //     width:"600px"
+  //   });
+  // }
+  // common image crop popup
   ngOnInit(): void {
     setTimeout(() => {
       this.isLoading = false;

@@ -54,7 +54,8 @@
                 </div>
               </div>
               <div class="aac-action">
-                <mat-slide-toggle color="primary" [checked]="constraint.enabled" (change)="toggleChanged($event, constraint)"></mat-slide-toggle>
+                <mat-checkbox matTooltip="Unlimited constraint value"></mat-checkbox>
+                <mat-slide-toggle matTooltip="Active/Inactive" color="primary" [checked]="constraint.enabled" (change)="toggleChanged($event, constraint)"></mat-slide-toggle>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplication } from '../../../interfaces/application';
@@ -10,7 +10,8 @@ import { CommonService } from '../../../services/common.service';
 @Component({
   selector: 'app-add-application-instance',
   templateUrl: './add-application-instance.component.html',
-  styleUrl: './add-application-instance.component.scss'
+  styleUrl: './add-application-instance.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   @Output() applicationInstanceAdded: EventEmitter<void> = new EventEmitter<void>();
