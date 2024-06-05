@@ -64,7 +64,7 @@
                     <div class="col-sm-12">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Account phone</mat-label>
-                        <input type="tel" matInput [(ngModel)]="PhoneNumber" name="PhoneNumber" required pattern="^\+[0-9]{1,3}\s?[0-9]{9,}$" (change)="checkAccountFields(fAccount?.invalid)">
+                        <input type="tel" matInput [(ngModel)]="PhoneNumber" prefix="+" [showMaskTyped]="true" mask="000 000 000 000" name="PhoneNumber" required (change)="checkAccountFields(fAccount?.invalid)">
                         <mat-error *ngIf="fAccount.controls['PhoneNumber']?.hasError('pattern')">Please enter a valid phone number with country code.</mat-error>
                       </mat-form-field>
                     </div>
@@ -129,9 +129,10 @@
                     <div class="col-sm-12">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Tenant Url</mat-label>
-                        <input type="url" matInput [(ngModel)]="tenantUrl" name="tenantUrl" required pattern="https?://.+" (change)="checkApplicationFields(fApplication?.invalid)">
+                        <span matTextPrefix>https:// </span>
+                        <input type="url" matInput [(ngModel)]="tenantUrl" name="tenantUrl" required placeholder="websiteurl.com" (change)="checkApplicationFields(fApplication?.invalid)">
                         <mat-error *ngIf="fApplication.controls['tenantUrl']?.invalid && (fApplication.controls['tenantUrl'].dirty || fApplication.controls['tenantUrl'].touched)">
-                          Please enter a valid URL starting with https://.
+                          Please enter a valid URL.
                         </mat-error>
                       </mat-form-field>
                     </div>

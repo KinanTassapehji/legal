@@ -258,7 +258,7 @@ export class OnboardingComponent {
   // generate the datasource for show the details of subscription plan in table view.
   generateDataSource(): void {
     if (this.selectedApplication) {
-
+      
       this.sub = this.applicationService.getApplicationById(this.selectedApplication?.id).subscribe({
         next: application => {
           if (application && application.applicationConstraints && application.applicationConstraints.length > 0) {
@@ -356,12 +356,12 @@ export class OnboardingComponent {
     this.onBoard = {
       "accountName": this.Name,
       "accountEmail": this.Email,
-      "accountPhoneNumber": this.PhoneNumber,
+      "accountPhoneNumber": '+' + this.PhoneNumber,
       "applicationInstanceName": this.Name,
       "applicationId": this.applicationId,
       "tenantName": this.tenantName,
       "tenantEmail": this.tenantEmail,
-      "tenantUrl": this.tenantUrl,
+      "tenantUrl": 'https://' + this.tenantUrl,
       "expiryDate": new Date(this.expiryDate),
       "expiryAction": this.expiryAction,
       "environment": this.environment,
