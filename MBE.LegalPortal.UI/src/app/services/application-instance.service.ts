@@ -25,9 +25,16 @@ export class ApplicationInstanceService {
       const direction = sort.direction === 'asc' ? 'Asc' : 'Desc';
       params = params.set('sortDirection', direction);
     }
+    else {
+      const direction = 'Desc';
+      params = params.set('sortDirection', direction);
+    }
 
     if (sort?.active !== undefined) {
       params = params.set('orderBy', sort.active);
+    }
+    else {
+      params = params.set('orderBy', 'id');
     }
 
     if (keyword !== undefined && keyword.trim() !== '') {

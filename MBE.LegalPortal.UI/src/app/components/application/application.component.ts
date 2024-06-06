@@ -122,8 +122,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     this.getApplicationInstances(this.selectedApplication ? this.selectedApplication.id : 0, sort, keyword);
   }
 
-  getApplicationInstances(id: number, sort?: Sort, keyword?: string) {
-    this.applicationInstanceService.getApplicationInstances(id, this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
+  getApplicationInstances(applicationId: number, sort?: Sort, keyword?: string) {
+    this.applicationInstanceService.getApplicationInstances(applicationId, this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
         this.ELEMENT_DATA = response.data;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
