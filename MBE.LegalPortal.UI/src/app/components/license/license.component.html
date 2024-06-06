@@ -8,7 +8,9 @@
                 <button mat-raised-button  *ngIf="!isLoading" color="primary" (click)="onCreateLicenseDialog()">Create License</button>
             </div>
         </div>
+
         <div class="col-sm-12">
+          <!-- Skeleton Loaders for Card Content -->
           <div class="card license-card-cont" *ngIf="isLoading">
             <div class="license-card-header dense-2">
               <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
@@ -18,18 +20,23 @@
               <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
             </div>
           </div>
+
+          <!-- Progress Bar -->
           <div *ngIf="progressBar">
             <mat-progress-bar mode="indeterminate" value="30"></mat-progress-bar>
           </div>
+
+          <!-- Licenses Table -->
           <div class="card license-card-cont" *ngIf="!isLoading">
-            <div class="license-card-header dense-2">
+            <div class="license-card-header dense-2" *ngIf="searchActive">
               <mat-form-field appearance="outline">
                 <input matInput placeholder="Search..." #keywordInput (input)="searchLicense(keywordInput.value)">
                 <mat-icon (click)="searchLicense(keywordInput.value)" class="material-symbols-outlined" matSuffix>search</mat-icon>
               </mat-form-field>
             </div>
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort (matSortChange)="sortLicense($event)" *ngIf="ELEMENT_DATA.length > 0">
 
+            <!-- Data Table -->
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort (matSortChange)="sortLicense($event)" *ngIf="ELEMENT_DATA.length > 0">
               <!-- Id Column -->
               <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="id"> Id </th>
@@ -113,6 +120,8 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
+
+            <!-- Paginator -->
             <mat-paginator *ngIf="totalCount > pageSizeOptions[0]"
                            [length]="totalCount"
                            [pageSize]="pageSize"
@@ -123,6 +132,13 @@
                            (page)="onPageChange($event)">
             </mat-paginator>
           </div>
+
+          <!-- No Data Template -->
+          <app-no-data-template *ngIf="!isLoading && ELEMENT_DATA.length === 0"
+                                [icon]="'description'"
+                                [title]="'No Items found'">
+            <!--[description]="">-->
+          </app-no-data-template>
         </div>
     </div>
 </div>

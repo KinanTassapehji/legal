@@ -1,5 +1,6 @@
 <div class="main-container">
   <div class="row">
+    <!-- Skeleton Loaders for Card Content -->
     <div class="col-sm-12">
       <div class="application-title-section">
         <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
@@ -24,7 +25,15 @@
                 *ngIf="!isLoading">
       </app-card>
     </div>
+
+    <!-- No Data Template -->
+    <app-no-data-template *ngIf="!isLoading && applications.length === 0"
+                          [icon]="'apps'"
+                          [title]="'No Items found'">
+      <!--[description]="">-->
+    </app-no-data-template>
   </div>
+
   <div class="application-instance-title-section">
     <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
     <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
@@ -35,6 +44,7 @@
   </div>
 
   <div class="card application-instance-table-card" *ngIf="isLoading">
+    <!-- Skeleton Loaders for Card Content -->
     <div class="application-instance-table-header dense-2">
       <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
     </div>
@@ -43,16 +53,22 @@
       <ngx-skeleton-loader count="1" [theme]="{width:'400px',height:'40px','margin': '0 0 0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
     </div>
   </div>
+
+  <!-- Progress Bar -->
   <div *ngIf="progressBar">
     <mat-progress-bar mode="indeterminate" value="30"></mat-progress-bar>
   </div>
-  <div class="card application-instance-table-card" *ngIf="!isLoading">
-    <div class="application-instance-table-header dense-2">
+
+  <!-- Application Instances Table -->
+  <div class="card application-instance-table-card" *ngIf="!isLoading && searchActive">
+    <div class="application-instance-table-header dense-2" *ngIf="searchActive">
       <mat-form-field appearance="outline">
         <input matInput placeholder="Search..." #keywordInput (input)="searchApplicationInstances(keywordInput.value)">
         <mat-icon (click)="searchApplicationInstances(keywordInput.value)" class="material-symbols-outlined" matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
+
+    <!-- Data Table -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z" matSort (matSortChange)="sortApplicationInstances($event)" *ngIf="ELEMENT_DATA.length > 0">
       <!-- Account Column -->
       <ng-container matColumnDef="account">
@@ -108,4 +124,11 @@
                    (page)="onPageChange($event)">
     </mat-paginator>
   </div>
+
+  <!-- No Data Template -->
+  <app-no-data-template *ngIf="!isLoading && ELEMENT_DATA.length === 0"
+                        [icon]="'apps'"
+                        [title]="'No Items found'">
+    <!--[description]="">-->
+  </app-no-data-template>
 </div>

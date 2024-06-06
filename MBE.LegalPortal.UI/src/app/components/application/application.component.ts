@@ -47,6 +47,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   keyword?= '';
   progressBar = false;
   isLoading = true;
+  searchActive = false;
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
   ELEMENT_DATA: IApplicationInstance[] = [];
@@ -86,11 +87,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
           this.applications[0].selected = true;
           this.applications[0].isDefault = true;
           this.getApplicationInstances(this.applications[0].id);
-
-          // Set isLoading to false and emit progress bar state after successful response
-          this.isLoading = false;
-          this.commonService.showAndHideProgressBar(false);
         }
+
+        // Set isLoading to false and emit progress bar state after successful response
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
       },
       error: err => {
         this.errorMessage = err;
@@ -131,6 +132,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         this.totalCount = pi.totalCount;
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
+
+        if (this.ELEMENT_DATA.length > 0 ) {
+          this.searchActive = true;
+        }
       },
       error: err => this.errorMessage = err
     });
