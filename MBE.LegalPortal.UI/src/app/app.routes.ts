@@ -21,6 +21,6 @@ export const routes: Routes = [
   { path: 'reseller', component: ResellerComponent, canActivate: [MsalGuard] },
   { path: 'reseller/dashboard', component: ResellerDashboardComponent, canActivate: [MsalGuard] },
   { path: 'region/country', component: RegionCountryComponent, canActivate: [MsalGuard] },
-  { path: 'license/details', component: LicenseDetailsComponent, canActivate: [MsalGuard] },
+  { path: 'license/details/:id', component: LicenseDetailsComponent, canActivate: [MsalGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [MsalGuard] },
 ];

@@ -50,7 +50,7 @@ export class CreateLicenseComponent {
   }
 
   addLicense() {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     let requestBody = {
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,
@@ -63,7 +63,7 @@ export class CreateLicenseComponent {
       next: (response) => {
         // Emit event to notify parent component
         this.licenseAdded.emit(response.data);
-        this.commonService.showAndHideProgressBar(false);
+        this.progressBar = false;
         // Close the dialog
         this.dialogRef.close();
       },
@@ -116,9 +116,9 @@ export class CreateLicenseComponent {
     if (this.accountId > 0 && this.applicationId > 0) {
        this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
         next: response => {
-          if (response.data.length > 0) {
-            this.applicationInstance = [response.data[0].application];
-            this.tenants = response.data[0].tenants;
+           if (response.data.length > 0) {
+             this.applicationInstance = [response.data[0]];
+             this.tenants = response.data[0].tenants;
           }
         }
       });

@@ -1,32 +1,12 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ViolationConstraintsComponent } from '../violation-constraints/violation-constraints.component';
+import { ViolationConstraintsComponent } from '../violation-constraints/ViolationConstraintsComponent';
 import { UpdateViolationComponent } from '../update-violation/update-violation.component';
-
-export interface PeriodicElement {
-  violationid: string;
-  violationdate: string;
-  licensestate: string;
-  overriddenstate: string;
-  resolveddate: string;
-  message: string;
-  action: string;
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-  {violationid: '#001', violationdate: '07-01-2025', licensestate: '<div class="violation-tag silent">Silent</div>', overriddenstate: '<div class="violation-tag silent">Silent</div>', resolveddate: '01-01-2025', message: '<div class="violation-message">Lorem ipsum dolor sit amet consectetur. Scelerisque vitae donec diam morbi sollicitudin congue enim.</div>', action:''},
-  {violationid: '#002', violationdate: '05-01-2024', licensestate: '<div class="violation-tag default">Default</div>', overriddenstate: '<div class="violation-tag default">Default</div>', resolveddate: '01-01-2025', message: '<div class="violation-message">Lorem ipsum dolor sit amet consectetur. Pharetra pharetra ornare imperdiet elementum semper varius a ultrices.</div>', action:''},
-  {violationid: '#003', violationdate: '11-01-2024', licensestate: '<div class="violation-tag breach">Breach</div>', overriddenstate: '<div class="violation-tag breach">Breach</div>', resolveddate: '01-01-2025', message: '<div class="violation-message">Lorem ipsum dolor sit amet consectetur. Nibh ullamcorper velit dignissim felis penatibus hendrerit ac nullam lacinia.</div>', action:''},
-  {violationid: '#004', violationdate: '11-01-2024', licensestate: '<div class="violation-tag no-violation">No Violation</div>', overriddenstate: '<div class="violation-tag no-violation">No Violation</div>', resolveddate: '01-01-2025', message: '<div class="violation-message">Lorem ipsum dolor sit amet consectetur. Nibh ullamcorper velit dignissim felis penatibus hendrerit ac nullam lacinia.</div>', action:''},
-];
-export interface PeriodicElements {
-  constraintkey: string;
-  constraintkevalue: string;
-}
-const ELEMENT_DATA1: PeriodicElements[] = [
-  {constraintkey: 'Max Users', constraintkevalue: '40'},
-  {constraintkey: 'Max Devices', constraintkevalue: '15'},
-  {constraintkey: 'Max Surveys', constraintkevalue: '50'},
-];
+import { ActivatedRoute, Router } from '@angular/router';
+import { LicenseService } from '../../../services/license.service';
+import { Subscription } from 'rxjs';
+import { formatDate } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-license-details',
@@ -35,39 +15,152 @@ const ELEMENT_DATA1: PeriodicElements[] = [
   encapsulation: ViewEncapsulation.None
 })
 export class LicenseDetailsComponent {
-  isLoading = true;  
+  isLoading = true;
+  progressBar = false;
+  licenseId: any;
+  sub!: Subscription;
+  subscriptionPlanName: string = '';
+  licenseType: string = '';
+  expiryDate: string = '';
+  expiryAction: string = '';
+  violation: any[] = [];
+  totalCount = 0;
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 20];
+  VIOLATION_ELEMENT_DATA: any[] = [];
+  CONSTRAINTS_ELEMENT_DATA: any[] = [];
+  dataSource = new MatTableDataSource(this.VIOLATION_ELEMENT_DATA);
   displayedColumns: string[] = ['violationid', 'violationdate', 'licensestate', 'overriddenstate', 'resolveddate', 'message','action'];
-  dataSource = ELEMENT_DATA;
   displayedColumnsConstraint: string[] = ['constraintkey', 'constraintkevalue'];
-  dataSources = ELEMENT_DATA1;
-  machineData = [
-    { title: 'Machine 1',},
-    { title: 'Machine 2',},
-    { title: 'Machine 3',},
-    { title: 'Machine 4',},
-    { title: 'Machine 5',},
-  ]; 
+  dataConstraints = new MatTableDataSource(this.CONSTRAINTS_ELEMENT_DATA);
+  machinesSoruce: any[] = [];
+  machineData : any[] =[]; 
   licneseLoaderItems = new Array(2);
-  licenseDetailsCardData = [
-    { label: 'Subscription Plan', title: 'Diamond', icon: 'ballot'},
-    { label: 'License Type', title: 'Unlimited', icon: 'description'},
-    { label: 'Expiry Date', title: '01-01-2050', icon: 'today'},
-    { label: 'Expiry Action', title: 'Auto Renew', icon: 'info'},
-  ];
+  licenseDetailsCardData: any[] = [];
+  licenseConstraints: any[] = [];
+  constructor(private matDialog: MatDialog, private rounter: ActivatedRoute, private licenseService: LicenseService) { }
+
   ngOnInit(): void {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
+    this.licenseId = this.rounter.snapshot.params['id'];
+    this.getLicenseDetails();
   }
-  constructor(private matDialog:MatDialog){}
-  violationConstraints(){
-    this.matDialog.open(ViolationConstraintsComponent, {
-      width:"600px"
+
+  getLicenseDetails() {
+    this.sub = this.licenseService.getLicenseById(this.licenseId).subscribe({
+      next: responseLicense => {
+        console.log('responseLicense', responseLicense);
+        var data = responseLicense;
+        var SubscriptionPlan = {
+          label: 'Subscription Plan',
+          title: data.subscriptionPlan.name,
+          icon: 'ballot'
+        };
+        var LicenseType = {
+          label: 'License Type',
+          title: data.licenseType,
+          icon: 'description'
+        };
+        var ExpiryDate = {
+          label: 'Expiry Date',
+          title: formatDate(data.expiryDate, 'dd-MM-yyyy', 'en-US'),
+          icon: 'today'
+        };
+        var ExpiryAction = {
+          label: 'Expiry Action',
+          title: data.expiryAction,
+          icon: 'info'
+        };
+        this.licenseConstraints = data.constraints;
+        this.machinesSoruce = data.machines;
+        this.licenseDetailsCardData.push(SubscriptionPlan);
+        this.licenseDetailsCardData.push(LicenseType);
+        this.licenseDetailsCardData.push(ExpiryDate);
+        this.licenseDetailsCardData.push(ExpiryAction);
+        this.createViolationObjects();
+        this.loadConstraints();
+        this.loadMachines();
+      }
     });
   }
+
+  loadConstraints() {
+    this.CONSTRAINTS_ELEMENT_DATA = [];
+    for (var i = 0; i < this.licenseConstraints.length; i++) {
+      var LisenceConstraints = {
+        constraintkey: this.licenseConstraints[i].key,
+        constraintkevalue: this.licenseConstraints[i].value
+      };
+      this.CONSTRAINTS_ELEMENT_DATA.push(LisenceConstraints);
+    }
+    this.dataConstraints = new MatTableDataSource(this.CONSTRAINTS_ELEMENT_DATA);
+  }
+
+  loadMachines() {
+    this.machineData = [];
+    for (var m = 0; m < this.machinesSoruce.length; m++) {
+      this.machineData.push({ title: this.machinesSoruce[m].macAddress, Id: this.machinesSoruce[m].id });
+    }
+  }
+
+  createViolationObjects() {
+    this.progressBar = true;
+    this.VIOLATION_ELEMENT_DATA = [];
+    this.violation = [];
+    this.sub = this.licenseService.getViolationByLicenseId(this.licenseId, this.pageIndex + 1, this.pageSize).subscribe({
+      next: responseViolation => {
+        this.totalCount = responseViolation.totalCount;
+        this.pageSize = responseViolation.pageSize;
+        this.pageIndex = responseViolation.page - 1;
+        this.violation = responseViolation.data;
+        if (this.violation.length > 0) {
+          for (var i = 0; i < this.violation.length; i++) {
+            let _violationid = this.violation[i].id;
+            let _violationdate = formatDate(this.violation[i].violationDate, 'dd-MM-yyyy', 'en-US');
+            let _licenseState = this.violation[i].licenseState;
+            let _messages = JSON.parse(this.violation[i].messages);
+            let _violationState = this.violation[i].violationState;
+            let _tag = _licenseState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _licenseState.toString().toLowerCase();
+            let _violationStateTag = _violationState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _violationState.toString().toLowerCase();
+            let _resolvedDate = this.violation[i].resolvedDate ?? "N/A";
+            this.VIOLATION_ELEMENT_DATA.push({
+              violationid: _violationid,
+              violationdate: _violationdate,
+              licensestate: '<div class="violation-tag ' + _tag + '">' + _licenseState + '</div>',
+              overriddenstate: '<div class="violation-tag ' + _violationStateTag + '">' + _violationState + '</div>',
+              resolveddate: _resolvedDate,
+              message: '<div class="violation-message">' + _messages + '</div>',
+              action: ''
+            });
+          }
+        }
+        this.dataSource = new MatTableDataSource(this.VIOLATION_ELEMENT_DATA);
+        this.isLoading = false;
+        this.progressBar = false;
+      }
+    });
+  }
+
+  violationConstraints(id: any) {
+    this.matDialog.open(ViolationConstraintsComponent, {
+      width: "600px",
+      data: this.violation.filter(x => x.id === id)[0].violationConstraints,
+    });
+  }
+
+  onPageChange(event: any) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.createViolationObjects();
+  }
+
   updateViolation(){
     this.matDialog.open(UpdateViolationComponent, {
       width:"600px"
     });
+  }
+
+  showInfo(id:any) {
+
   }
 }

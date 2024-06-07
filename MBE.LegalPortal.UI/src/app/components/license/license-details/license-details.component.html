@@ -20,72 +20,81 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">                    
-            <div class="card license-details-card-cont" *ngIf="isLoading">
-                <ngx-skeleton-loader count="6" [theme]="{width:'100%',height:'44px','margin-bottom': '0.25rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
-            </div>
-            <div class="card license-details-card-cont" *ngIf="!isLoading">
-                <div class="ld-card-title">Violation Details</div>
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
-                  
-                    <!-- ID Column -->
-                    <ng-container matColumnDef="violationid">
-                        <th mat-header-cell *matHeaderCellDef> ID </th>
-                        <td mat-cell *matCellDef="let element"> {{element.violationid}} </td>
-                      </ng-container>
-                      <!-- Violation Date Column -->
-                      <ng-container matColumnDef="violationdate">
-                          <th mat-header-cell *matHeaderCellDef> Violation Date </th>
-                          <td mat-cell *matCellDef="let element"> {{element.violationdate}} </td>
-                      </ng-container>
-                      <!-- License State Column -->
-                      <ng-container matColumnDef="licensestate">
-                          <th mat-header-cell *matHeaderCellDef> License State </th>
-                          <td mat-cell *matCellDef="let element" [innerHTML]="element.licensestate"></td>
-                      </ng-container>
-                  
-                    <!-- Overridden State Column -->
-                    <ng-container matColumnDef="overriddenstate">
-                      <th mat-header-cell *matHeaderCellDef> Overridden State </th>
-                      <td mat-cell *matCellDef="let element" [innerHTML]="element.overriddenstate"></td>
-                    </ng-container>
-                  
-                    <!-- Resolved Date Column -->
-                    <ng-container matColumnDef="resolveddate">
-                      <th mat-header-cell *matHeaderCellDef> Resolved Date </th>
-                      <td mat-cell *matCellDef="let element"> {{element.resolveddate}} </td>
-                    </ng-container>
-                  
-                    <!-- Message Column -->
-                    <ng-container matColumnDef="message">
-                      <th mat-header-cell *matHeaderCellDef> Message </th>
-                      <td mat-cell *matCellDef="let element" [innerHTML]="element.message"></td>
-                    </ng-container>
-                  
-                    <!-- Expiry Action Column -->
-                    <ng-container matColumnDef="expiryaction">
-                      <th mat-header-cell *matHeaderCellDef> Expiry Action </th>
-                      <td mat-cell *matCellDef="let element"> {{element.expiryaction}} </td>
-                    </ng-container>
-                    <!-- Action Instance Column -->
-                    <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let element">                             
-                            <div class="license-table-action">
-                                <mat-icon class="material-symbols-outlined" (click)="violationConstraints()">info</mat-icon>
-                                <mat-icon class="material-symbols-outlined" (click)="updateViolation()">edit</mat-icon>
-                            </div>
-                        </td>
-                      </ng-container>
-                  
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                  </table>                                    
-                    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                    showFirstLastButtons
-                    aria-label="Select page of periodic elements">
-                    </mat-paginator>
-            </div>
+        <div class="col-sm-12">
+          <div *ngIf="progressBar">
+            <mat-progress-bar mode="indeterminate" value="30"></mat-progress-bar>
+          </div>
+          <div class="card license-details-card-cont" *ngIf="isLoading">
+            <ngx-skeleton-loader count="6" [theme]="{width:'100%',height:'44px','margin-bottom': '0.25rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
+          </div>
+          <div class="card license-details-card-cont" *ngIf="!isLoading">
+            <div class="ld-card-title">Violation Details</div>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+              <!-- ID Column -->
+              <ng-container matColumnDef="violationid">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.violationid}} </td>
+              </ng-container>
+              <!-- Violation Date Column -->
+              <ng-container matColumnDef="violationdate">
+                <th mat-header-cell *matHeaderCellDef> Violation Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.violationdate}} </td>
+              </ng-container>
+              <!-- License State Column -->
+              <ng-container matColumnDef="licensestate">
+                <th mat-header-cell *matHeaderCellDef> License State </th>
+                <td mat-cell *matCellDef="let element" [innerHTML]="element.licensestate"></td>
+              </ng-container>
+
+              <!-- Overridden State Column -->
+              <ng-container matColumnDef="overriddenstate">
+                <th mat-header-cell *matHeaderCellDef> Overridden State </th>
+                <td mat-cell *matCellDef="let element" [innerHTML]="element.overriddenstate"></td>
+              </ng-container>
+
+              <!-- Resolved Date Column -->
+              <ng-container matColumnDef="resolveddate">
+                <th mat-header-cell *matHeaderCellDef> Resolved Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.resolveddate}} </td>
+              </ng-container>
+
+              <!-- Message Column -->
+              <ng-container matColumnDef="message">
+                <th mat-header-cell *matHeaderCellDef> Message </th>
+                <td mat-cell *matCellDef="let element" [innerHTML]="element.message"></td>
+              </ng-container>
+
+              <!-- Expiry Action Column -->
+              <ng-container matColumnDef="expiryaction">
+                <th mat-header-cell *matHeaderCellDef> Expiry Action </th>
+                <td mat-cell *matCellDef="let element"> {{element.expiryaction}} </td>
+              </ng-container>
+              <!-- Action Instance Column -->
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="license-table-action">
+                    <mat-icon class="material-symbols-outlined" (click)="violationConstraints(element.violationid)">info</mat-icon>
+                    <mat-icon class="material-symbols-outlined" (click)="updateViolation()">edit</mat-icon>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator *ngIf="totalCount > pageSizeOptions[0]"
+                           [length]="totalCount"
+                           [pageSize]="pageSize"
+                           [pageSizeOptions]="pageSizeOptions"
+                           [pageIndex]="pageIndex"
+                           showFirstLastButtons
+                           aria-label="Violation table pagination"
+                           (page)="onPageChange($event)">
+            </mat-paginator>
+            <app-no-data-template *ngIf="violation.length == 0"
+                                  [title]="'Violation not exist.'">
+            </app-no-data-template>
+          </div>
         </div>  
         <ng-container *ngIf="isLoading">      
             <div class="col-sm-12 col-md-6" *ngFor="let licneseLoader of licneseLoaderItems; let i = index">        
@@ -95,56 +104,56 @@
             </div>
         </ng-container>
         <div class="col-sm-12 col-md-6" *ngIf="!isLoading">
-            <div class="card license-details-card-cont">
-                <div class="ld-card-title">Constraints</div>
-                <table mat-table [dataSource]="dataSources" class="mat-elevation-z0">
-                  
-                    <!-- Key Column -->
-                    <ng-container matColumnDef="constraintkey">
-                        <th mat-header-cell *matHeaderCellDef> Key </th>
-                        <td mat-cell *matCellDef="let element"> {{element.constraintkey}} </td>
-                      </ng-container>
-                      <!-- Value Column -->
-                      <ng-container matColumnDef="constraintkevalue">
-                          <th mat-header-cell *matHeaderCellDef> Value </th>
-                          <td mat-cell *matCellDef="let element"> {{element.constraintkevalue}} </td>
-                      </ng-container>
-                  
-                    <tr mat-header-row *matHeaderRowDef="displayedColumnsConstraint"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsConstraint;"></tr>
-                  </table>                                    
-                    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                    showFirstLastButtons
-                    aria-label="Select page of periodic elements">
-                    </mat-paginator>
-            </div>
+          <div class="card license-details-card-cont">
+            <div class="ld-card-title">Constraints</div>
+            <table mat-table [dataSource]="dataConstraints" class="mat-elevation-z0" *ngIf="licenseConstraints.length > 0">
+              <!-- Key Column -->
+              <ng-container matColumnDef="constraintkey">
+                <th mat-header-cell *matHeaderCellDef> Key </th>
+                <td mat-cell *matCellDef="let element"> {{element.constraintkey}} </td>
+              </ng-container>
+              <!-- Value Column -->
+              <ng-container matColumnDef="constraintkevalue">
+                <th mat-header-cell *matHeaderCellDef> Value </th>
+                <td mat-cell *matCellDef="let element"> {{element.constraintkevalue}} </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsConstraint"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsConstraint;"></tr>
+            </table>
+            <app-no-data-template *ngIf="licenseConstraints.length == 0"
+                                  [title]="'Constraints not found.'">
+            </app-no-data-template>
+          </div>
         </div>
         <div class="col-sm-12 col-md-6" *ngIf="!isLoading">
-            <div class="card license-details-card-cont">
-                <div class="ld-card-title">Machines</div>
-                <mat-list role="list" class="license-machines-list">
-                    <mat-list-item role="listitem" *ngFor="let machines of machineData; let i = index;">
-                        <div class="ld-container">
-                            <div class="ld-title">{{ machines.title }}</div>
-                            <div class="ld-details">
-                                <button mat-icon-button [matMenuTriggerFor]="menu">
-                                    <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
-                                  </button>
-                                  <mat-menu #menu="matMenu">
-                                    <button mat-menu-item>
-                                      <mat-icon class="material-symbols-outlined">info</mat-icon>
-                                      <span>Info</span>
-                                    </button>
-                                    <button mat-menu-item>
-                                      <mat-icon class="material-symbols-outlined">power_settings_new</mat-icon>
-                                      <span>Terminate</span>
-                                    </button>
-                                  </mat-menu>
-                            </div>
-                        </div>
-                    </mat-list-item>
-                </mat-list>
-            </div>
+          <div class="card license-details-card-cont">
+            <div class="ld-card-title">Machines</div>
+            <mat-list role="list" class="license-machines-list">
+              <mat-list-item role="listitem" *ngFor="let machines of machineData; let i = index;">
+                <div class="ld-container">
+                  <div class="ld-title">{{ machines.title }}</div>
+                  <div class="ld-details">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="showInfo(machines.Id)">
+                        <mat-icon class="material-symbols-outlined">info</mat-icon>
+                        <span>Info</span>
+                      </button>
+                      <button mat-menu-item>
+                        <mat-icon class="material-symbols-outlined">power_settings_new</mat-icon>
+                        <span>Terminate</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+              </mat-list-item>
+            </mat-list>
+            <app-no-data-template *ngIf="machinesSoruce.length == 0"
+                                  [title]="'Machine not found.'">
+            </app-no-data-template>
+          </div>
         </div>
     </div>
 </div>
