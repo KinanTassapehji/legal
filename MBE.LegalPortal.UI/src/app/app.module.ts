@@ -45,7 +45,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { AddSettingsComponent } from './components/settings/add-settings/add-settings.component';
 import { UpdateLicenseComponent } from './components/license/update-license/update-license.component';
 import { MatSelectModule } from '@angular/material/select';
-import { ViolationConstraintsComponent } from './components/license/violation-constraints/violation-constraints.component';
+import { ViolationConstraintsComponent } from './components/license/violation-constraints/ViolationConstraintsComponent';
 import { UpdateViolationComponent } from './components/license/update-violation/update-violation.component';
 import { CustomSnackbarComponent } from './shared/custom-snackbar/custom-snackbar.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';

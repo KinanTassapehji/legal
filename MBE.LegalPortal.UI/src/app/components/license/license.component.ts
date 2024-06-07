@@ -15,6 +15,7 @@ import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
 import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
   application: string;
@@ -58,7 +59,11 @@ export class LicenseComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService, private matDialog: MatDialog, private licenseService: LicenseService, private snackbarService: SnackbarService) { }
+  constructor(private commonService: CommonService,
+    private matDialog: MatDialog,
+    private licenseService: LicenseService,
+    private snackbarService: SnackbarService,
+    private router: Router) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -189,5 +194,10 @@ export class LicenseComponent {
         this.commonService.showAndHideProgressBar(false);
       }
     });
+  }
+
+  viewLicenseDetails(id: any) {
+    console.log('id',id);
+    this.router.navigate(['license/details/' + id]);
   }
 }

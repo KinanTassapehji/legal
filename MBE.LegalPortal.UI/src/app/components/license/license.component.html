@@ -89,7 +89,7 @@
                       <mat-icon class="material-symbols-outlined">more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                      <button mat-menu-item routerLink="/license/details">
+                      <button mat-menu-item (click)="viewLicenseDetails(element.id)">
                         <mat-icon class="material-symbols-outlined">visibility</mat-icon>
                         <span>View License</span>
                       </button>
