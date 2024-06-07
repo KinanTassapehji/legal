@@ -7,6 +7,11 @@ import { LicenseService } from '../../../services/license.service';
 import { Subscription } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfirmationPopupComponent } from '../../../shared/popups/confirmation-popup/confirmation-popup.component';
+import { SnackbarService } from '../../../shared/custom-snackbar/snackbar.service';
+import { GetDeleteSuccessfullyMessage } from '../../../constants/messages-constants';
+import { MessageType } from '../../../enums/messageType';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-license-details',
@@ -39,7 +44,10 @@ export class LicenseDetailsComponent {
   licneseLoaderItems = new Array(2);
   licenseDetailsCardData: any[] = [];
   licenseConstraints: any[] = [];
-  constructor(private matDialog: MatDialog, private rounter: ActivatedRoute, private licenseService: LicenseService) { }
+  constructor(private matDialog: MatDialog,
+    private rounter: ActivatedRoute,
+    private licenseService: LicenseService,
+    private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
     this.licenseId = this.rounter.snapshot.params['id'];
@@ -162,5 +170,42 @@ export class LicenseDetailsComponent {
 
   showInfo(id:any) {
 
+  }
+
+  terminateMachine(id:any, machineName:any) {
+    const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
+      width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
+      data: `${machineName}`,
+    });
+    //
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteMachine(id, machineName);
+      }
+    });
+  }
+
+  deleteMachine(id: any, machineName:any) {
+    this.sub = this.licenseService.deleteMachineById(id).subscribe({
+      next: () => {
+        this.snackbarService.show(GetDeleteSuccessfullyMessage(machineName), MessageType.SUCCESS);
+        // Update the UI
+        this.getLicenseDetails();
+      },
+      error: err => {
+        // Extract the detailed error message if available
+        let errorMessage = GetDeleteSuccessfullyMessage(machineName);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
+      }
+    });
   }
 }

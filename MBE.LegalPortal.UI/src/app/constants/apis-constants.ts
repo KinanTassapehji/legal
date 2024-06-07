@@ -11,4 +11,5 @@ export const Media_Url: string = BaseUrl + 'Media';
 export const OnBoard_Url: string = BaseUrl + 'OnBoard';
 export const OfflineLicense_Url: string = BaseUrl + 'OfflineLicense';
 export const Violation_Url: string = BaseUrl + 'Violation';
+export const Machine_Url: string = BaseUrl + 'Machine';
 export const Base_Media_Url: string = 'https://legal-portal.s3.ap-south-1.amazonaws.com/';

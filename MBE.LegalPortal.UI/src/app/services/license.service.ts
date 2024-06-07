@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map } from 'rxjs';
-import { License_Url, OfflineLicense_Url, Violation_Url } from '../constants/apis-constants';
+import { License_Url, OfflineLicense_Url, Violation_Url, Machine_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
 import { ILicense } from '../interfaces/license';
 import { Sort } from '@angular/material/sort';
@@ -99,5 +99,9 @@ export class LicenseService {
       .set('pageSize', pageSize.toString());
     return this.http.get(`${Violation_Url}?LicenseId=${id}`, { params })
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
+
+  deleteMachineById(id:any) {
+    return this.http.delete<void>(`${Machine_Url}/${id}`);
   }
 }
