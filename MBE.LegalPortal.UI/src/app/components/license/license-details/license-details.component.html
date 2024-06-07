@@ -141,7 +141,7 @@
                         <mat-icon class="material-symbols-outlined">info</mat-icon>
                         <span>Info</span>
                       </button>
-                      <button mat-menu-item>
+                      <button mat-menu-item (click)="terminateMachine(machines.Id,machines.title)">
                         <mat-icon class="material-symbols-outlined">power_settings_new</mat-icon>
                         <span>Terminate</span>
                       </button>
