@@ -28,7 +28,7 @@ export class AccountsComponent {
   selectedAccounts: IAccount | undefined;
   defaultAccounts: IAccount | undefined;
   errorMessage = '';
-  modelName : string = 'Account';
+  modelName: string = 'Account';
   // Paginator
   totalCount = 0;
   pageSize = 5;
@@ -43,6 +43,7 @@ export class AccountsComponent {
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
   progressBar = false;
+  searchActive = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -55,12 +56,13 @@ export class AccountsComponent {
   ngOnInit(): void {
     this.getAccounts();
     this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
-  }
+}
 
   openAddAccountDialog() {
     const dialogRef = this.matDialog.open(AddAccountComponent, {
       width: "600px",
-    });
+      disableClose: true, // Prevent closing the dialog by clicking outside
+});
 
     dialogRef.componentInstance.accountsAdded.subscribe(() => {
       this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
@@ -77,10 +79,13 @@ export class AccountsComponent {
         this.totalCount = pi.totalCount;
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
-
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
         this.commonService.showAndHideProgressBar(false);
+
+        if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
+          this.searchActive = true;
+        }
       },
       error: err => {
         this.errorMessage = err;
@@ -116,6 +121,7 @@ export class AccountsComponent {
   openUpdateAccountDialog(element: any) {
     const dialogRef = this.matDialog.open(UpdateAccountComponent, {
       width: "600px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: element,
     });
 
@@ -128,6 +134,7 @@ export class AccountsComponent {
   openDeleteAccountDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" ${this.modelName}`,
     });
 
@@ -156,6 +163,7 @@ export class AccountsComponent {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }

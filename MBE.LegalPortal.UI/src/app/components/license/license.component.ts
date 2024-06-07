@@ -56,6 +56,7 @@ export class LicenseComponent {
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
   progressBar = false;
+  searchActive = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -76,7 +77,8 @@ export class LicenseComponent {
 
   onCreateLicenseDialog() {
     const dialogRef = this.matDialog.open(CreateLicenseComponent, {
-      width: "600px"
+      width: "600px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
     });
 
     dialogRef.componentInstance.licenseAdded.subscribe(() => {
@@ -98,6 +100,10 @@ export class LicenseComponent {
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
         this.commonService.showAndHideProgressBar(false);
+
+        if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
+          this.searchActive = true;
+        }
       },
       error: err => {
         this.errorMessage = err;
@@ -133,6 +139,7 @@ export class LicenseComponent {
   openUpdateLicenseDialog(id: number) {
     const dialogRef = this.matDialog.open(UpdateLicenseComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: id
     });
 
@@ -145,6 +152,7 @@ export class LicenseComponent {
   openDeleteLicenseDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `${this.modelName}`,
     });
 
@@ -173,12 +181,12 @@ export class LicenseComponent {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }
     });
   }
-
 
   downloadOfflineLicense(id: number) {
     this.sub = this.licenseService.getOfflineLicense(id).subscribe({

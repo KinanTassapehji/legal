@@ -17,8 +17,15 @@
                 *ngIf="!isLoading">
       </app-card>
     </div>
+
+    <!-- No Data Template -->
+    <app-no-data-template *ngIf="!isLoading && applications.length === 0"
+                          [icon]="'apps'"
+                          [title]="'No applications were found.'">
+      <!--[description]="">-->
+    </app-no-data-template>
   </div>
-  <div class="subscription-plan-title-section">
+  <div class="subscription-plan-title-section" *ngIf="applications.length > 0">
     <ngx-skeleton-loader count="1" [theme]="{width:'250px',height:'20px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
     <ngx-skeleton-loader count="1" [theme]="{width:'200px',height:'40px','margin-bottom': '0.5rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" *ngIf="isLoading" />
     <!-- Subscription Plan section -->
@@ -33,7 +40,7 @@
     <ngx-skeleton-loader count="10" [theme]="{width:'100%',height:'40px','margin-bottom': '0.01rem', 'background-color': '#e7edf4', animation: 'pulse'}" appearance="line" />
   </div>
   <div class="card subscription-plan-table-card" *ngIf="dataSource.length > 0 && !isLoading">
-    <table mat-table [dataSource]="dataSource" class="subscription-plan-table mat-elevation-z0">
+    <table mat-table [dataSource]="dataSource" class="subscription-plan-table mat-elevation-z0" *ngIf="displayedColumns.length > 1">
       <!-- Dynamic column definition -->
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
@@ -63,5 +70,12 @@
       <!-- Data rows -->
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <!-- No Data Template -->
+    <app-no-data-template *ngIf="!isLoading && displayedColumns.length <= 1"
+                          [icon]="'view_kanban'"
+                          [title]="'No subscription plans found'">
+      <!--[description]="">-->
+    </app-no-data-template>
   </div>
 </div>

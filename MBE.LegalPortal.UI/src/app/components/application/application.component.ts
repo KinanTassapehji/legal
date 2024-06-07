@@ -47,6 +47,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   keyword?= '';
   progressBar = false;
   isLoading = true;
+  searchActive = false;
 
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
   ELEMENT_DATA: IApplicationInstance[] = [];
@@ -86,11 +87,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
           this.applications[0].selected = true;
           this.applications[0].isDefault = true;
           this.getApplicationInstances(this.applications[0].id);
-
-          // Set isLoading to false and emit progress bar state after successful response
-          this.isLoading = false;
-          this.commonService.showAndHideProgressBar(false);
         }
+
+        // Set isLoading to false and emit progress bar state after successful response
+        this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
       },
       error: err => {
         this.errorMessage = err;
@@ -121,8 +122,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     this.getApplicationInstances(this.selectedApplication ? this.selectedApplication.id : 0, sort, keyword);
   }
 
-  getApplicationInstances(id: number, sort?: Sort, keyword?: string) {
-    this.applicationInstanceService.getApplicationInstances(id, this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
+  getApplicationInstances(applicationId: number, sort?: Sort, keyword?: string) {
+    this.applicationInstanceService.getApplicationInstances(applicationId, this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
         this.ELEMENT_DATA = response.data;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
@@ -131,6 +132,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         this.totalCount = pi.totalCount;
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
+
+        if (this.ELEMENT_DATA.length > 0 ) {
+          this.searchActive = true;
+        }
       },
       error: err => this.errorMessage = err
     });
@@ -144,7 +149,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   openAddApplicationDialog() {
     const dialogRef = this.matDialog.open(AddApplicationComponent, {
-      width: "800px"
+      width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
     });
 
     dialogRef.componentInstance.applicationAdded.subscribe(() => {
@@ -156,6 +162,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openAddApplicationInstanceDialog() {
     const dialogRef = this.matDialog.open(AddApplicationInstanceComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: {
         applications: this.applications, // Pass applications data to the dialog component
       }
@@ -174,6 +181,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openUpdateApplicationInstanceDialog(id: number) {
     const dialogRef = this.matDialog.open(UpdateApplicationInstanceComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: {
         id: id,
         applications: this.applications // Pass applications data to the dialog component
@@ -231,6 +239,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openUpdateApplicationDialog(id: number) {
     const dialogRef = this.matDialog.open(UpdateApplicationComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: id,
     });
 
@@ -243,6 +252,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openDeleteApplicationDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${this.applications.find(app => app.id === id)?.name}" ${this.applicationModelName}`,
     });
 
@@ -271,6 +281,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }
@@ -280,6 +291,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openDeleteApplicationInstanceDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" ${this.applicationInstanceModelName}`,
     });
 
@@ -308,6 +320,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }
