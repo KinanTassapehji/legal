@@ -29,7 +29,7 @@
     <!-- No Data Template -->
     <app-no-data-template *ngIf="!isLoading && applications.length === 0"
                           [icon]="'apps'"
-                          [title]="'No Items found'">
+                          [title]="'No applications were found.'">
       <!--[description]="">-->
     </app-no-data-template>
   </div>
@@ -128,7 +128,7 @@
   <!-- No Data Template -->
   <app-no-data-template *ngIf="!isLoading && ELEMENT_DATA.length === 0"
                         [icon]="'apps'"
-                        [title]="'No Items found'">
+                        [title]="'No application Instances were found.'">
     <!--[description]="">-->
   </app-no-data-template>
 </div>

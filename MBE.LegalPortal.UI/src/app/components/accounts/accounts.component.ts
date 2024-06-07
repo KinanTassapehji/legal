@@ -61,7 +61,8 @@ export class AccountsComponent {
   openAddAccountDialog() {
     const dialogRef = this.matDialog.open(AddAccountComponent, {
       width: "600px",
-    });
+      disableClose: true, // Prevent closing the dialog by clicking outside
+});
 
     dialogRef.componentInstance.accountsAdded.subscribe(() => {
       this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
@@ -120,6 +121,7 @@ export class AccountsComponent {
   openUpdateAccountDialog(element: any) {
     const dialogRef = this.matDialog.open(UpdateAccountComponent, {
       width: "600px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: element,
     });
 
@@ -132,6 +134,7 @@ export class AccountsComponent {
   openDeleteAccountDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" ${this.modelName}`,
     });
 
@@ -160,6 +163,7 @@ export class AccountsComponent {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }

@@ -21,7 +21,7 @@
     <!-- No Data Template -->
     <app-no-data-template *ngIf="!isLoading && applications.length === 0"
                           [icon]="'apps'"
-                          [title]="'No Items found'">
+                          [title]="'No applications were found.'">
       <!--[description]="">-->
     </app-no-data-template>
   </div>
@@ -74,7 +74,7 @@
     <!-- No Data Template -->
     <app-no-data-template *ngIf="!isLoading && displayedColumns.length <= 1"
                           [icon]="'view_kanban'"
-                          [title]="'No Items found'">
+                          [title]="'No subscription plans found'">
       <!--[description]="">-->
     </app-no-data-template>
   </div>

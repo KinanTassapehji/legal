@@ -149,7 +149,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
   openAddApplicationDialog() {
     const dialogRef = this.matDialog.open(AddApplicationComponent, {
-      width: "800px"
+      width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
     });
 
     dialogRef.componentInstance.applicationAdded.subscribe(() => {
@@ -161,6 +162,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openAddApplicationInstanceDialog() {
     const dialogRef = this.matDialog.open(AddApplicationInstanceComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: {
         applications: this.applications, // Pass applications data to the dialog component
       }
@@ -179,6 +181,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openUpdateApplicationInstanceDialog(id: number) {
     const dialogRef = this.matDialog.open(UpdateApplicationInstanceComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: {
         id: id,
         applications: this.applications // Pass applications data to the dialog component
@@ -236,6 +239,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openUpdateApplicationDialog(id: number) {
     const dialogRef = this.matDialog.open(UpdateApplicationComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: id,
     });
 
@@ -248,6 +252,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openDeleteApplicationDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${this.applications.find(app => app.id === id)?.name}" ${this.applicationModelName}`,
     });
 
@@ -276,6 +281,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }
@@ -285,6 +291,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   openDeleteApplicationInstanceDialog(id: number) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${this.ELEMENT_DATA.find(app => app.id === id)?.name}" ${this.applicationInstanceModelName}`,
     });
 
@@ -313,6 +320,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }

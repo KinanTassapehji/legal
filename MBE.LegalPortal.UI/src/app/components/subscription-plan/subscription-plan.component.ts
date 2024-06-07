@@ -177,6 +177,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   openAddSubscriptionPlanDialog() {
     const dialogRef = this.matDialog.open(AddSubscriptionPlanComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: {
         applications: this.applications, // Pass applications data to the child component
         selectedApplicationId: this.selectedApplication?.id
@@ -198,6 +199,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.matDialog.open(UpdateSubscriptionPlanComponent, {
       width: "800px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: {
         subscriptionPlan: subscriptionPlan,
         selectedApplication: this.selectedApplication
@@ -217,6 +219,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   openDeleteSubscriptionPlanDialog(name: string) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: `"${name}" ${this.modelName}`,
     });
 
@@ -248,6 +251,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
       }
