@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 
-
 @Component({
   selector: 'app-license-details',
   templateUrl: './license-details.component.html',

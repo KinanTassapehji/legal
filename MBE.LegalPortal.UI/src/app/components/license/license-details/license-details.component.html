@@ -91,6 +91,9 @@
                            aria-label="Violation table pagination"
                            (page)="onPageChange($event)">
             </mat-paginator>
+            <app-no-data-template *ngIf="violation.length == 0"
+                                  [title]="'Violation not exist.'">
+            </app-no-data-template>
           </div>
         </div>  
         <ng-container *ngIf="isLoading">      
@@ -101,26 +104,26 @@
             </div>
         </ng-container>
         <div class="col-sm-12 col-md-6" *ngIf="!isLoading">
-            <div class="card license-details-card-cont">
-                <div class="ld-card-title">Constraints</div>
-                <table mat-table [dataSource]="dataConstraints" class="mat-elevation-z0" *ngIf="licenseConstraints.length > 0">
-                    <!-- Key Column -->
-                    <ng-container matColumnDef="constraintkey">
-                        <th mat-header-cell *matHeaderCellDef> Key </th>
-                        <td mat-cell *matCellDef="let element"> {{element.constraintkey}} </td>
-                      </ng-container>
-                      <!-- Value Column -->
-                      <ng-container matColumnDef="constraintkevalue">
-                          <th mat-header-cell *matHeaderCellDef> Value </th>
-                          <td mat-cell *matCellDef="let element"> {{element.constraintkevalue}} </td>
-                      </ng-container>
-                    <tr mat-header-row *matHeaderRowDef="displayedColumnsConstraint"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsConstraint;"></tr>
-                  </table>
-                 <div *ngIf="licenseConstraints.length == 0" >
-                    <h3 style="padding:20px 10px">Constraints not found</h3>
-                 </div>
-            </div>
+          <div class="card license-details-card-cont">
+            <div class="ld-card-title">Constraints</div>
+            <table mat-table [dataSource]="dataConstraints" class="mat-elevation-z0" *ngIf="licenseConstraints.length > 0">
+              <!-- Key Column -->
+              <ng-container matColumnDef="constraintkey">
+                <th mat-header-cell *matHeaderCellDef> Key </th>
+                <td mat-cell *matCellDef="let element"> {{element.constraintkey}} </td>
+              </ng-container>
+              <!-- Value Column -->
+              <ng-container matColumnDef="constraintkevalue">
+                <th mat-header-cell *matHeaderCellDef> Value </th>
+                <td mat-cell *matCellDef="let element"> {{element.constraintkevalue}} </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsConstraint"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsConstraint;"></tr>
+            </table>
+            <app-no-data-template *ngIf="licenseConstraints.length == 0"
+                                  [title]="'Constraints not found.'">
+            </app-no-data-template>
+          </div>
         </div>
         <div class="col-sm-12 col-md-6" *ngIf="!isLoading">
           <div class="card license-details-card-cont">
@@ -147,9 +150,9 @@
                 </div>
               </mat-list-item>
             </mat-list>
-            <div *ngIf="machinesSoruce.length == 0">
-              <h3 style="padding:5px 20px">Machine not found</h3>
-            </div>
+            <app-no-data-template *ngIf="machinesSoruce.length == 0"
+                                  [title]="'Machine not found.'">
+            </app-no-data-template>
           </div>
         </div>
     </div>
