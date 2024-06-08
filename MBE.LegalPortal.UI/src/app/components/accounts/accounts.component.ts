@@ -46,7 +46,7 @@ export class AccountsComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService, private matDialog: MatDialog, private accountsService: AccountService, private snackbarService: SnackbarService) { }
+  constructor(private matDialog: MatDialog, private accountsService: AccountService, private snackbarService: SnackbarService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -54,15 +54,15 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
-  }
+}
 
   openAddAccountDialog() {
     const dialogRef = this.matDialog.open(AddAccountComponent, {
       width: "600px",
       disableClose: true, // Prevent closing the dialog by clicking outside
-});
+  });
 
-    dialogRef.componentInstance.accountsAdded.subscribe(() => {
+  dialogRef.componentInstance.accountsAdded.subscribe(() => {
       this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
       this.getAccounts(); // Refresh the list of accounts
     });
@@ -79,6 +79,7 @@ export class AccountsComponent {
         this.pageIndex = pi.page - 1;
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
+
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
         }
@@ -153,7 +154,6 @@ export class AccountsComponent {
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }
-
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',

@@ -21,12 +21,11 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
   name: string = '';
   applicationId: number = 0;
   applicationConstraints: IApplicationConstraint[] = [];
-
+  progressBar = false;
   constructor(
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<AddSubscriptionPlanComponent>,
-    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[], selectedApplicationId: number }) {
   }
 
@@ -40,7 +39,7 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   addSubscriptionPlan() {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     const subscriptionPlanApplicationConstraint = this.applicationConstraints.map(constraint => ({
       applicationConstraintId: constraint.id,
       defaultValue: constraint.value
@@ -56,13 +55,14 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.subscriptionPlanAdded.emit(response.data.id);
-        this.commonService.showAndHideProgressBar(false);
+        this.progressBar = false;
         // Close the dialog
         this.dialogRef.close();
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error creating subscription plan', err);
+        this.progressBar = false;
       }
     });
   }

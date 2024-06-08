@@ -32,15 +32,13 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   modelName : string = 'Subscription Plan';
   errorMessage = '';
   isLoading = true;
-  progressBar = false;
   constructor(private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private matDialog: MatDialog,
-    private commonService: CommonService, private snackbarService: SnackbarService) { }
+    private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
     this.getApplications();
-    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
   ngOnDestroy(): void {
@@ -64,14 +62,12 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
       },
       error: err => {
         this.errorMessage = err;
 
         // Set isLoading to false and emit progress bar state on error
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
       }
     });
   }

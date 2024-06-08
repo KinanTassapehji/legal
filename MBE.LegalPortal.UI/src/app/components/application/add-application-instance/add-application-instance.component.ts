@@ -23,12 +23,11 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   accounts: IAccount[] = [];
   sub!: Subscription;
   errorMessage = '';
-
+  progressBar = false;
   constructor(
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<AddApplicationInstanceComponent>,
-    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { applications: IApplication[] }) {
   }
 
@@ -50,7 +49,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   }
 
   addApplicationInstance() {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     const requestBody = {
       name: this.name,
       applicationId: this.applicationId,
@@ -65,13 +64,14 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.applicationInstanceAdded.emit(response.data.id);
-        this.commonService.showAndHideProgressBar(false);
+        this.progressBar = false;
         // Close the dialog
         this.dialogRef.close();
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error creating application instance', err);
+        this.progressBar = false;
       }
     });
   }

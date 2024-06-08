@@ -27,7 +27,6 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<UpdateSubscriptionPlanComponent>,
-    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { subscriptionPlan: ISubscriptionPlan, selectedApplication: IApplication }) {
   }
 
@@ -54,7 +53,7 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   updateSubscriptionPlan() {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     const subscriptionPlanApplicationConstraint = this.applicationConstraints.map(constraint => ({
       applicationConstraintId: constraint.id,
       defaultValue: constraint.value
@@ -71,13 +70,14 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.subscriptionPlanUpdated.emit(response.data.id);
-        this.commonService.showAndHideProgressBar(false);
+        this.progressBar = false;
         // Close the dialog
         this.dialogRef.close();
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error updating subscription plan', err);
+        this.progressBar = false;
       }
     });
   }
