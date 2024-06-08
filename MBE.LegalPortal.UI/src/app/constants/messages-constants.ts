@@ -1,6 +1,6 @@
-export const CreateSuccessfully: string = 'A New {entity} has Created Successfully';
-export const UpdateSuccessfully: string = 'The {entity} has Updated Successfully';
-export const DeleteSuccessfully: string = 'The {entity} has Deleted Successfully';
+export const CreateSuccessfully: string = 'A New {entity} has created successfully';
+export const UpdateSuccessfully: string = 'The {entity} has updated successfully';
+export const DeleteSuccessfully: string = 'The {entity} has deleted successfully';
 export const DeleteFailed: string = 'An error occurred while deleting the {entity}.';
 
 export function GetCreateSuccessfullyMessage(entity: string): string {

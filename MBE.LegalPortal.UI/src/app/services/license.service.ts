@@ -104,4 +104,11 @@ export class LicenseService {
   deleteMachineById(id:any) {
     return this.http.delete<void>(`${Machine_Url}/${id}`);
   }
+
+  updateViolationState(UpdateViolationStateDto: any) {
+    return this.http.put(`${Violation_Url}`, UpdateViolationStateDto)
+      .pipe(
+        catchError(error => this.errorHandlingService.handleError(error))
+      );
+  }
 }

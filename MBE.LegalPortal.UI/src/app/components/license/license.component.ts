@@ -205,7 +205,6 @@ export class LicenseComponent {
   }
 
   viewLicenseDetails(id: any) {
-    console.log('id',id);
     this.router.navigate(['license/details/' + id]);
   }
 }

@@ -36,7 +36,7 @@ export class LicenseDetailsComponent {
   VIOLATION_ELEMENT_DATA: any[] = [];
   CONSTRAINTS_ELEMENT_DATA: any[] = [];
   dataSource = new MatTableDataSource(this.VIOLATION_ELEMENT_DATA);
-  displayedColumns: string[] = ['violationid', 'violationdate', 'licensestate', 'overriddenstate', 'resolveddate', 'message','action'];
+  displayedColumns: string[] = ['violationid', 'violationdate', 'licensestate', 'overriddenstate', 'resolveddate', 'resolvedreason', 'message','action'];
   displayedColumnsConstraint: string[] = ['constraintkey', 'constraintkevalue'];
   dataConstraints = new MatTableDataSource(this.CONSTRAINTS_ELEMENT_DATA);
   machinesSoruce: any[] = [];
@@ -55,9 +55,10 @@ export class LicenseDetailsComponent {
   }
 
   getLicenseDetails() {
+    this.licenseDetailsCardData = [];
+    this.licenseConstraints = [];
     this.sub = this.licenseService.getLicenseById(this.licenseId).subscribe({
       next: responseLicense => {
-        console.log('responseLicense', responseLicense);
         var data = responseLicense;
         var SubscriptionPlan = {
           label: 'Subscription Plan',
@@ -113,8 +114,8 @@ export class LicenseDetailsComponent {
 
   createViolationObjects() {
     this.progressBar = true;
-    this.VIOLATION_ELEMENT_DATA = [];
     this.violation = [];
+    this.VIOLATION_ELEMENT_DATA = [];
     this.sub = this.licenseService.getViolationByLicenseId(this.licenseId, this.pageIndex + 1, this.pageSize).subscribe({
       next: responseViolation => {
         this.totalCount = responseViolation.totalCount;
@@ -126,17 +127,19 @@ export class LicenseDetailsComponent {
             let _violationid = this.violation[i].id;
             let _violationdate = formatDate(this.violation[i].violationDate, 'dd-MM-yyyy', 'en-US');
             let _licenseState = this.violation[i].licenseState;
-            let _messages = JSON.parse(this.violation[i].messages);
+            let _resolvedReason = this.violation[i].resolvedReason ? this.violation[i].resolvedReason :"N/A";
+            let _messages = JSON.parse(this.violation[i].messages); 
             let _violationState = this.violation[i].violationState;
             let _tag = _licenseState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _licenseState.toString().toLowerCase();
             let _violationStateTag = _violationState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _violationState.toString().toLowerCase();
-            let _resolvedDate = this.violation[i].resolvedDate ?? "N/A";
+            let _resolvedDate = this.violation[i].resolvedDate ? formatDate(this.violation[i].resolvedDate, 'dd-MM-yyyy', 'en-US') : "N/A";
             this.VIOLATION_ELEMENT_DATA.push({
               violationid: _violationid,
               violationdate: _violationdate,
               licensestate: '<div class="violation-tag ' + _tag + '">' + _licenseState + '</div>',
               overriddenstate: '<div class="violation-tag ' + _violationStateTag + '">' + _violationState + '</div>',
               resolveddate: _resolvedDate,
+              resolvedreason: _resolvedReason,
               message: '<div class="violation-message">' + _messages + '</div>',
               action: ''
             });
@@ -162,10 +165,14 @@ export class LicenseDetailsComponent {
     this.createViolationObjects();
   }
 
-  updateViolation(){
-    this.matDialog.open(UpdateViolationComponent, {
-      width:"600px"
+  updateViolation(violationId: any) {
+    const dialogRef =  this.matDialog.open(UpdateViolationComponent, {
+      width: "600px",
+      data: violationId
     });
+    dialogRef.componentInstance.violationUpdated.subscribe(() => {
+      this.getLicenseDetails();
+    })
   }
 
   showInfo(id:any) {
