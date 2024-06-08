@@ -235,7 +235,7 @@
                     <div class="col-sm-12">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Expiry action</mat-label>
-                        <mat-select  matInput required [(ngModel)]="expiryAction" name="expiryAction" (selectionChange)="checkLicenseFields(fLicense?.invalid)">
+                        <mat-select matInput required [(ngModel)]="expiryAction" name="expiryAction" (selectionChange)="checkLicenseFields(fLicense?.invalid)">
                           <mat-option value="NoViolation">No Violation Policy</mat-option>
                           <mat-option value="Silent">Silent Policy</mat-option>
                           <mat-option value="Default">Default Policy</mat-option>
@@ -243,6 +243,9 @@
                         </mat-select>
                       </mat-form-field>
                     </div>
+                    <mat-error *ngIf="errorMessage != ''">
+                      {{errorMessage}}
+                    </mat-error>
                   </div>
                 </div>
               </mat-tab>
@@ -251,7 +254,7 @@
             <div class="ob-container-footer-section">
               <button mat-raised-button (click)="previousTab()" [ngClass]="{'hide-btn': selectedIndex === 0}">Previous</button>
               <button mat-raised-button (click)="nextTab()" color="primary"  [ngClass]="{'hide-btn': selectedIndex === tabLabels.length - 1}">Next</button>
-              <button mat-raised-button (click)="finished()" color="primary" style="display: none;" [ngClass]="{'show-btn': selectedIndex === tabLabels.length - 1}" [disabled]="fLicense.invalid">Finish</button>
+              <button mat-raised-button (click)="finished()" color="primary" style="display: none;" [ngClass]="{'show-btn': selectedIndex === tabLabels.length - 1}" >Finish</button>
             </div>
         </div>
       </div>

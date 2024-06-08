@@ -69,6 +69,7 @@ export class OnboardingComponent {
   account: IAccount | undefined;
   applicationInstance: IApplicationInstance | undefined;
   license: ILicense | undefined;
+  licenseFieldsChange = false;
   // Array to hold tab labels
   tabLabels: string[] = ['Account', 'Application', 'Subscription Plan', 'License'];
   constructor(private applicationService: ApplicationService,
@@ -81,6 +82,7 @@ export class OnboardingComponent {
     this.getApplications();
   }
 
+  // create new license...
   openAddSubscriptionPlanDialog() {
     const dialogRef = this.matDialog.open(AddSubscriptionPlanComponent, {
       width: "800px",
@@ -196,6 +198,7 @@ export class OnboardingComponent {
 
   // check license fields validation...
   checkLicenseFields(isInvalid: any) {
+    this.licenseFieldsChange = true;
     this.isLicenseDisabled = isInvalid;
     this.errorMessage = '';
   }
@@ -343,6 +346,10 @@ export class OnboardingComponent {
 
   //submit the onboard details
   finished() {
+    if (this.isLicenseDisabled || !this.licenseFieldsChange) {
+      this.showErrorMessage("License");
+      return;
+    }
     this.progressBar = true;
     //get application constraints from selected plan...
     let applicationConstraints = this.selectedsubscriptionPlan.constraints[0] as any;
@@ -376,6 +383,10 @@ export class OnboardingComponent {
           this.router.navigate(['/license']);
           this.progressBar = false;
         }
+      },
+      error: err => {
+        this.errorMessage = err
+        this.progressBar = false;
       }
     });
   }

@@ -42,7 +42,6 @@ export class AccountsComponent {
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
-  progressBar = false;
   searchActive = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -55,8 +54,7 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
-    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
-}
+  }
 
   openAddAccountDialog() {
     const dialogRef = this.matDialog.open(AddAccountComponent, {
@@ -81,18 +79,14 @@ export class AccountsComponent {
         this.pageIndex = pi.page - 1;
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
-
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
         }
       },
       error: err => {
         this.errorMessage = err;
-
         // Set isLoading to false and emit progress bar state on error
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
       }
     });
   }
