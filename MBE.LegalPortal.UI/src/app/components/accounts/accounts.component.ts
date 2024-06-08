@@ -42,12 +42,11 @@ export class AccountsComponent {
   ELEMENT_DATA: IAccount[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
-  progressBar = false;
   searchActive = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService, private matDialog: MatDialog, private accountsService: AccountService, private snackbarService: SnackbarService) { }
+  constructor(private matDialog: MatDialog, private accountsService: AccountService, private snackbarService: SnackbarService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -55,7 +54,6 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
-    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
 }
 
   openAddAccountDialog() {
@@ -81,7 +79,6 @@ export class AccountsComponent {
         this.pageIndex = pi.page - 1;
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
 
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
@@ -89,10 +86,8 @@ export class AccountsComponent {
       },
       error: err => {
         this.errorMessage = err;
-
         // Set isLoading to false and emit progress bar state on error
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
       }
     });
   }
@@ -159,7 +154,6 @@ export class AccountsComponent {
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }
-
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',

@@ -16,7 +16,7 @@ export class AddAccountComponent implements  OnDestroy {
   Email: string = '';
   PhoneNumber: string = '';
   sub!: Subscription;
-
+  progressBar = false;
   constructor(public commonService: CommonService, private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
 
   ngOnDestroy(): void {
@@ -24,7 +24,7 @@ export class AddAccountComponent implements  OnDestroy {
   }
 
   addAccount(model: any) {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     let formData = {
       "Name": model.Name,
       "Email": model.Email,
@@ -37,11 +37,12 @@ export class AddAccountComponent implements  OnDestroy {
         this.accountsAdded.emit();
         // Close the dialog
         this.dialogRef.close();
-        this.commonService.showAndHideProgressBar(false);
+        this.progressBar = false;
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error creating account', err);
+        this.progressBar = false;
       }
     });
   }

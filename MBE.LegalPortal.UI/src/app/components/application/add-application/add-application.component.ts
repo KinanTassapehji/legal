@@ -19,13 +19,13 @@ export class AddApplicationComponent {
   applicationImageUrl: string | undefined;
   constraints: any[] = [{}];
   sub!: Subscription;
+  progressBar = false;
   constructor(private applicationService: ApplicationService,
     private mediaService: MediaService,
-    private dialogRef: MatDialogRef<AddApplicationComponent>,
-    private commonService: CommonService) { }
+    private dialogRef: MatDialogRef<AddApplicationComponent>) { }
 
   addApplication() {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true
     const requestBody = {
       name: this.applicationName,
       image: this.applicationImage,
@@ -36,13 +36,14 @@ export class AddApplicationComponent {
       next: () => {
         // Emit event to notify parent component
         this.applicationAdded.emit();
-        this.commonService.showAndHideProgressBar(false);
+        this.progressBar = false;
         // Close the dialog
         this.dialogRef.close();
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error creating application', err);
+        this.progressBar = false;
       }
     });
   }

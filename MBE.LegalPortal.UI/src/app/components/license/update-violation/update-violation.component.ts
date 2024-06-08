@@ -18,6 +18,7 @@ export class UpdateViolationComponent {
   ViolationState: string = '';
   ResolvedReason: string = '';
   sub!: Subscription;
+  progressBar = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<UpdateViolationComponent>,
     private licenseService: LicenseService,
@@ -25,14 +26,17 @@ export class UpdateViolationComponent {
     private matDialog: MatDialog) { }
 
   updateState() {
+    this.progressBar = true;
     let state = { Id: this.data, ViolationState: this.ViolationState, ResolvedReason: this.ResolvedReason };
     this.sub = this.licenseService.updateViolationState(state).subscribe({
       next: () => {
         this.violationUpdated.emit();
         this.snackbarService.show(GetUpdateSuccessfullyMessage("violation status"), MessageType.SUCCESS);
         this.dialogRef.close();
+        this.progressBar = false;
       },
       error: err => {
+        this.progressBar = false;
         // Extract the detailed error message if available
         let errorMessage = GetUpdateSuccessfullyMessage("Exception");
         if (err && err.error && err.error.messages) {

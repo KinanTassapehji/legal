@@ -55,13 +55,11 @@ export class LicenseComponent {
   ELEMENT_DATA: ILicense[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   isLoading = true;
-  progressBar = false;
   searchActive = false;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService,
-    private matDialog: MatDialog,
+  constructor(private matDialog: MatDialog,
     private licenseService: LicenseService,
     private snackbarService: SnackbarService,
     private router: Router) { }
@@ -72,7 +70,6 @@ export class LicenseComponent {
 
   ngOnInit(): void {
     this.getLicense();
-    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
   onCreateLicenseDialog() {
@@ -99,7 +96,6 @@ export class LicenseComponent {
 
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
 
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
@@ -110,7 +106,6 @@ export class LicenseComponent {
 
         // Set isLoading to false and emit progress bar state on error
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
       }
     });
   }
@@ -191,7 +186,6 @@ export class LicenseComponent {
   downloadOfflineLicense(id: number) {
     this.sub = this.licenseService.getOfflineLicense(id).subscribe({
       next: response => {
-        console.log('File', response);
         const blob = new Blob([response], { type: 'application/octet-stream' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -199,7 +193,6 @@ export class LicenseComponent {
         a.download = 'MBE.LegalPortal.ECL.dll';
         a.click();
         window.URL.revokeObjectURL(url);
-        this.commonService.showAndHideProgressBar(false);
       }
     });
   }
