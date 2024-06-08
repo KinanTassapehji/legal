@@ -54,6 +54,7 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
+    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
 }
 
   openAddAccountDialog() {
@@ -79,6 +80,7 @@ export class AccountsComponent {
         this.pageIndex = pi.page - 1;
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
+        this.commonService.showAndHideProgressBar(false);
 
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
