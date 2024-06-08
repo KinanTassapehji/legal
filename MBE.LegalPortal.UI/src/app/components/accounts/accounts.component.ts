@@ -54,16 +54,15 @@ export class AccountsComponent {
 
   ngOnInit(): void {
     this.getAccounts();
-    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
 }
 
   openAddAccountDialog() {
     const dialogRef = this.matDialog.open(AddAccountComponent, {
       width: "600px",
       disableClose: true, // Prevent closing the dialog by clicking outside
-});
+  });
 
-    dialogRef.componentInstance.accountsAdded.subscribe(() => {
+  dialogRef.componentInstance.accountsAdded.subscribe(() => {
       this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
       this.getAccounts(); // Refresh the list of accounts
     });
@@ -80,7 +79,6 @@ export class AccountsComponent {
         this.pageIndex = pi.page - 1;
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
 
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
