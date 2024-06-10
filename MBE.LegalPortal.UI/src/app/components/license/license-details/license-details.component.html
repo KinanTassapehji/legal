@@ -110,7 +110,9 @@
         </ng-container>
         <div class="col-sm-12 col-md-6" *ngIf="!isLoading">
           <div class="card license-details-card-cont">
-            <div class="ld-card-title">Constraints</div>
+            <div class="ld-card-header">
+              <div class="ld-card-title">Constraints</div>
+            </div>
             <table mat-table [dataSource]="dataConstraints" class="mat-elevation-z0" *ngIf="licenseConstraints.length > 0">
               <!-- Key Column -->
               <ng-container matColumnDef="constraintkey">
@@ -132,7 +134,10 @@
         </div>
         <div class="col-sm-12 col-md-6" *ngIf="!isLoading">
           <div class="card license-details-card-cont">
-            <div class="ld-card-title">Machines</div>
+            <div class="ld-card-header">
+              <div class="ld-card-title">Machines</div>
+              <button mat-raised-button (click)="registerNewMachine()">Register new machine</button>
+            </div>
             <mat-list role="list" class="license-machines-list">
               <mat-list-item role="listitem" *ngFor="let machines of machineData; let i = index;">
                 <div class="ld-container">

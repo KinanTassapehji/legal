@@ -12,6 +12,7 @@ import { SnackbarService } from '../../../shared/custom-snackbar/snackbar.servic
 import { GetDeleteSuccessfullyMessage } from '../../../constants/messages-constants';
 import { MessageType } from '../../../enums/messageType';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
+import { RegisterNewMachineComponent } from '../register-new-machine/register-new-machine.component';
 
 @Component({
   selector: 'app-license-details',
@@ -54,6 +55,11 @@ export class LicenseDetailsComponent {
     this.getLicenseDetails();
   }
 
+  registerNewMachine(){
+    this.matDialog.open(RegisterNewMachineComponent, {
+      width:"600px"
+    });
+  }
   getLicenseDetails() {
     this.licenseDetailsCardData = [];
     this.licenseConstraints = [];

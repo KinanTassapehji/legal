@@ -10,12 +10,22 @@
 .license-details-card-cont{
     padding: 10px;
     margin-bottom: 1rem;
-    .ld-card-title{
-        font-size: 1.25rem;
-        font-weight: 500;
+    .ld-card-header{ 
+        height: 50px;
         border-bottom: 2px solid var(--lp-text-light);
-        padding: 0.75rem;
-    }  
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.25rem;
+        .ld-card-title{
+            font-size: 1.25rem;
+            font-weight: 500;
+        } 
+        button{
+            background-color: var(--lp-primary);
+            color: var(--lp-white);
+        }
+    } 
     .license-constraints-list{
         mat-list-item{
             border-bottom: 1px solid var(--lp-text-light);            

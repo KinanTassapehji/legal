@@ -55,6 +55,7 @@ import { NoDataTemplateComponent } from './shared/no-data-template/no-data-templ
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { CommonImageCropperComponent } from './shared/popups/common-image-cropper/common-image-cropper.component';
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { RegisterNewMachineComponent } from './components/license/register-new-machine/register-new-machine.component';
 
 
 
@@ -143,6 +144,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     ErrorPopupComponent,
     NoDataTemplateComponent,
     CommonImageCropperComponent,
+    RegisterNewMachineComponent,
   ],
   imports: [
     BrowserModule,
