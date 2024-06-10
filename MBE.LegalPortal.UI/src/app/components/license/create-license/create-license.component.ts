@@ -42,8 +42,7 @@ export class CreateLicenseComponent {
     private accountService: AccountService,
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationInstanceService: ApplicationInstanceService,
-    private dialogRef: MatDialogRef<CreateLicenseComponent>,
-    private commonService: CommonService) { }
+    private dialogRef: MatDialogRef<CreateLicenseComponent>) { }
 
   ngOnInit(): void {
     this.getApplications();

@@ -1,34 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, catchError, map } from 'rxjs';
-import { Accounts_GetAll_Url, Accounts_Url } from '../constants/apis-constants';
+import { Observable, catchError } from 'rxjs';
+import {  Settings_Url } from '../constants/apis-constants';
 import { ErrorHandlingService } from './error-handling-service';
-import { IAccount } from '../interfaces/account';
 import { Sort } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class SettingService {
   errorMessage = '';
 
   constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
 
-  getAccountsAll(): Observable<IAccount[]> {
-    // Constructing query parameters
-    let params = new HttpParams();
-    const direction = 'Desc';
-    params = params.set('sortDirection', direction);
-    params = params.set('orderBy', 'id');
-
-    return this.http.get<IAccount[]>(Accounts_GetAll_Url, { params })
-      .pipe(
-        map((response: any) => response),
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
-  }
-
-  getAccounts(page: number, pageSize: number, sort?: Sort, keyword?: string): Observable<any> {
+  getSettings(page: number, pageSize: number, sort?: Sort, keyword?: string): Observable<any> {
     // Constructing query parameters
     let params = new HttpParams()
       .set('page', page.toString())
@@ -53,25 +38,25 @@ export class AccountService {
     if (keyword !== undefined && keyword.trim() !== '') {
       params = params.set('keyword', keyword.trim());
     }
-    return this.http.get<any>(Accounts_Url, { params })
+    return this.http.get<any>(Settings_Url, { params })
       .pipe(catchError(error => this.errorHandlingService.handleError(error)));
   }
 
-  createAccount(CreateAccountDto: any): Observable<any> {
-    return this.http.post(Accounts_Url, CreateAccountDto)
+  createSetting(CreateSettingDto: any): Observable<any> {
+    return this.http.post(Settings_Url, CreateSettingDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
 
-  updateAccount(accountDto: any): Observable<any> {
-    return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto)
+  updateSetting(settingDto: any): Observable<any> {
+    return this.http.put(`${Settings_Url}/${settingDto.id}`, settingDto)
       .pipe(
         catchError(error => this.errorHandlingService.handleError(error))
       );
   }
 
-  deleteAccount(id: number): Observable<void> {
-    return this.http.delete<void>(`${Accounts_Url}/${id}`);
+  deleteSetting(id: number): Observable<void> {
+    return this.http.delete<void>(`${Settings_Url}/${id}`);
   }
 }

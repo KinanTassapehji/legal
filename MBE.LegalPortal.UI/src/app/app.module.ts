@@ -42,7 +42,7 @@ import { UpdateApplicationInstanceComponent } from './components/application/upd
 import { UpdateAccountComponent } from './components/accounts/update-account/update-account.component';
 import { UpdateSubscriptionPlanComponent } from './components/subscription-plan/update-subscription-plan/update-subscription-plan.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { AddSettingsComponent } from './components/settings/add-settings/add-settings.component';
+import { AddSettingComponent } from './components/settings/add-setting/add-setting.component';
 import { UpdateLicenseComponent } from './components/license/update-license/update-license.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ViolationConstraintsComponent } from './components/license/violation-constraints/ViolationConstraintsComponent';
@@ -55,8 +55,8 @@ import { NoDataTemplateComponent } from './shared/no-data-template/no-data-templ
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { CommonImageCropperComponent } from './shared/popups/common-image-cropper/common-image-cropper.component';
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { UpdateSettingComponent } from './components/settings/update-setting/update-setting.component';
 import { RegisterNewMachineComponent } from './components/license/register-new-machine/register-new-machine.component';
-
 
 
 
@@ -134,9 +134,10 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     LicenseDetailsComponent,
     UpdateApplicationInstanceComponent,
     UpdateAccountComponent,
+    UpdateSettingComponent,
     UpdateSubscriptionPlanComponent,
     SettingsComponent,
-    AddSettingsComponent,
+    AddSettingComponent,
     UpdateLicenseComponent,
     ViolationConstraintsComponent,
     UpdateViolationComponent,

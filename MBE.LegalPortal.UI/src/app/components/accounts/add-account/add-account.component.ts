@@ -12,9 +12,9 @@ import { CommonService } from '../../../services/common.service';
 
 export class AddAccountComponent implements  OnDestroy {
   @Output() accountsAdded: EventEmitter<void> = new EventEmitter<void>();
-  Name: string = '';
-  Email: string = '';
-  PhoneNumber: string = '';
+  name: string = '';
+  email: string = '';
+  phoneNumber: string = '';
   sub!: Subscription;
   progressBar = false;
   constructor(public commonService: CommonService, private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
@@ -25,13 +25,13 @@ export class AddAccountComponent implements  OnDestroy {
 
   addAccount(model: any) {
     this.progressBar = true;
-    let formData = {
+    let requestBody = {
       "Name": model.Name,
       "Email": model.Email,
       "PhoneNumber": '+' + model.PhoneNumber
     };
 
-    this.sub = this.accountService.createAccounts(formData).subscribe({
+    this.sub = this.accountService.createAccount(requestBody).subscribe({
       next: () => {
         // Emit event to notify parent component
         this.accountsAdded.emit();
