@@ -16,9 +16,8 @@ import { ApplicationInstanceService } from '../../services/application-instance.
 import { Utils } from '../../utilities/sort.util';
 import { UpdateApplicationComponent } from './update-application/update-application.component';
 import { UpdateApplicationInstanceComponent } from './update-application-instance/update-application-instance.component';
-import { CommonService } from '../../services/common.service';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
@@ -267,7 +266,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(this.applicationModelName);
+        let errorMessage = GetDeleteFailedMessage(this.applicationModelName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }
@@ -306,7 +305,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(this.applicationInstanceModelName);
+        let errorMessage = GetDeleteFailedMessage(this.applicationInstanceModelName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }

@@ -4,7 +4,6 @@ import { ApplicationService } from '../../../services/application.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-application',
@@ -20,6 +19,7 @@ export class AddApplicationComponent {
   constraints: any[] = [{}];
   sub!: Subscription;
   progressBar = false;
+
   constructor(private applicationService: ApplicationService,
     private mediaService: MediaService,
     private dialogRef: MatDialogRef<AddApplicationComponent>) { }

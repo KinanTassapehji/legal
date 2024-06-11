@@ -6,7 +6,6 @@ import { ApplicationService } from '../../../services/application.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplication } from '../../../interfaces/application';
 import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-update-subscription-plan',
@@ -23,6 +22,7 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   applicationName: string = '';
   applicationConstraints: IApplicationConstraint[] = [];
   progressBar = false;
+
   constructor(
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
@@ -89,7 +89,6 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (constraints) => {
             this.applicationConstraints = constraints;
-            this.progressBar = false;
             this.bindDefaultValue();
           },
           error: (err) => {

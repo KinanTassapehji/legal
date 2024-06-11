@@ -16,6 +16,7 @@ export class UpdateSettingComponent {
   settingId: number = 0;
   sub!: Subscription;
   progressBar = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private settingService: SettingService, private dialogRef: MatDialogRef<UpdateSettingComponent>) { }
 
   ngOnInit(): void {
@@ -56,6 +57,7 @@ export class UpdateSettingComponent {
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error updating setting', err);
+        this.progressBar = false;
       }
     });
   }

@@ -11,7 +11,6 @@ import { ApplicationService } from '../../../services/application.service';
 import { AccountService } from '../../../services/account.service';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-create-license',
@@ -67,9 +66,9 @@ export class CreateLicenseComponent {
         this.dialogRef.close();
       },
       error: (err) => {
-        console.log('err', err);
         // Handle error response, maybe show an error message
-        console.error('Error creating application instance', err);
+        console.error('Error creating license', err);
+        this.progressBar = false;
       }
     });
   }

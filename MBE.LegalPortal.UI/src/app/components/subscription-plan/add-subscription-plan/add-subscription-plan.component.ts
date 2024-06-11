@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationService } from '../../../services/application.service';
 import { IApplicationConstraint } from '../../../interfaces/application-constraint';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-subscription-plan',
@@ -22,6 +21,7 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
   applicationId: number = 0;
   applicationConstraints: IApplicationConstraint[] = [];
   progressBar = false;
+
   constructor(
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,

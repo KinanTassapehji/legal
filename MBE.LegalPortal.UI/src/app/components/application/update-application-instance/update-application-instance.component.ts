@@ -7,7 +7,6 @@ import { IAccount } from '../../../interfaces/account';
 import { Subscription } from 'rxjs';
 import { IApplicationInstance } from '../../../interfaces/application-instance';
 import { ITenant } from '../../../interfaces/tenant';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-update-application-instance',
@@ -22,11 +21,11 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   errorMessage = '';
   progressBar = false;
+
   constructor(
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<UpdateApplicationInstanceComponent>,
-    private commonService: CommonService,
     @Inject(MAT_DIALOG_DATA) public data: { id: number, applications: IApplication[] }) {
   }
 
@@ -68,14 +67,13 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
     this.sub = this.accountService.getAccountsAll().subscribe({
       next: accounts => {
         this.accounts = accounts;
-        this.progressBar = false;
       },
       error: err => this.errorMessage = err
     });
   }
 
   updateApplicationInstance() {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     const requestBody = {
       id: this.applicationInstance.id,
       name: this.applicationInstance.name,
@@ -87,13 +85,14 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
       next: (response) => {
         // Emit event to notify parent component
         this.applicationInstanceUpdated.emit(response.data.id);
-        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
+        this.progressBar = false;
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error updating application instance', err);
+        this.progressBar = false;
       }
     });
   }

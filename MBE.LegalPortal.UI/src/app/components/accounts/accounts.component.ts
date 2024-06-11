@@ -10,9 +10,8 @@ import { Utils } from '../../utilities/sort.util';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateAccountComponent } from './update-account/update-account.component';
-import { CommonService } from '../../services/common.service';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
@@ -60,9 +59,9 @@ export class AccountsComponent {
     const dialogRef = this.matDialog.open(AddAccountComponent, {
       width: "600px",
       disableClose: true, // Prevent closing the dialog by clicking outside
-  });
+    });
 
-  dialogRef.componentInstance.accountsAdded.subscribe(() => {
+    dialogRef.componentInstance.accountsAdded.subscribe(() => {
       this.snackbarService.show(GetCreateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
       this.getAccounts(); // Refresh the list of accounts
     });
@@ -150,7 +149,7 @@ export class AccountsComponent {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        let errorMessage = GetDeleteFailedMessage(this.modelName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }

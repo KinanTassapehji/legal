@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplicationDetails } from '../../../interfaces/application-details';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-update-application',
@@ -19,8 +18,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   application: IApplicationDetails = {} as IApplicationDetails;
   sub!: Subscription;
   progressBar = false;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>,
-    private commonService: CommonService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
 
   ngOnInit(): void {
     this.progressBar = true;
@@ -50,7 +48,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   }
 
   updateApplication() {
-    this.commonService.showAndHideProgressBar(true);
+        this.progressBar = true;
     const requestBody = {
       id: this.application?.id,
       name: this.application?.name,
@@ -62,13 +60,14 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
       next: () => {
         // Emit event to notify parent component
         this.applicationUpdated.emit();
-        this.commonService.showAndHideProgressBar(false);
         // Close the dialog
         this.dialogRef.close();
+        this.progressBar = true;
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error updating application', err);
+        this.progressBar = true;
       }
     });
   }

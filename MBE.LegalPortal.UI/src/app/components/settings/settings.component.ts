@@ -10,9 +10,8 @@ import { Utils } from '../../utilities/sort.util';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateSettingComponent } from './update-setting/update-setting.component';
-import { CommonService } from '../../services/common.service';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
@@ -47,7 +46,7 @@ export class SettingsComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private commonService: CommonService, private matDialog: MatDialog, private settingsService: SettingService, private snackbarService: SnackbarService) { }
+  constructor(private matDialog: MatDialog, private settingsService: SettingService, private snackbarService: SnackbarService) { }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -55,7 +54,6 @@ export class SettingsComponent {
 
   ngOnInit(): void {
     this.getSettings();
-    this.commonService.changeEmitted$.subscribe(data => this.progressBar = data);
   }
 
   openAddSettingDialog() {
@@ -81,7 +79,6 @@ export class SettingsComponent {
         this.pageIndex = pi.page - 1;
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
 
         if (this.ELEMENT_DATA.length > 0 && !this.searchActive) {
           this.searchActive = true;
@@ -92,7 +89,6 @@ export class SettingsComponent {
 
         // Set isLoading to false and emit progress bar state on error
         this.isLoading = false;
-        this.commonService.showAndHideProgressBar(false);
       }
     });
   }
@@ -155,7 +151,7 @@ export class SettingsComponent {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        let errorMessage = GetDeleteFailedMessage(this.modelName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }

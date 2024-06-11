@@ -1,44 +1,49 @@
 <div mat-dialog-container class="lp-common-modal-container">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <span>Register new machine</span>
-        <button mat-icon-button mat-dialog-close>
-          <mat-icon class="material-symbols-outlined">close</mat-icon>
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
-      <mat-dialog-content>
-        <div class="row  dense-2">
-            <div class="col-sm-12">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Mac Address</mat-label>
-                <input matInput>
-              </mat-form-field>
-            </div>
-            <div class="col-sm-12">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Processor ID</mat-label>
-                <input matInput>
-              </mat-form-field>
-            </div>
-            <div class="col-sm-12">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Volume Address</mat-label>
-                <input matInput>
-              </mat-form-field>
-            </div>
-            <div class="col-sm-12">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Domain Url</mat-label>
-                <input matInput placeholder="websiteurl.com">
-                <span matTextPrefix>https:// </span>
-              </mat-form-field>
-            </div>
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions>
-        <button mat-button mat-dialog-close>Cancel</button>
-        <button mat-button type="submit">Register</button>
-      </mat-dialog-actions>
+  <!-- Progress Bar -->
+  <div *ngIf="progressBar">
+    <mat-progress-bar mode="indeterminate" value="30"></mat-progress-bar>
   </div>
-  
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Register new machine</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <form novalidate (ngSubmit)="addMachine(this)" #f="ngForm">
+    <mat-dialog-content>
+      <div class="row  dense-2">
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Mac Address</mat-label>
+            <input matInput [(ngModel)]="macAddress" name="macAddress" required>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Processor ID</mat-label>
+            <input matInput [(ngModel)]="processorId" name="processorId" required>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Volume Address</mat-label>
+            <input matInput [(ngModel)]="volumeAddress" name="volumeAddress" required>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Domain Url</mat-label>
+            <input matInput placeholder="websiteurl.com" [(ngModel)]="domain" name="domain" required>
+            <span matTextPrefix>https:// </span>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button type="submit">Register</button>
+    </mat-dialog-actions>
+    </form>
+</div>

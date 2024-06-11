@@ -19,6 +19,7 @@ export class UpdateViolationComponent {
   ResolvedReason: string = '';
   sub!: Subscription;
   progressBar = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<UpdateViolationComponent>,
     private licenseService: LicenseService,

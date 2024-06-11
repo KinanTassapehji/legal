@@ -10,9 +10,8 @@ import { LicenseService } from '../../services/license.service';
 import { Utils } from '../../utilities/sort.util';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateLicenseComponent } from './update-license/update-license.component';
-import { CommonService } from '../../services/common.service';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 import { Router } from '@angular/router';
@@ -168,7 +167,7 @@ export class LicenseComponent {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        let errorMessage = GetDeleteFailedMessage(this.modelName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }

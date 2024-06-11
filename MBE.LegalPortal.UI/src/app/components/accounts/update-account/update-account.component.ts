@@ -10,12 +10,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class UpdateAccountComponent {
   @Output() accountUpdated: EventEmitter<void> = new EventEmitter<void>();
-  Name: string = '';
-  Email: string = '';
-  PhoneNumber: string = '';
+  name: string = '';
+  email: string = '';
+  phoneNumber: string = '';
   accountId: number = 0;
   sub!: Subscription;
   progressBar = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private accountService: AccountService, private dialogRef: MatDialogRef<UpdateAccountComponent>) { }
 
   ngOnInit(): void {
@@ -30,9 +31,9 @@ export class UpdateAccountComponent {
 
   getAccountDetails(data: any) {
     if (data) {
-      this.Email = data.email;
-      this.Name = data.name;
-      this.PhoneNumber = data.phoneNumber;
+      this.name = data.name;
+      this.email = data.email;
+      this.phoneNumber = data.phoneNumber;
       this.accountId = data.id;
     }
   }
@@ -56,6 +57,7 @@ export class UpdateAccountComponent {
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error updating account', err);
+        this.progressBar = false;
       }
     });
   }

@@ -5,7 +5,6 @@ import { IApplication } from '../../../interfaces/application';
 import { AccountService } from '../../../services/account.service';
 import { IAccount } from '../../../interfaces/account';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-application-instance',
@@ -24,6 +23,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   errorMessage = '';
   progressBar = false;
+
   constructor(
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,

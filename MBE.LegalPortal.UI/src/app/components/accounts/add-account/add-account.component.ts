@@ -2,7 +2,6 @@ import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@ang
 import { AccountService } from '../../../services/account.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-add-account',
@@ -17,7 +16,8 @@ export class AddAccountComponent implements  OnDestroy {
   phoneNumber: string = '';
   sub!: Subscription;
   progressBar = false;
-  constructor(public commonService: CommonService, private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
+
+  constructor(private accountService: AccountService, private dialogRef: MatDialogRef<AddAccountComponent>) { }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -26,9 +26,9 @@ export class AddAccountComponent implements  OnDestroy {
   addAccount(model: any) {
     this.progressBar = true;
     let requestBody = {
-      "Name": model.Name,
-      "Email": model.Email,
-      "PhoneNumber": '+' + model.PhoneNumber
+      "name": model.name,
+      "email": model.email,
+      "phoneNumber": '+' + model.phoneNumber
     };
 
     this.sub = this.accountService.createAccount(requestBody).subscribe({

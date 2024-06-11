@@ -8,9 +8,8 @@ import { IApplication } from '../../interfaces/application';
 import { ApplicationService } from '../../services/application.service';
 import { ConfirmationPopupComponent } from '../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { UpdateSubscriptionPlanComponent } from './update-subscription-plan/update-subscription-plan.component';
-import { CommonService } from '../../services/common.service';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
@@ -32,6 +31,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   modelName : string = 'Subscription Plan';
   errorMessage = '';
   isLoading = true;
+
   constructor(private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private matDialog: MatDialog,
@@ -239,7 +239,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(this.modelName);
+        let errorMessage = GetDeleteFailedMessage(this.modelName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CommonService } from '../../../services/common.service';
 import { SettingService } from '../../../services/setting.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -15,15 +14,16 @@ export class AddSettingComponent implements OnDestroy {
   value: string = '';
   description: string = '';
   sub!: Subscription;
+  progressBar = false;
 
-  constructor(public commonService: CommonService, private settingService: SettingService, private dialogRef: MatDialogRef<AddSettingComponent>) { }
+  constructor(private settingService: SettingService, private dialogRef: MatDialogRef<AddSettingComponent>) { }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 
   addSetting(model: any) {
-    this.commonService.showAndHideProgressBar(true);
+    this.progressBar = true;
     let requestBody = {
       "Key": model.Key,
       "Value": model.Value,
@@ -36,11 +36,12 @@ export class AddSettingComponent implements OnDestroy {
         this.settingsAdded.emit();
         // Close the dialog
         this.dialogRef.close();
-        this.commonService.showAndHideProgressBar(false);
+    this.progressBar = true;
       },
       error: (err) => {
         // Handle error response, maybe show an error message
         console.error('Error creating setting', err);
+    this.progressBar = true;
       }
     });
   }

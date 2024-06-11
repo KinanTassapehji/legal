@@ -9,10 +9,11 @@ import { formatDate } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationPopupComponent } from '../../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { SnackbarService } from '../../../shared/custom-snackbar/snackbar.service';
-import { GetDeleteSuccessfullyMessage } from '../../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage } from '../../../constants/messages-constants';
 import { MessageType } from '../../../enums/messageType';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 import { RegisterNewMachineComponent } from '../register-new-machine/register-new-machine.component';
+import { MachineService } from '../../../services/machine.service';
 
 @Component({
   selector: 'app-license-details',
@@ -37,17 +38,18 @@ export class LicenseDetailsComponent {
   VIOLATION_ELEMENT_DATA: any[] = [];
   CONSTRAINTS_ELEMENT_DATA: any[] = [];
   dataSource = new MatTableDataSource(this.VIOLATION_ELEMENT_DATA);
-  displayedColumns: string[] = ['violationid', 'violationdate', 'licensestate', 'overriddenstate', 'resolveddate', 'resolvedreason', 'message','action'];
+  displayedColumns: string[] = ['violationid', 'violationdate', 'licensestate', 'overriddenstate', 'resolveddate', 'resolvedreason', 'message', 'action'];
   displayedColumnsConstraint: string[] = ['constraintkey', 'constraintkevalue'];
   dataConstraints = new MatTableDataSource(this.CONSTRAINTS_ELEMENT_DATA);
   machinesSoruce: any[] = [];
-  machineData : any[] =[]; 
+  machineData: any[] = [];
   licneseLoaderItems = new Array(2);
   licenseDetailsCardData: any[] = [];
   licenseConstraints: any[] = [];
   constructor(private matDialog: MatDialog,
     private rounter: ActivatedRoute,
     private licenseService: LicenseService,
+    private machineService: MachineService,
     private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
@@ -55,11 +57,18 @@ export class LicenseDetailsComponent {
     this.getLicenseDetails();
   }
 
-  registerNewMachine(){
-    this.matDialog.open(RegisterNewMachineComponent, {
-      width:"600px"
+  registerNewMachine() {
+    const dialogRef = this.matDialog.open(RegisterNewMachineComponent, {
+      width: "600px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
+    });
+
+    dialogRef.componentInstance.machineAdded.subscribe(() => {
+      this.snackbarService.show(GetCreateSuccessfullyMessage('Machine'), MessageType.SUCCESS);
+      this.getLicenseDetails(); // Refresh the details of the license
     });
   }
+
   getLicenseDetails() {
     this.licenseDetailsCardData = [];
     this.licenseConstraints = [];
@@ -133,8 +142,8 @@ export class LicenseDetailsComponent {
             let _violationid = this.violation[i].id;
             let _violationdate = formatDate(this.violation[i].violationDate, 'dd-MM-yyyy', 'en-US');
             let _licenseState = this.violation[i].licenseState;
-            let _resolvedReason = this.violation[i].resolvedReason ? this.violation[i].resolvedReason :"N/A";
-            let _messages = JSON.parse(this.violation[i].messages); 
+            let _resolvedReason = this.violation[i].resolvedReason ? this.violation[i].resolvedReason : "N/A";
+            let _messages = JSON.parse(this.violation[i].messages);
             let _violationState = this.violation[i].violationState;
             let _tag = _licenseState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _licenseState.toString().toLowerCase();
             let _violationStateTag = _violationState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _violationState.toString().toLowerCase();
@@ -172,7 +181,7 @@ export class LicenseDetailsComponent {
   }
 
   updateViolation(violationId: any) {
-    const dialogRef =  this.matDialog.open(UpdateViolationComponent, {
+    const dialogRef = this.matDialog.open(UpdateViolationComponent, {
       width: "600px",
       data: violationId
     });
@@ -181,11 +190,11 @@ export class LicenseDetailsComponent {
     })
   }
 
-  showInfo(id:any) {
+  showInfo(id: any) {
 
   }
 
-  terminateMachine(id:any, machineName:any) {
+  terminateMachine(id: any, machineName: any) {
     const dialogRef = this.matDialog.open(ConfirmationPopupComponent, {
       width: "400px",
       disableClose: true, // Prevent closing the dialog by clicking outside
@@ -199,8 +208,8 @@ export class LicenseDetailsComponent {
     });
   }
 
-  deleteMachine(id: any, machineName:any) {
-    this.sub = this.licenseService.deleteMachineById(id).subscribe({
+  deleteMachine(id: any, machineName: any) {
+    this.sub = this.machineService.deleteMachineById(id).subscribe({
       next: () => {
         this.snackbarService.show(GetDeleteSuccessfullyMessage(machineName), MessageType.SUCCESS);
         // Update the UI
@@ -208,7 +217,7 @@ export class LicenseDetailsComponent {
       },
       error: err => {
         // Extract the detailed error message if available
-        let errorMessage = GetDeleteSuccessfullyMessage(machineName);
+        let errorMessage = GetDeleteFailedMessage(machineName);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }
