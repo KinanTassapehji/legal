@@ -36,7 +36,7 @@ export interface PeriodicElement {
 
 export class LicenseComponent {
   @Output() licenseAdded: EventEmitter<void> = new EventEmitter<void>();
-  displayedColumns: string[] = ['id', 'application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'expirydate', 'action'];
+  displayedColumns: string[] = ['id', 'application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'lastcheck', 'expirydate', 'action'];
   sub!: Subscription;
   license: ILicense[] = [];
   errorMessage = '';
@@ -198,5 +198,13 @@ export class LicenseComponent {
 
   viewLicenseDetails(id: any) {
     this.router.navigate(['license/details/' + id]);
+  }
+
+  getTags(tags: any): any {
+    if (tags === 'NoViolation') {
+      return 'violation-tag no-violation';
+    } else {
+      return 'violation-tag ' + tags.toString().toLowerCase();
+    }
   }
 }
