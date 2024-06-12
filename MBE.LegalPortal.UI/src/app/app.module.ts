@@ -58,8 +58,6 @@ import { ImageCropperComponent } from 'ngx-image-cropper';
 import { UpdateSettingComponent } from './components/settings/update-setting/update-setting.component';
 import { RegisterNewMachineComponent } from './components/license/register-new-machine/register-new-machine.component';
 
-
-
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
 }

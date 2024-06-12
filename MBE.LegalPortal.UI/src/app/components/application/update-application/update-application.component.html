@@ -62,10 +62,9 @@
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Default Action</mat-label>
                     <mat-select [(ngModel)]="constraint.defaultAction" name="defaultAction{{i}}" required>
-                      <mat-option value="NoViolation">No Violation Policy</mat-option>
-                      <mat-option value="Silent">Silent Policy</mat-option>
-                      <mat-option value="Default">Default Policy</mat-option>
-                      <mat-option value="Breach">Breach Policy</mat-option>
+                      <mat-option *ngFor="let policy of violationPolicies" [value]="policy">
+                        {{ policy }} Policy
+                      </mat-option>
                     </mat-select>
                     <mat-error *ngIf="f.controls['defaultAction'+i]?.invalid && (f.controls['defaultAction'+i].dirty || f.controls['defaultAction'+i].touched)">
                       Default Action is required.

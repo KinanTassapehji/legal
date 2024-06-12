@@ -11,6 +11,8 @@ import { IApplicationInstance } from '../../../interfaces/application-instance';
 import { ITenant } from '../../../interfaces/tenant';
 import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
 import { TenantService } from '../../../services/tenant.service';
+import { ExpiryType } from '../../../enums/expiryType';
+import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 
 @Component({
   selector: 'app-update-license',
@@ -39,7 +41,10 @@ export class UpdateLicenseComponent {
   environmentId: string = '';
   expiryDate: string = '';
   expiryAction: string = '';
-  //
+  maximumMachines: number = 1;
+  expiryTypeEnum = ExpiryType; // Enum reference
+  expiryType: ExpiryType = ExpiryType.Limited;
+  violationPolicies = Object.keys(ViolationPolicy);
   progressBar = false;
   environment = [{ environmentId: "Staging", environmentName: "Staging" },
   { environmentId: "Production", environmentName: "Production" }
@@ -77,21 +82,16 @@ export class UpdateLicenseComponent {
         this.expiryAction = response.expiryAction;
         this.expiryDate = response.expiryDate.toString();
         this.creatApplicationConstraints(response.constraints);
-        this.licenseService.getLicenseBySubscriptionPlanId(this.subscriptionPlanId).subscribe({
-          next: responseLicense => {
-            let licenseData = responseLicense[0];
-            if (licenseData) {
-              this.accountId = licenseData.accountId;
-              this.applicationId = licenseData.applicationId;
-              this.getApplications();
-              this.getAccounts();
-              this.getSubscriptionPlans();
-              this.getApplicationConstraints();
-              this.getTenantsApplicationInstance(this.tenantId);
-              this.progressBar = false;
-            }
-          }
-        });
+        this.maximumMachines = response.maximumMachines;
+        this.expiryType = response.expiryType;
+        this.accountId = response.account.id;
+        this.applicationId = response.application.id;
+        this.getApplications();
+        this.getAccounts();
+        this.getSubscriptionPlans();
+        this.getApplicationConstraints();
+        this.getTenantsApplicationInstance(this.tenantId);
+        this.progressBar = false;
       }
     });
   }
@@ -169,6 +169,8 @@ export class UpdateLicenseComponent {
   updateLicense() {
     this.progressBar = true;
     let requestBody = {
+      "maximumMachines": this.maximumMachines,
+      "expiryType": this.expiryType,
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,
       "environment": this.environmentId,

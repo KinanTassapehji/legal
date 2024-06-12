@@ -137,7 +137,7 @@ export class LicenseComponent {
       data: id
     });
 
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.componentInstance.licenseUpdated.subscribe(() => {
       this.snackbarService.show(GetUpdateSuccessfullyMessage(this.modelName), MessageType.SUCCESS);
       this.getLicense();
     });

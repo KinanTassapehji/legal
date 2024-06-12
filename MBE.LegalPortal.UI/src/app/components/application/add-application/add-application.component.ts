@@ -4,6 +4,7 @@ import { ApplicationService } from '../../../services/application.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
+import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 
 @Component({
   selector: 'app-add-application',
@@ -17,6 +18,7 @@ export class AddApplicationComponent {
   applicationImage: string | undefined;
   applicationImageUrl: string | undefined;
   constraints: any[] = [{}];
+  violationPolicies = Object.keys(ViolationPolicy);
   sub!: Subscription;
   progressBar = false;
 

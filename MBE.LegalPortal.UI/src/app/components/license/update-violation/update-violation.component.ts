@@ -6,6 +6,7 @@ import { SnackbarService } from '../../../shared/custom-snackbar/snackbar.servic
 import { GetUpdateSuccessfullyMessage } from '../../../constants/messages-constants';
 import { MessageType } from '../../../enums/messageType';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
+import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 
 @Component({
   selector: 'app-update-violation',
@@ -17,7 +18,8 @@ export class UpdateViolationComponent {
   @Output() violationUpdated: EventEmitter<void> = new EventEmitter<void>();
   ViolationState: string = '';
   ResolvedReason: string = '';
-  sub!: Subscription;
+  violationPolicies = Object.keys(ViolationPolicy);
+sub!: Subscription;
   progressBar = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,

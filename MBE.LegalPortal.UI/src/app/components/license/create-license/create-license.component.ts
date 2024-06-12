@@ -11,6 +11,8 @@ import { ApplicationService } from '../../../services/application.service';
 import { AccountService } from '../../../services/account.service';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
+import { ExpiryType } from '../../../enums/expiryType';
+import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 
 @Component({
   selector: 'app-create-license',
@@ -31,10 +33,14 @@ export class CreateLicenseComponent {
   applicationInstanceId: number = 0;
   tenantId: number = 0;
   subscriptionPlanId: number = 0;
+  maximumMachines: number = 1;
+  expiryTypeEnum = ExpiryType; // Enum reference
+  expiryType: ExpiryType = ExpiryType.Limited;
   environment: string = '';
   expiryDate: string = '';
   expiryAction: string = '';
   applicationConstraints: any[] = [];
+  violationPolicies = Object.keys(ViolationPolicy);
   progressBar = false;
   constructor(private licenseService: LicenseService,
     private applicationService: ApplicationService,
@@ -49,7 +55,13 @@ export class CreateLicenseComponent {
 
   addLicense() {
     this.progressBar = true;
+    if (this.expiryType === this.expiryTypeEnum.UnLimited) {
+      this.expiryAction = 'NoViolation';
+      this.expiryDate = new Date(0).toISOString(); 
+    }
     let requestBody = {
+      "maximumMachines": this.maximumMachines,
+      "expiryType": this.expiryType,
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,
       "environment": this.environment,
@@ -112,11 +124,11 @@ export class CreateLicenseComponent {
       this.getSubscriptionPlans();
     }
     if (this.accountId > 0 && this.applicationId > 0) {
-       this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
+      this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
         next: response => {
-           if (response.data.length > 0) {
-             this.applicationInstance = [response.data[0]];
-             this.tenants = response.data[0].tenants;
+          if (response.data.length > 0) {
+            this.applicationInstance = [response.data[0]];
+            this.tenants = response.data[0].tenants;
           }
         }
       });

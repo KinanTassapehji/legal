@@ -25,9 +25,9 @@ export class AddSettingComponent implements OnDestroy {
   addSetting(model: any) {
     this.progressBar = true;
     let requestBody = {
-      "Key": model.Key,
-      "Value": model.Value,
-      "Description": model.Description
+      "key": model.key,
+      "value": model.value,
+      "description": model.description
     };
 
     this.sub = this.settingService.createSetting(requestBody).subscribe({

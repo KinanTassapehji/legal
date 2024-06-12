@@ -48,7 +48,7 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Subscription plan</mat-label>
-            <mat-select matInput required [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId" (selectionChange)="getApplicationConstraints()">
+            <mat-select matInput [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId" (selectionChange)="getApplicationConstraints()" required>
               <mat-option *ngFor="let subscriptionPlan of subscriptionPlans" [value]="subscriptionPlan.id">{{subscriptionPlan.name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -65,37 +65,38 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>No of Machines</mat-label>
-            <input type="number" matInput>
+            <input type="number" matInput [(ngModel)]="maximumMachines" name="maximumMachines" required>
           </mat-form-field>
-        </div>        
+        </div>
         <div class="col-sm-12">
           <div class="license-type-container">
             <h5>License Type</h5>
-            <mat-radio-group aria-label="Select an option">
-              <mat-radio-button value="1">Limited</mat-radio-button>
-              <mat-radio-button value="2">Unlimited</mat-radio-button>
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="expiryType" name="expiryType" required>
+              <mat-radio-button [value]="expiryTypeEnum.Limited">{{expiryTypeEnum.Limited}}</mat-radio-button>
+              <mat-radio-button [value]="expiryTypeEnum.UnLimited">{{expiryTypeEnum.UnLimited}}</mat-radio-button>
             </mat-radio-group>
           </div>
         </div>
-        <div class="col-sm-12 col-md-6">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Expiry Date</mat-label>
-            <input matInput [matDatepicker]="picker" (dateInput)="OnDateChange($event.value)" name="expiryDate" required>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-12 col-md-6">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Expiry Action</mat-label>
-            <mat-select matInput required [(ngModel)]="expiryAction" name="expiryAction">
-              <mat-option value="NoViolation">No Violation Policy</mat-option>
-              <mat-option value="Silent">Silent Policy</mat-option>
-              <mat-option value="Default">Default Policy</mat-option>
-              <mat-option value="Breach">Breach Policy</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <ng-container *ngIf="expiryType === expiryTypeEnum.Limited">
+          <div class="col-sm-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Expiry Date</mat-label>
+              <input matInput [matDatepicker]="picker" (dateInput)="OnDateChange($event.value)" name="expiryDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Expiry Action</mat-label>
+              <mat-select [(ngModel)]="expiryAction" name="expiryAction" required>
+                <mat-option *ngFor="let policy of violationPolicies" [value]="policy">
+                  {{ policy }} Policy
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-container>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>

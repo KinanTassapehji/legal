@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
 import { GetCreateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
+import { ViolationPolicy } from '../../enums/ViolationPolicy';
 
 @Component({
   selector: 'app-onboarding',
@@ -70,6 +71,7 @@ export class OnboardingComponent {
   applicationInstance: IApplicationInstance | undefined;
   license: ILicense | undefined;
   licenseFieldsChange = false;
+  violationPolicies = Object.keys(ViolationPolicy);
   // Array to hold tab labels
   tabLabels: string[] = ['Account', 'Application', 'Subscription Plan', 'License'];
   constructor(private applicationService: ApplicationService,

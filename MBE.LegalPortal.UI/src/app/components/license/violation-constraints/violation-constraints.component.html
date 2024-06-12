@@ -1,45 +1,45 @@
 <div mat-dialog-container class="lp-common-modal-container violation-constraints-modal">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <span>Violation Constraints</span>
-        <button mat-icon-button mat-dialog-close>
-          <mat-icon class="material-symbols-outlined">close</mat-icon>
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <mat-dialog-content>
-      <div>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
-            <!-- Key Column -->
-            <ng-container matColumnDef="keyValue">
-              <th mat-header-cell *matHeaderCellDef> Key </th>
-              <td mat-cell *matCellDef="let element"> {{element.keyValue}} </td>
-            </ng-container>
-          
-            <!-- App Value Column -->
-            <ng-container matColumnDef="appvalue">
-              <th mat-header-cell *matHeaderCellDef> App Value </th>
-              <td mat-cell *matCellDef="let element"> {{element.appvalue}} </td>
-            </ng-container>
-          
-            <!-- License Value Column -->
-            <ng-container matColumnDef="licensevalue">
-              <th mat-header-cell *matHeaderCellDef> License Value </th>
-              <td mat-cell *matCellDef="let element"> {{element.licensevalue}} </td>
-            </ng-container>
-          
-            <!-- Policy Column -->
-            <ng-container matColumnDef="policy">
-              <th mat-header-cell *matHeaderCellDef> Policy </th>
-              <td mat-cell *matCellDef="let element" [innerHTML]="element.policy"></td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>                                    
-      </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close>Close</button>
-    </mat-dialog-actions>
-  </div>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Violation Constraints</span>
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-dialog-content>
+    <div>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+        <!-- Key Column -->
+        <ng-container matColumnDef="keyValue">
+          <th mat-header-cell *matHeaderCellDef> Key </th>
+          <td mat-cell *matCellDef="let element"> {{element.keyValue}} </td>
+        </ng-container>
+
+        <!-- App Value Column -->
+        <ng-container matColumnDef="appvalue">
+          <th mat-header-cell *matHeaderCellDef> App Value </th>
+          <td mat-cell *matCellDef="let element"> {{element.appvalue}} </td>
+        </ng-container>
+
+        <!-- License Value Column -->
+        <ng-container matColumnDef="licensevalue">
+          <th mat-header-cell *matHeaderCellDef> License Value </th>
+          <td mat-cell *matCellDef="let element"> {{element.licensevalue}} </td>
+        </ng-container>
+
+        <!-- Policy Column -->
+        <ng-container matColumnDef="policy">
+          <th mat-header-cell *matHeaderCellDef> Policy </th>
+          <td mat-cell *matCellDef="let element" [innerHTML]="element.policy"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>

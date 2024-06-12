@@ -31,8 +31,8 @@ export class UpdateSettingComponent {
 
   getSettingDetails(data: any) {
     if (data) {
-      this.value = data.value;
       this.key = data.key;
+      this.value = data.value;
       this.description = data.description;
       this.settingId = data.id;
     }

@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IApplicationDetails } from '../../../interfaces/application-details';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
+import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 
 @Component({
   selector: 'app-update-application',
@@ -16,6 +17,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
 
   applicationImageUrl: string | undefined;
   application: IApplicationDetails = {} as IApplicationDetails;
+  violationPolicies = Object.keys(ViolationPolicy);
   sub!: Subscription;
   progressBar = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
