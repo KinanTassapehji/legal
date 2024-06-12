@@ -334,6 +334,10 @@ export class ApplicationComponent implements OnInit, OnDestroy {
           a.click();
           window.URL.revokeObjectURL(url);
         }, 2000);
+      },
+      error: err => {
+        console.log(err);
+        this.progressBar = false;
       }
     });
   }
