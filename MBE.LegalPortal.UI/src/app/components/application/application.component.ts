@@ -46,11 +46,11 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   keyword?= '';
   isLoading = true;
   searchActive = false;
-
+  progressBar = false;
   displayedColumns: string[] = ['account', 'name', 'tenants', 'createdOn', 'action'];
   ELEMENT_DATA: IApplicationInstance[] = [];
   dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
+  offlineFileName = 'MBE.LegalPortal.ECL.dll';
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -319,4 +319,23 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  downloadOfflineLicense(id: number) {
+    this.progressBar = true;
+    this.sub = this.applicationInstanceService.getOfflineLicense(id).subscribe({
+      next: response => {
+        setTimeout(()=>{
+          const blob = new Blob([response], { type: 'application/octet-stream' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          this.progressBar = false;
+          a.download = this.offlineFileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }, 2000);
+      }
+    });
+  }
+
 }
