@@ -77,4 +77,9 @@ export class ApplicationInstanceService {
   deleteApplicationInstance(id: number): Observable<void> {
     return this.http.delete<void>(`${Application_Instances_Url}/${id}`);
   }
+
+  getOfflineLicense(id: any) {
+    return this.http.get(`${Application_Instances_Url}/offline/${id}`, { responseType: 'blob' })
+      .pipe(catchError(error => this.errorHandlingService.handleError(error)));
+  }
 }
