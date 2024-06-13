@@ -4,5 +4,6 @@ export interface IApplicationConstraint {
   label: string,
   value?: number,
   defaultAction: string,
-  enabled?: boolean
+  enabled?: boolean,
+  unlimited?: boolean
 }

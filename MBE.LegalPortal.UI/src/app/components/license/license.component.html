@@ -85,7 +85,14 @@
               <!-- Expiry Date Column -->
               <ng-container matColumnDef="expirydate">
                 <th mat-header-cell *matHeaderCellDef> Expiry Date </th>
-                <td mat-cell *matCellDef="let element"> {{element.expiryDate | date:'dd/MM/yyyy'}} </td>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="element.expiryType === ExpiryType.UnLimited; else showDate">
+                    Uncontrolled
+                  </ng-container>
+                  <ng-template #showDate>
+                    {{element.expiryDate | date:'dd/MM/yyyy'}}
+                  </ng-template>
+                </td>
               </ng-container>
 
               <!-- Action Instance Column -->

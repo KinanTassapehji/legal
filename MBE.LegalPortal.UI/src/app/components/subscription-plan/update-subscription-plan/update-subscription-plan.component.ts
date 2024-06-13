@@ -31,7 +31,6 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.progressBar = true;
     this.name = this.data.subscriptionPlan.name;
     this.applicationId = this.data.selectedApplication.id;
     this.applicationName = this.data.selectedApplication.name;
@@ -43,7 +42,12 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
       const matchingConstraint = this.data.subscriptionPlan.constraints.find(constraint => constraint.key === appConstraint.key);
       if (matchingConstraint) {
         appConstraint.value = matchingConstraint.defaultValue !== undefined && matchingConstraint.defaultValue > 0 ? matchingConstraint.defaultValue : undefined;
-        appConstraint.enabled = appConstraint.value !== undefined && appConstraint.value > 0 ? true : false;
+
+        appConstraint.enabled =
+          matchingConstraint.defaultValue !== undefined &&
+            (matchingConstraint.defaultValue > 0 || matchingConstraint.defaultValue === -1) ? true : false;
+
+        appConstraint.unlimited = matchingConstraint.defaultValue !== undefined && matchingConstraint.defaultValue === -1 ? true : false;
       }
     });
   }
@@ -54,10 +58,22 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
 
   updateSubscriptionPlan() {
     this.progressBar = true;
-    const subscriptionPlanApplicationConstraint = this.applicationConstraints.map(constraint => ({
-      applicationConstraintId: constraint.id,
-      defaultValue: constraint.value
-    }));
+
+    const subscriptionPlanApplicationConstraint = this.applicationConstraints.map(constraint => {
+      let defaultValue;
+      if (!constraint.enabled) {
+        defaultValue = 0;
+      } else if (constraint.unlimited) {
+        defaultValue = -1;
+      } else {
+        defaultValue = constraint.value;
+      }
+
+      return {
+        applicationConstraintId: constraint.id,
+        defaultValue: defaultValue
+      };
+    });
 
     const requestBody = {
       id: this.data.subscriptionPlan.id,
@@ -100,6 +116,17 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
 
   toggleChanged(event: any, constraint: IApplicationConstraint) {
     constraint.enabled = event.checked;
-    constraint.value = undefined;
+    if (!event.checked) {
+      constraint.value = undefined;
+      constraint.unlimited = false;
+    }
+  }
+
+  onUnlimitedChanged(event: any, constraint: IApplicationConstraint) {
+    constraint.unlimited = event.checked;
+    if (event.checked) {
+      constraint.value = undefined;
+      constraint.enabled = true;
+    }
   }
 }

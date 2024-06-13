@@ -14,6 +14,7 @@ import { MessageType } from '../../../enums/messageType';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 import { RegisterNewMachineComponent } from '../register-new-machine/register-new-machine.component';
 import { MachineService } from '../../../services/machine.service';
+import { ExpiryType } from '../../../enums/expiryType';
 
 @Component({
   selector: 'app-license-details',
@@ -61,7 +62,10 @@ export class LicenseDetailsComponent {
     const dialogRef = this.matDialog.open(RegisterNewMachineComponent, {
       width: "600px",
       disableClose: true, // Prevent closing the dialog by clicking outside
-    });
+      data: {
+        licenseId: this.licenseId, // Pass licenseId data to the child component
+      }
+});
 
     dialogRef.componentInstance.machineAdded.subscribe(() => {
       this.snackbarService.show(GetCreateSuccessfullyMessage('Machine'), MessageType.SUCCESS);
@@ -85,9 +89,9 @@ export class LicenseDetailsComponent {
           title: data.licenseType,
           icon: 'description'
         };
-        var ExpiryDate = {
+        const ExpiryDate = {
           label: 'Expiry Date',
-          title: formatDate(data.expiryDate, 'dd-MM-yyyy', 'en-US'),
+          title: data.expiryType === ExpiryType.UnLimited ? 'Uncontrolled' : formatDate(data.expiryDate, 'dd-MM-yyyy', 'en-US'),
           icon: 'today'
         };
         var ExpiryAction = {

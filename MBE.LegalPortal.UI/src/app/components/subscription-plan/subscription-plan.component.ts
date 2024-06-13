@@ -137,7 +137,13 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
   getConstraintValue(plan: ISubscriptionPlan, key: string): any {
     const constraint = plan.constraints.find(constraint => constraint.key === key);
-    return constraint && constraint.defaultValue !== undefined && constraint.defaultValue > 0 ? constraint.defaultValue : '-';
+    if (!constraint || constraint.defaultValue === undefined || constraint.defaultValue ===  0) {
+      return '-';
+    }
+    if (constraint.defaultValue === -1) {
+      return 'Uncontrolled';
+    }
+    return constraint.defaultValue;
   }
 
   setApplicationAsDefault(id: number) {

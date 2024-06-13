@@ -15,6 +15,7 @@ import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessf
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 import { Router } from '@angular/router';
+import { ExpiryType } from '../../enums/expiryType';
 import { ViolationPolicy } from '../../enums/ViolationPolicy';
 
 export interface PeriodicElement {
@@ -42,7 +43,8 @@ export class LicenseComponent {
   license: ILicense[] = [];
   errorMessage = '';
   modelName: string = 'License';
-  // Paginator
+  ExpiryType = ExpiryType;
+// Paginator
   totalCount = 0;
   pageSize = 5;
   pageIndex = 0;

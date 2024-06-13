@@ -94,6 +94,17 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
 
   toggleChanged(event: any, constraint: IApplicationConstraint) {
     constraint.enabled = event.checked;
-    constraint.value = 0;
+    if (!event.checked) {
+      constraint.value = undefined;
+      constraint.unlimited = false;
+    }
+  }
+
+  onUnlimitedChanged(event: any, constraint: IApplicationConstraint) {
+    constraint.unlimited = event.checked;
+    if (event.checked) {
+      constraint.value = undefined;
+      constraint.enabled = true;
+    }
   }
 }
