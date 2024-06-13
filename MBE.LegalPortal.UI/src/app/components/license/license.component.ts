@@ -15,6 +15,7 @@ import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessf
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 import { Router } from '@angular/router';
+import { ViolationPolicy } from '../../enums/ViolationPolicy';
 
 export interface PeriodicElement {
   application: string;
@@ -201,7 +202,7 @@ export class LicenseComponent {
   }
 
   getTags(tags: any): any {
-    if (tags === 'NoViolation') {
+    if (tags === ViolationPolicy.NoViolation) {
       return 'violation-tag no-violation';
     } else {
       return 'violation-tag ' + tags.toString().toLowerCase();
