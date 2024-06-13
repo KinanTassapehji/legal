@@ -15,6 +15,7 @@ import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessf
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 import { Router } from '@angular/router';
+import { ViolationPolicy } from '../../enums/ViolationPolicy';
 
 export interface PeriodicElement {
   application: string;
@@ -36,7 +37,7 @@ export interface PeriodicElement {
 
 export class LicenseComponent {
   @Output() licenseAdded: EventEmitter<void> = new EventEmitter<void>();
-  displayedColumns: string[] = ['id', 'application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'expirydate', 'action'];
+  displayedColumns: string[] = ['id', 'application', 'accountname', 'tenant', 'subscription', 'environment', 'violation', 'lastcheck', 'expirydate', 'action'];
   sub!: Subscription;
   license: ILicense[] = [];
   errorMessage = '';
@@ -198,5 +199,13 @@ export class LicenseComponent {
 
   viewLicenseDetails(id: any) {
     this.router.navigate(['license/details/' + id]);
+  }
+
+  getTags(tags: any): any {
+    if (tags === ViolationPolicy.NoViolation) {
+      return 'violation-tag no-violation';
+    } else {
+      return 'violation-tag ' + tags.toString().toLowerCase();
+    }
   }
 }
