@@ -42,9 +42,9 @@ export class UpdateAccountComponent {
     this.progressBar = true;
     const requestBody = {
       id: this.accountId,
-      name: data.Name,
-      email: data.Email,
-      phoneNumber: '+' +data.PhoneNumber
+      name: data.name,
+      email: data.email,
+      phoneNumber: '+' + data.phoneNumber
     };
     this.sub = this.accountService.updateAccount(requestBody).subscribe({
       next: () => {
