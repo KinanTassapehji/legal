@@ -48,7 +48,7 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Subscription plan</mat-label>
-            <mat-select matInput required [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId">
+            <mat-select matInput required [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId" (selectionChange)="selectSubscriptionPlanId($event)">
               <mat-option *ngFor="let subscriptionPlan of subscriptionPlans" [value]="subscriptionPlan.id">{{subscriptionPlan.name}}</mat-option>
             </mat-select>
           </mat-form-field>
