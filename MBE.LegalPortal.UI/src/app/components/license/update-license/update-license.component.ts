@@ -96,6 +96,11 @@ export class UpdateLicenseComponent {
     });
   }
 
+  selectSubscriptionPlanId(event: any) {
+    this.subscriptionPlanId = event.value;
+    this.getApplicationConstraints();
+  }
+
   getApplications() {
     this.sub = this.applicationService.getApplications().subscribe({
       next: response => {
@@ -129,8 +134,10 @@ export class UpdateLicenseComponent {
 
   getSubscriptionPlans() {
     this.subscriptionPlans = [];
+    console.log('responseSubscriptionPlanapplicationId', this.applicationId);
     this.sub = this.subscriptionPlanService.getSubscriptionPlans(this.applicationId).subscribe({
       next: responseSubscriptionPlan => {
+        console.log('responseSubscriptionPlan', responseSubscriptionPlan);
         this.subscriptionPlans = responseSubscriptionPlan;
       }
     });
@@ -138,6 +145,7 @@ export class UpdateLicenseComponent {
 
   getApplicationConstraints() {
     this.applicationConstraints = [];
+    console.log('getApplicationConstraints', this.applicationConstraints);
     this.sub = this.subscriptionPlanService.getSubscriptionPlansById(this.subscriptionPlanId).subscribe({
       next: response => {
         let applicationConstaintsList = response.data.applicationConstraints;

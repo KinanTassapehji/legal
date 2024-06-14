@@ -15,6 +15,7 @@ import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-po
 import { RegisterNewMachineComponent } from '../register-new-machine/register-new-machine.component';
 import { MachineService } from '../../../services/machine.service';
 import { ExpiryType } from '../../../enums/expiryType';
+import { MachineDetailsComponent } from '../machine-details/machine-details.component';
 
 @Component({
   selector: 'app-license-details',
@@ -195,7 +196,11 @@ export class LicenseDetailsComponent {
   }
 
   showInfo(id: any) {
-
+    let getMachine = this.machinesSoruce?.filter(x => { return x.id === id; })[0];
+    this.matDialog.open(MachineDetailsComponent, {
+      width: "600px",
+      data: `${JSON.stringify(getMachine)}`
+    });
   }
 
   terminateMachine(id: any, machineName: any) {

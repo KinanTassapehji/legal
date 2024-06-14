@@ -57,6 +57,7 @@ import { CommonImageCropperComponent } from './shared/popups/common-image-croppe
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { UpdateSettingComponent } from './components/settings/update-setting/update-setting.component';
 import { RegisterNewMachineComponent } from './components/license/register-new-machine/register-new-machine.component';
+import { MachineDetailsComponent } from './components/license/machine-details/machine-details.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication(msalConfig);
@@ -144,6 +145,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     NoDataTemplateComponent,
     CommonImageCropperComponent,
     RegisterNewMachineComponent,
+    MachineDetailsComponent,
   ],
   imports: [
     BrowserModule,

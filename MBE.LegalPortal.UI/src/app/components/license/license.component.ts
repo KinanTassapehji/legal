@@ -17,6 +17,7 @@ import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup
 import { Router } from '@angular/router';
 import { ExpiryType } from '../../enums/expiryType';
 import { ViolationPolicy } from '../../enums/ViolationPolicy';
+import { formatDate } from '@angular/common';
 
 export interface PeriodicElement {
   application: string;
@@ -89,6 +90,9 @@ export class LicenseComponent {
   getLicense(sort?: Sort, keyword?: string) {
     this.sub = this.licenseService.getLicense(this.pageIndex + 1, this.pageSize, sort, keyword).subscribe({
       next: response => {
+        for (var i = 0; i < response.data.length; i++) {
+          response.data[i].lastCheck = response.data[i].lastCheck === '' || response.data[i].lastCheck === null? 'Not Check' : formatDate(response.data[i].lastCheck, 'dd-MM-yyyy HH:mm:ss', 'en-US');
+        }
         this.ELEMENT_DATA = response.data;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         const pi = response; // Paginator Info
@@ -174,7 +178,6 @@ export class LicenseComponent {
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }
-
         // Display the error message in a dialog
         this.matDialog.open(ErrorPopupComponent, {
           width: '500px',
