@@ -67,7 +67,7 @@ export class CreateLicenseComponent {
       "environment": this.environment,
       "tenantId": this.tenantId,
       "subscriptionPlanId": this.subscriptionPlanId,
-      "Constraints": this.applicationConstraints
+      "constraints": this.applicationConstraints
     };
     this.sub = this.licenseService.createLicense(requestBody).subscribe({
       next: (response) => {
