@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IApplication } from '../../../interfaces/application';
 import { IAccount } from '../../../interfaces/account';
 import { Subscription } from 'rxjs';
 import { IApplicationInstance } from '../../../interfaces/application-instance';
 import { ITenant } from '../../../interfaces/tenant';
+import { GetConflictMessage, GetUpdateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-update-application-instance',
@@ -21,8 +23,10 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   errorMessage = '';
   progressBar = false;
+  modelName: string = 'Application instance';
 
   constructor(
+    private matDialog: MatDialog,
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<UpdateApplicationInstanceComponent>,
@@ -89,12 +93,28 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
         this.dialogRef.close();
         this.progressBar = false;
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error updating application instance', err);
-        this.progressBar = false;
+    error: err => {
+      let errorMessage = GetUpdateFailedMessage(this.modelName);
+      if (err.status === 409) {
+        // Handle 409 Conflict as a successful response
+        errorMessage = GetConflictMessage(this.modelName);
       }
-    });
+      else {
+        // Extract the detailed error message if available
+        console.error('Error updating application instance', err);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+      }
+      // Display the error message in a dialog
+      this.matDialog.open(ErrorPopupComponent, {
+        width: '500px',
+        disableClose: true, // Prevent closing the dialog by clicking outside
+        data: { title: 'Error', message: errorMessage }
+      });
+      this.progressBar = false;
+    }
+  });
   }
 
   addNewTenant(applicationInstanceId: number, event: any) {

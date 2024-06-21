@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Machine_Url } from '../constants/apis-constants';
-import { ErrorHandlingService } from './error-handling-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +9,10 @@ import { ErrorHandlingService } from './error-handling-service';
 export class MachineService {
   errorMessage = '';
 
-  constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) { }
+  constructor(private http: HttpClient) { }
 
   createMachine(CreateMachineDto: any): Observable<any> {
-    return this.http.post(Machine_Url, CreateMachineDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.post(Machine_Url, CreateMachineDto);
   }
 
   deleteMachineById(id: any) {

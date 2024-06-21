@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { LicenseService } from '../../../services/license.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { IApplication } from '../../../interfaces/application';
 import { IAccount } from '../../../interfaces/account';
@@ -13,6 +13,8 @@ import { SubscriptionPlanService } from '../../../services/subscription-plan.ser
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
 import { ExpiryType } from '../../../enums/expiryType';
 import { ViolationPolicy } from '../../../enums/ViolationPolicy';
+import { GetConflictMessage, GetCreateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-create-license',
@@ -42,7 +44,9 @@ export class CreateLicenseComponent {
   applicationConstraints: any[] = [];
   violationPolicies = Object.keys(ViolationPolicy);
   progressBar = false;
-  constructor(private licenseService: LicenseService,
+  modelName: string = 'License';
+
+  constructor(private matDialog: MatDialog, private licenseService: LicenseService,
     private applicationService: ApplicationService,
     private accountService: AccountService,
     private subscriptionPlanService: SubscriptionPlanService,
@@ -77,12 +81,28 @@ export class CreateLicenseComponent {
         // Close the dialog
         this.dialogRef.close();
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error creating license', err);
-        this.progressBar = false;
+    error: err => {
+      let errorMessage = GetCreateFailedMessage(this.modelName);
+      if (err.status === 409) {
+        // Handle 409 Conflict as a successful response
+        errorMessage = GetConflictMessage(this.modelName);
       }
-    });
+      else {
+        // Extract the detailed error message if available
+        console.error('Error creating license', err);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+      }
+      // Display the error message in a dialog
+      this.matDialog.open(ErrorPopupComponent, {
+        width: '500px',
+        disableClose: true, // Prevent closing the dialog by clicking outside
+        data: { title: 'Error', message: errorMessage }
+      });
+      this.progressBar = false;
+    }
+  });
   }
 
   OnDateChange(value: any) {

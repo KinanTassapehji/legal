@@ -3,9 +3,11 @@ import { Subscription } from 'rxjs';
 import { IApplicationConstraint } from '../../../interfaces/application-constraint';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationService } from '../../../services/application.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IApplication } from '../../../interfaces/application';
 import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
+import { GetConflictMessage, GetUpdateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-update-subscription-plan',
@@ -22,8 +24,9 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
   applicationName: string = '';
   applicationConstraints: IApplicationConstraint[] = [];
   progressBar = false;
+  modelName: string = 'Subscription plan';
 
-  constructor(
+  constructor(private matDialog: MatDialog,
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<UpdateSubscriptionPlanComponent>,
@@ -90,12 +93,28 @@ export class UpdateSubscriptionPlanComponent implements OnInit, OnDestroy {
         // Close the dialog
         this.dialogRef.close();
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error updating subscription plan', err);
-        this.progressBar = false;
+    error: err => {
+      let errorMessage = GetUpdateFailedMessage(this.modelName);
+      if (err.status === 409) {
+        // Handle 409 Conflict as a successful response
+        errorMessage = GetConflictMessage(this.modelName);
       }
-    });
+      else {
+        // Extract the detailed error message if available
+        console.error('Error updating subscription plan', err);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+      }
+      // Display the error message in a dialog
+      this.matDialog.open(ErrorPopupComponent, {
+        width: '500px',
+        disableClose: true, // Prevent closing the dialog by clicking outside
+        data: { title: 'Error', message: errorMessage }
+      });
+      this.progressBar = false;
+    }
+  });
   }
 
   getApplicationConstraints() {

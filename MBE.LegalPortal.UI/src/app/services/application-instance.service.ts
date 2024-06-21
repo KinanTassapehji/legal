@@ -61,17 +61,11 @@ export class ApplicationInstanceService {
   }
 
   createApplicationInstance(applicationInstanceDto: any): Observable<any> {
-    return this.http.post(Application_Instances_Url, applicationInstanceDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.post(Application_Instances_Url, applicationInstanceDto);
   }
 
   updateApplicationInstance(applicationInstanceDto: any): Observable<any> {
-    return this.http.put(`${Application_Instances_Url}/${applicationInstanceDto.id}`, applicationInstanceDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.put(`${Application_Instances_Url}/${applicationInstanceDto.id}`, applicationInstanceDto);
   }
 
   deleteApplicationInstance(id: number): Observable<void> {

@@ -14,9 +14,10 @@ import { Router } from '@angular/router';
 import { AddSubscriptionPlanComponent } from '../subscription-plan/add-subscription-plan/add-subscription-plan.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage } from '../../constants/messages-constants';
+import { GetConflictMessage, GetCreateFailedMessage, GetCreateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ViolationPolicy } from '../../enums/ViolationPolicy';
+import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-onboarding',
@@ -36,7 +37,7 @@ export class OnboardingComponent {
   isSubscriptionPlanSelected = false;
   buttonEvent: any;
   errorMessage: string = '';
-  modelName : string = 'License';
+  modelName: string = 'License';
   // Current selected tab index
   selectedIndex: number = 0;
   // import Subscription...
@@ -263,7 +264,7 @@ export class OnboardingComponent {
   // generate the datasource for show the details of subscription plan in table view.
   generateDataSource(): void {
     if (this.selectedApplication) {
-      
+
       this.sub = this.applicationService.getApplicationById(this.selectedApplication?.id).subscribe({
         next: application => {
           if (application && application.applicationConstraints && application.applicationConstraints.length > 0) {
@@ -387,7 +388,24 @@ export class OnboardingComponent {
         }
       },
       error: err => {
-        this.errorMessage = err
+        let errorMessage = GetCreateFailedMessage(this.modelName);
+        if (err.status === 409) {
+          // Handle 409 Conflict as a successful response
+          errorMessage = GetConflictMessage(this.modelName);
+        }
+        else {
+          // Extract the detailed error message if available
+          console.error('Error adding license');
+          if (err && err.error && err.error.messages) {
+            errorMessage = err.error.messages.join(', ');
+          }
+        }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
         this.progressBar = false;
       }
     });

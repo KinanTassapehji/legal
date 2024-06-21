@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Inject, OnDestroy, Output } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MachineService } from '../../../services/machine.service';
 import { Subscription } from 'rxjs';
+import { GetConflictMessage, GetCreateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-register-new-machine',
@@ -16,8 +18,9 @@ export class RegisterNewMachineComponent implements OnDestroy {
   domain: string = '';
   sub!: Subscription;
   progressBar = false;
+  modelName: string = 'Machine';
 
-  constructor(private machineService: MachineService, private dialogRef: MatDialogRef<RegisterNewMachineComponent>, @Inject(MAT_DIALOG_DATA) public data: { licenseId: number }) { }
+  constructor(private matDialog: MatDialog, private machineService: MachineService, private dialogRef: MatDialogRef<RegisterNewMachineComponent>, @Inject(MAT_DIALOG_DATA) public data: { licenseId: number }) { }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
@@ -30,7 +33,7 @@ export class RegisterNewMachineComponent implements OnDestroy {
       "macAddress": model.macAddress,
       "processorId": model.processorId,
       "volumeSerial": model.volumeSerial,
-      "domain":  `https://${model.domain}`
+      "domain": `https://${model.domain}`
     };
 
     this.sub = this.machineService.createMachine(requestBody).subscribe({
@@ -41,9 +44,25 @@ export class RegisterNewMachineComponent implements OnDestroy {
         this.dialogRef.close();
         this.progressBar = false;
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error creating account', err);
+      error: err => {
+        let errorMessage = GetCreateFailedMessage(this.modelName);
+        if (err.status === 409) {
+          // Handle 409 Conflict as a successful response
+          errorMessage = GetConflictMessage(this.modelName);
+        }
+        else {
+          // Extract the detailed error message if available
+          console.error('Error adding machine', err);
+          if (err && err.error && err.error.messages) {
+            errorMessage = err.error.messages.join(', ');
+          }
+        }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
         this.progressBar = false;
       }
     });

@@ -58,17 +58,11 @@ export class AccountService {
   }
 
   createAccount(CreateAccountDto: any): Observable<any> {
-    return this.http.post(Accounts_Url, CreateAccountDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.post(Accounts_Url, CreateAccountDto);
   }
 
   updateAccount(accountDto: any): Observable<any> {
-    return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.put(`${Accounts_Url}/${accountDto.id}`, accountDto);
   }
 
   deleteAccount(id: number): Observable<void> {

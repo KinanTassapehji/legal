@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IApplication } from '../../../interfaces/application';
 import { AccountService } from '../../../services/account.service';
 import { IAccount } from '../../../interfaces/account';
 import { ApplicationInstanceService } from '../../../services/application-instance.service';
+import { GetConflictMessage, GetCreateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-add-application-instance',
@@ -23,8 +25,10 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
   sub!: Subscription;
   errorMessage = '';
   progressBar = false;
+  modelName: string = 'Application instance';
 
   constructor(
+    private matDialog: MatDialog,
     private accountService: AccountService,
     private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<AddApplicationInstanceComponent>,
@@ -68,12 +72,28 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
         // Close the dialog
         this.dialogRef.close();
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error creating application instance', err);
-        this.progressBar = false;
+    error: err => {
+      let errorMessage = GetCreateFailedMessage(this.modelName);
+      if (err.status === 409) {
+        // Handle 409 Conflict as a successful response
+        errorMessage = GetConflictMessage(this.modelName);
       }
-    });
+      else {
+        // Extract the detailed error message if available
+        console.error('Error creating application instance', err);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+      }
+      // Display the error message in a dialog
+      this.matDialog.open(ErrorPopupComponent, {
+        width: '500px',
+        disableClose: true, // Prevent closing the dialog by clicking outside
+        data: { title: 'Error', message: errorMessage }
+      });
+      this.progressBar = false;
+    }
+  });
   }
 
   addNewTenant(event: any) {

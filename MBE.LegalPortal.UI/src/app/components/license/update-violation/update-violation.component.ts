@@ -19,7 +19,7 @@ export class UpdateViolationComponent {
   ViolationState: string = '';
   ResolvedReason: string = '';
   violationPolicies = Object.keys(ViolationPolicy);
-sub!: Subscription;
+  sub!: Subscription;
   progressBar = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,

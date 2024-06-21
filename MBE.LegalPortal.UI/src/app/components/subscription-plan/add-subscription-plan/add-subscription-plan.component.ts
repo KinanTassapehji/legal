@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { IApplication } from '../../../interfaces/application';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
 import { ApplicationService } from '../../../services/application.service';
 import { IApplicationConstraint } from '../../../interfaces/application-constraint';
+import { GetConflictMessage, GetCreateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-add-subscription-plan',
@@ -21,8 +23,10 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
   applicationId: number = 0;
   applicationConstraints: IApplicationConstraint[] = [];
   progressBar = false;
+  modelName: string = 'Subscription plan';
 
   constructor(
+    private matDialog: MatDialog,
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private dialogRef: MatDialogRef<AddSubscriptionPlanComponent>,
@@ -59,12 +63,28 @@ export class AddSubscriptionPlanComponent implements OnInit, OnDestroy {
         // Close the dialog
         this.dialogRef.close();
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error creating subscription plan', err);
-        this.progressBar = false;
+    error: err => {
+      let errorMessage = GetCreateFailedMessage(this.modelName);
+      if (err.status === 409) {
+        // Handle 409 Conflict as a successful response
+        errorMessage = GetConflictMessage(this.modelName);
       }
-    });
+      else {
+        // Extract the detailed error message if available
+        console.error('Error creating subscription plan', err);
+        if (err && err.error && err.error.messages) {
+          errorMessage = err.error.messages.join(', ');
+        }
+      }
+      // Display the error message in a dialog
+      this.matDialog.open(ErrorPopupComponent, {
+        width: '500px',
+        disableClose: true, // Prevent closing the dialog by clicking outside
+        data: { title: 'Error', message: errorMessage }
+      });
+      this.progressBar = false;
+    }
+  });
   }
 
   getApplicationConstraints() {

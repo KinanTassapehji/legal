@@ -49,17 +49,11 @@ export class ApplicationService {
   }
 
   createApplication(applicationDto: any): Observable<any> {
-    return this.http.post(Applications_Url, applicationDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.post(Applications_Url, applicationDto);
   }
 
   updateApplication(applicationDto: any): Observable<any> {
-    return this.http.put(`${Applications_Url}/${applicationDto.id}`, applicationDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.put(`${Applications_Url}/${applicationDto.id}`, applicationDto);
   }
 
   deleteApplication(id: number): Observable<void> {

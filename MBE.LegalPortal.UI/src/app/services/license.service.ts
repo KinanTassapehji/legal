@@ -69,19 +69,15 @@ export class LicenseService {
     return this.http.get<any>(License_Url, { params })
       .pipe(
         map(response => response.data),
-        catchError(error => this.errorHandlingService.handleError(error))
       );
   }
 
   createLicense(data: any): Observable<any> {
-    return this.http.post(License_Url, data).pipe(catchError(error => this.errorHandlingService.handleError(error)));
+    return this.http.post(License_Url, data);
   }
 
   updateLicense(id: any, licenseDto: any): Observable<any> {
-    return this.http.put(`${License_Url}/${id}`, licenseDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.put(`${License_Url}/${id}`, licenseDto);
   }
 
   deleteLicense(id: number) {
@@ -102,9 +98,6 @@ export class LicenseService {
   }
 
   updateViolationState(UpdateViolationStateDto: any) {
-    return this.http.put(`${Violation_Url}`, UpdateViolationStateDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.put(`${Violation_Url}`, UpdateViolationStateDto);
   }
 }

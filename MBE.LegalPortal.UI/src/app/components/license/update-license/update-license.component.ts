@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { LicenseService } from '../../../services/license.service';
 import { SubscriptionPlanService } from '../../../services/subscription-plan.service';
@@ -13,6 +13,8 @@ import { ISubscriptionPlan } from '../../../interfaces/subscription-plan';
 import { TenantService } from '../../../services/tenant.service';
 import { ExpiryType } from '../../../enums/expiryType';
 import { ViolationPolicy } from '../../../enums/ViolationPolicy';
+import { GetConflictMessage, GetUpdateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-update-license',
@@ -49,9 +51,11 @@ export class UpdateLicenseComponent {
   environment = [{ environmentId: "Staging", environmentName: "Staging" },
   { environmentId: "Production", environmentName: "Production" }
   ];
+  modelName: string = 'License';
 
   constructor(@Inject(MAT_DIALOG_DATA)
   public data: any,
+    private matDialog: MatDialog,
     private licenseService: LicenseService,
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
@@ -194,9 +198,25 @@ export class UpdateLicenseComponent {
         this.dialogRef.close();
         this.progressBar = false;
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error updating license', err);
+      error: err => {
+        let errorMessage = GetUpdateFailedMessage(this.modelName);
+        if (err.status === 409) {
+          // Handle 409 Conflict as a successful response
+          errorMessage = GetConflictMessage(this.modelName);
+        }
+        else {
+          // Extract the detailed error message if available
+          console.error('Error updating license', err);
+          if (err && err.error && err.error.messages) {
+            errorMessage = err.error.messages.join(', ');
+          }
+        }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
         this.progressBar = false;
       }
     });

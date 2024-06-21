@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ApplicationService } from '../../../services/application.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IApplicationDetails } from '../../../interfaces/application-details';
 import { Base_Media_Url } from '../../../constants/apis-constants';
 import { MediaService } from '../../../services/media.service';
 import { ViolationPolicy } from '../../../enums/ViolationPolicy';
+import { GetConflictMessage, GetUpdateFailedMessage } from '../../../constants/messages-constants';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 
 @Component({
   selector: 'app-update-application',
@@ -20,7 +22,9 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   violationPolicies = Object.keys(ViolationPolicy);
   sub!: Subscription;
   progressBar = false;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
+  modelName: string = 'Application';
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: number, private matDialog: MatDialog, private applicationService: ApplicationService, private mediaService: MediaService, private dialogRef: MatDialogRef<UpdateApplicationComponent>) { }
 
   ngOnInit(): void {
     this.progressBar = true;
@@ -30,7 +34,8 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.sub) {
       this.sub.unsubscribe();
-    }  }
+    }
+  }
 
   getApplicationById(applicationId: number) {
     this.sub = this.applicationService.getApplicationById(applicationId).subscribe(
@@ -50,7 +55,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
   }
 
   updateApplication() {
-        this.progressBar = true;
+    this.progressBar = true;
     const requestBody = {
       id: this.application?.id,
       name: this.application?.name,
@@ -66,10 +71,26 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
         this.dialogRef.close();
         this.progressBar = true;
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error updating application', err);
-        this.progressBar = true;
+      error: err => {
+        let errorMessage = GetUpdateFailedMessage(this.modelName);
+        if (err.status === 409) {
+          // Handle 409 Conflict as a successful response
+          errorMessage = GetConflictMessage(this.modelName);
+        }
+        else {
+          // Extract the detailed error message if available
+          console.error('Error updating application', err);
+          if (err && err.error && err.error.messages) {
+            errorMessage = err.error.messages.join(', ');
+          }
+        }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
+        this.progressBar = false;
       }
     });
   }
@@ -94,7 +115,7 @@ export class UpdateApplicationComponent implements OnInit, OnDestroy {
         this.application.image = '';
       }
     });
-    }
+  }
 
   removeImage() {
     this.application.image = undefined;

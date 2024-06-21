@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { SettingService } from '../../../services/setting.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
+import { GetConflictMessage, GetUpdateFailedMessage } from '../../../constants/messages-constants';
 
 @Component({
   selector: 'app-update-setting',
@@ -16,8 +18,9 @@ export class UpdateSettingComponent {
   settingId: number = 0;
   sub!: Subscription;
   progressBar = false;
+  modelName: string = 'Setting';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private settingService: SettingService, private dialogRef: MatDialogRef<UpdateSettingComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private matDialog: MatDialog, private settingService: SettingService, private dialogRef: MatDialogRef<UpdateSettingComponent>) { }
 
   ngOnInit(): void {
     this.getSettingDetails(this.data);
@@ -54,9 +57,25 @@ export class UpdateSettingComponent {
         // Close the dialog
         this.dialogRef.close();
       },
-      error: (err) => {
-        // Handle error response, maybe show an error message
-        console.error('Error updating setting', err);
+      error: err => {
+        let errorMessage = GetUpdateFailedMessage(this.modelName);
+        if (err.status === 409) {
+          // Handle 409 Conflict as a successful response
+          errorMessage = GetConflictMessage(this.modelName);
+        }
+        else {
+          // Extract the detailed error message if available
+          console.error('Error updating setting', err);
+          if (err && err.error && err.error.messages) {
+            errorMessage = err.error.messages.join(', ');
+          }
+        }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
         this.progressBar = false;
       }
     });

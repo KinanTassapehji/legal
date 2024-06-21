@@ -97,7 +97,7 @@ export class LicenseDetailsComponent {
         };
         var ExpiryAction = {
           label: 'Expiry Action',
-          title: data.expiryAction,
+          title: data.expiryAction + 'Policy',
           icon: 'info'
         };
         this.licenseConstraints = data.constraints;

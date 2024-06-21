@@ -43,17 +43,11 @@ export class SettingService {
   }
 
   createSetting(CreateSettingDto: any): Observable<any> {
-    return this.http.post(Settings_Url, CreateSettingDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.post(Settings_Url, CreateSettingDto);
   }
 
   updateSetting(settingDto: any): Observable<any> {
-    return this.http.put(`${Settings_Url}/${settingDto.id}`, settingDto)
-      .pipe(
-        catchError(error => this.errorHandlingService.handleError(error))
-      );
+    return this.http.put(`${Settings_Url}/${settingDto.id}`, settingDto);
   }
 
   deleteSetting(id: number): Observable<void> {
