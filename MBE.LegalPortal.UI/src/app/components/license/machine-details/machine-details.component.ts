@@ -17,6 +17,7 @@ export class MachineDetailsComponent {
       "processorId": this.machineInfo.processorId,
       "volumeSerial": this.machineInfo.volumeSerial,
       "macAddress": this.machineInfo.macAddress,
+      "domain": this.machineInfo.domain,
       "hash":this.machineInfo.hash,
     };
     this.machineInfo = JSON.stringify(machineData);

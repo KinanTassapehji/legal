@@ -20,6 +20,7 @@ import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
 import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-application',
@@ -33,7 +34,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   defaultApplication: IApplication | undefined;
   errorMessage = '';
   applicationModelName: string = 'Application';
-  applicationInstanceModelName : string = 'Application Instance';
+  applicationInstanceModelName: string = 'Application Instance';
   // Paginator
   totalCount = 0;
   pageSize = 5;
@@ -61,7 +62,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     private applicationService: ApplicationService,
     private applicationInstanceService: ApplicationInstanceService,
     private bottomSheet: MatBottomSheet,
-    private snackbarService: SnackbarService) { }
+    private snackbarService: SnackbarService,
+    private sessionStorageService: SessionStorageService) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -78,12 +80,24 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
         // Check if there are applications
         if (this.applications.length > 0) {
-          // Set the first application as selected
-          this.selectedApplication = applications[0];
-          this.defaultApplication = applications[0];
-          this.applications[0].selected = true;
-          this.applications[0].isDefault = true;
-          this.getApplicationInstances(this.applications[0].id);
+
+          // Get the Default Application
+          var defaultApplication = this.sessionStorageService.getItem('defaultApplication');
+          if (defaultApplication === null) {
+            this.sessionStorageService.setItem('defaultApplication', applications[0]);
+            defaultApplication = this.sessionStorageService.getItem('defaultApplication');
+          }
+          this.selectedApplication = defaultApplication;
+          this.defaultApplication = defaultApplication;
+
+          //add default and selected app
+          var defaultApp = this.applications.find(app => app.id === this.defaultApplication?.id);
+          if (defaultApp) {
+            defaultApp.isDefault = true;
+            defaultApp.selected = true;
+          }
+
+          this.getApplicationInstances(defaultApplication.id);
         }
         // Set isLoading to false and emit progress bar state after successful response
         this.isLoading = false;
@@ -126,7 +140,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
         this.pageSize = pi.pageSize;
         this.pageIndex = pi.page - 1;
 
-        if (this.ELEMENT_DATA.length > 0 ) {
+        if (this.ELEMENT_DATA.length > 0) {
           this.searchActive = true;
         }
       },
@@ -227,6 +241,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
 
     // Set the found application as the defaultApplication
     this.defaultApplication = defaultApp;
+    this.sessionStorageService.setItem('defaultApplication', defaultApp);
   }
 
   openUpdateApplicationDialog(id: number) {
@@ -299,7 +314,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     // Call the delete service
     this.applicationInstanceService.deleteApplicationInstance(id).subscribe({
       next: () => {
-          this.snackbarService.show(GetDeleteSuccessfullyMessage(this.applicationInstanceModelName), MessageType.SUCCESS);
+        this.snackbarService.show(GetDeleteSuccessfullyMessage(this.applicationInstanceModelName), MessageType.SUCCESS);
         // Update the UI
         this.getApplications();
       },
@@ -324,7 +339,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     this.progressBar = true;
     this.sub = this.applicationInstanceService.getOfflineLicense(id).subscribe({
       next: response => {
-        setTimeout(()=>{
+        setTimeout(() => {
           const blob = new Blob([response], { type: 'application/octet-stream' });
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
@@ -341,5 +356,4 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 }

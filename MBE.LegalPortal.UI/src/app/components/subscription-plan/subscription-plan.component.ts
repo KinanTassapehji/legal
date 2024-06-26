@@ -12,6 +12,7 @@ import { SnackbarService } from '../../shared/custom-snackbar/snackbar.service';
 import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../constants/messages-constants';
 import { MessageType } from '../../enums/messageType';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-subscription-plan',
@@ -35,7 +36,8 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
   constructor(private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private matDialog: MatDialog,
-    private snackbarService: SnackbarService) { }
+    private snackbarService: SnackbarService,
+    private sessionStorageService: SessionStorageService) { }
 
   ngOnInit(): void {
     this.getApplications();
@@ -52,12 +54,24 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
         // Check if there are applications
         if (this.applications.length > 0) {
-          // Set the first application as selected
-          this.selectedApplication = applications[0];
-          this.defaultApplication = this.selectedApplication;
-          this.selectedApplication.selected = true;
-          this.selectedApplication.isDefault = true;
-          this.getSubscriptionPlans(this.selectedApplication.id);
+
+          // Get the Default Application
+          var defaultApplication = this.sessionStorageService.getItem('defaultApplication');
+          if (defaultApplication === null) {
+            this.sessionStorageService.setItem('defaultApplication', applications[0]);
+            defaultApplication = this.sessionStorageService.getItem('defaultApplication');
+          }
+          this.selectedApplication = defaultApplication;
+          this.defaultApplication = defaultApplication;
+
+          //add default and selected app
+          var defaultApp = this.applications.find(app => app.id === this.defaultApplication?.id);
+          if (defaultApp) {
+            defaultApp.isDefault = true;
+            defaultApp.selected = true;
+          }
+
+          this.getSubscriptionPlans(defaultApplication.id);
         }
 
         // Set isLoading to false and emit progress bar state after successful response
@@ -158,6 +172,7 @@ export class SubscriptionPlanComponent implements OnInit, OnDestroy {
 
     // Set the found application as the defaultApplication
     this.defaultApplication = defaultApp;
+    this.sessionStorageService.setItem('defaultApplication', defaultApp);
   }
 
   onCardClick(id: number) {
