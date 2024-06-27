@@ -70,6 +70,8 @@ export class AddApplicationComponent {
     }
     this.isuploaded = false;
   }
+
+
   fileInputClick() {
     this.isuploaded = true;
     let element: HTMLElement = document.querySelector('input[type="file"]') as HTMLElement;
@@ -77,7 +79,6 @@ export class AddApplicationComponent {
   }
 
   handleImageInput(event: any) {
-    console.log('File Upload 2')
     this.isuploaded = true;
     const folder = 'Applications'; // Specify the folder here
     const file: File = event.target.files[0];
@@ -90,7 +91,6 @@ export class AddApplicationComponent {
         this.applicationImage = response.data;
         this.applicationImageUrl = `${Base_Media_Url}${response.data}`; // Display the uploaded image
         this.isuploaded = false;
-        console.log('File Upload 3')
       },
       error: (error: any) => {
         // Handle error
