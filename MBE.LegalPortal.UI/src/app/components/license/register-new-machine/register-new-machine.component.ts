@@ -12,6 +12,7 @@ import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-po
 })
 export class RegisterNewMachineComponent implements OnDestroy {
   @Output() machineAdded: EventEmitter<void> = new EventEmitter<void>();
+  machineName: string = '';
   macAddress: string = '';
   processorId: string = '';
   volumeSerial: string = '';
@@ -30,6 +31,7 @@ export class RegisterNewMachineComponent implements OnDestroy {
     this.progressBar = true;
     let requestBody = {
       "licenseId": this.data.licenseId,
+      "machineName": model.machineName,
       "macAddress": model.macAddress,
       "processorId": model.processorId,
       "volumeSerial": model.volumeSerial,
