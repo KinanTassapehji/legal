@@ -24,56 +24,64 @@ export class AddApplicationComponent {
   sub!: Subscription;
   progressBar = false;
   modelName: string = 'Application';
-
+  isuploaded = false;
   constructor(private matDialog: MatDialog, private applicationService: ApplicationService,
     private mediaService: MediaService,
     private dialogRef: MatDialogRef<AddApplicationComponent>) { }
 
   addApplication() {
-    this.progressBar = true
-    const requestBody = {
-      name: this.applicationName,
-      image: this.applicationImage,
-      applicationConstraints: this.constraints
-    };
-
-    this.sub = this.applicationService.createApplication(requestBody).subscribe({
-      next: () => {
-        // Emit event to notify parent component
-        this.applicationAdded.emit();
-        this.progressBar = false;
-        // Close the dialog
-        this.dialogRef.close();
-      },
-      error: err => {
-        let errorMessage = GetCreateFailedMessage(this.modelName);
-        if (err.status === 409) {
-          // Handle 409 Conflict as a successful response
-          errorMessage = GetConflictMessage(this.modelName);
-        }
-        else {
-          // Extract the detailed error message if available
-          console.error('Error adding application');
-          if (err && err.error && err.error.messages) {
-            errorMessage = err.error.messages.join(', ');
+    if (this.isuploaded === false) {
+      const requestBody = {
+        name: this.applicationName,
+        image: this.applicationImage,
+        applicationConstraints: this.constraints
+      };
+      this.progressBar = true
+      this.sub = this.applicationService.createApplication(requestBody).subscribe({
+        next: () => {
+          // Emit event to notify parent component
+          this.applicationAdded.emit();
+          this.progressBar = false;
+          // Close the dialog
+          this.dialogRef.close();
+        },
+        error: err => {
+          let errorMessage = GetCreateFailedMessage(this.modelName);
+          if (err.status === 409) {
+            // Handle 409 Conflict as a successful response
+            errorMessage = GetConflictMessage(this.modelName);
           }
+          else {
+            // Extract the detailed error message if available
+            console.error('Error adding application');
+            if (err && err.error && err.error.messages) {
+              errorMessage = err.error.messages.join(', ');
+            }
+          }
+          // Display the error message in a dialog
+          this.matDialog.open(ErrorPopupComponent, {
+            width: '500px',
+            disableClose: true, // Prevent closing the dialog by clicking outside
+            data: { title: 'Error', message: errorMessage }
+          });
+          this.progressBar = false;
         }
-        // Display the error message in a dialog
-        this.matDialog.open(ErrorPopupComponent, {
-          width: '500px',
-          disableClose: true, // Prevent closing the dialog by clicking outside
-          data: { title: 'Error', message: errorMessage }
-        });
-        this.progressBar = false;
-      }
-    });
+      });
+    }
+    this.isuploaded = false;
+  }
+  fileInputClick() {
+    this.isuploaded = true;
+    let element: HTMLElement = document.querySelector('input[type="file"]') as HTMLElement;
+    return element.click();
   }
 
   handleImageInput(event: any) {
+    console.log('File Upload 2')
+    this.isuploaded = true;
     const folder = 'Applications'; // Specify the folder here
     const file: File = event.target.files[0];
     const formData = new FormData();
-
     formData.append('file', file);
 
     // Use the mediaService to handle the upload
@@ -81,6 +89,8 @@ export class AddApplicationComponent {
       next: (response: any) => {
         this.applicationImage = response.data;
         this.applicationImageUrl = `${Base_Media_Url}${response.data}`; // Display the uploaded image
+        this.isuploaded = false;
+        console.log('File Upload 3')
       },
       error: (error: any) => {
         // Handle error
@@ -88,6 +98,7 @@ export class AddApplicationComponent {
         // Reset the image-related properties
         this.applicationImage = '';
         this.applicationImageUrl = '';
+        this.isuploaded = false;
       }
     });
   }
