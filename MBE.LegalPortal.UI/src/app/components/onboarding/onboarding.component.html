@@ -215,7 +215,7 @@
                       <div class="ob-cont-title">License</div>
                       <div class="ob-cont-subtitle">Please fill the following details.</div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 col-md-6">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Environment</mat-label>
                         <mat-select matInput required [(ngModel)]="environment" name="environment" (selectionChange)="checkLicenseFields(fLicense?.invalid)">
@@ -223,8 +223,23 @@
                           <mat-option value="Staging">Staging</mat-option>
                         </mat-select>
                       </mat-form-field>
-                    </div>
+                    </div>                    
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>No of Machines</mat-label>
+                        <input matInput required>
+                      </mat-form-field>
+                    </div>                    
                     <div class="col-sm-12">
+                      <div class="license-type-container">
+                        <h5>License Type</h5>
+                        <mat-radio-group aria-label="Select an option" name="expiryType" required>
+                          <mat-radio-button value="Limited">Limited</mat-radio-button>
+                          <mat-radio-button value="UnLimited">UnLimited</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Expiry Date</mat-label>
                         <input matInput [matDatepicker]="picker" (dateInput)="onDateChange($event.value)" name="expiryDate" required (change)="checkLicenseFields(fLicense?.invalid)">
@@ -232,7 +247,7 @@
                         <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-12 col-md-6">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Expiry action</mat-label>
                         <mat-select matInput [(ngModel)]="expiryAction" name="expiryAction" required (selectionChange)="checkLicenseFields(fLicense?.invalid)">
