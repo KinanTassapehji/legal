@@ -14,6 +14,7 @@ export class MachineDetailsComponent {
   ngOnInit(): void {
     this.machineInfo = JSON.parse(this.data);
     let machineData = {
+      "machineName": this.machineInfo.machineName,
       "processorId": this.machineInfo.processorId,
       "volumeSerial": this.machineInfo.volumeSerial,
       "macAddress": this.machineInfo.macAddress,
