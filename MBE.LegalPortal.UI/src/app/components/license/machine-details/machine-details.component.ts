@@ -9,6 +9,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class MachineDetailsComponent {
 
   machineInfo: any;
+  macAddress = '';
+  processorId = '';
+  volumeSerial = '';
+  domain = '';
+  hash = '';
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
@@ -21,6 +27,11 @@ export class MachineDetailsComponent {
       "domain": this.machineInfo.domain,
       "hash":this.machineInfo.hash,
     };
+    this.macAddress = machineData.macAddress;
+    this.processorId = machineData.processorId;
+    this.volumeSerial = machineData.volumeSerial;
+    this.domain = machineData.domain;
+    this.hash = machineData.hash;
     this.machineInfo = JSON.stringify(machineData);
   }
 

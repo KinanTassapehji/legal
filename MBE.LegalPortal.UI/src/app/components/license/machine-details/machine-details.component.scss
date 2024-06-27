@@ -1,0 +1,27 @@
+mat-list.machine-info-details-list {
+    padding: 0;
+    mat-list-item {
+        border-bottom: 1px solid var(--lp-text-light);
+        height: auto;
+        &:last-child{
+            border-bottom: none;
+        }
+        .machine-list-inner-cont {
+            display: flex;
+            align-items: center;
+            .machine-list-inner-title {
+                font-weight: 500;
+                flex: 0 0 30%;
+            }
+            .machine-list-inner-desc {
+                flex: 0 0 70%;
+                word-break: break-word;
+                white-space: normal;
+                padding: 6px 0;
+            }
+        }
+    }
+}
+.lp-common-modal-container mat-dialog-content {
+    padding: 0 1rem !important;
+}
