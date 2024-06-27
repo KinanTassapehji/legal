@@ -348,7 +348,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
           a.download = this.offlineFileName;
           a.click();
           window.URL.revokeObjectURL(url);
-        }, 2000);
+        }, 1000);
       },
       error: err => {
         console.log(err);

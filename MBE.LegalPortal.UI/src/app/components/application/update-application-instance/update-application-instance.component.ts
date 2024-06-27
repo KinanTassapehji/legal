@@ -71,8 +71,12 @@ export class UpdateApplicationInstanceComponent implements OnInit, OnDestroy {
     this.sub = this.accountService.getAccountsAll().subscribe({
       next: accounts => {
         this.accounts = accounts;
+        this.progressBar = false;
       },
-      error: err => this.errorMessage = err
+      error: err => {
+        this.errorMessage = err
+        this.progressBar = false;
+      }
     });
   }
 
