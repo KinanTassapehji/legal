@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class MachineDetailsComponent {
 
   machineInfo: any;
+  machineName = '';
   macAddress = '';
   processorId = '';
   volumeSerial = '';
@@ -27,6 +28,7 @@ export class MachineDetailsComponent {
       "domain": this.machineInfo.domain,
       "hash":this.machineInfo.hash,
     };
+    this.machineName = machineData.machineName;
     this.macAddress = machineData.macAddress;
     this.processorId = machineData.processorId;
     this.volumeSerial = machineData.volumeSerial;

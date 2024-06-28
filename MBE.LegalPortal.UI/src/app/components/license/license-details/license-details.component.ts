@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViolationConstraintsComponent } from '../violation-constraints/ViolationConstraintsComponent';
 import { UpdateViolationComponent } from '../update-violation/update-violation.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LicenseService } from '../../../services/license.service';
 import { Subscription } from 'rxjs';
 import { formatDate } from '@angular/common';
