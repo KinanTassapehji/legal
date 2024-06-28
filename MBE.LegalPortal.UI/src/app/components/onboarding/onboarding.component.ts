@@ -18,6 +18,7 @@ import { GetConflictMessage, GetCreateFailedMessage, GetCreateSuccessfullyMessag
 import { MessageType } from '../../enums/messageType';
 import { ViolationPolicy } from '../../enums/ViolationPolicy';
 import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup.component';
+import { ExpiryType } from '../../enums/expiryType';
 
 @Component({
   selector: 'app-onboarding',
@@ -64,6 +65,8 @@ export class OnboardingComponent {
   dataSource: any[] = [];
   //License Tab Fields....
   environment: string = '';
+  expiryType: ExpiryType = ExpiryType.Limited;
+  expiryTypeEnum = ExpiryType; // Enum reference
   expiryDate: string = '';
   expiryAction: string = '';
   //oboard interface

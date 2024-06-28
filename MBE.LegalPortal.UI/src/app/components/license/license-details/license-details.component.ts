@@ -128,7 +128,8 @@ export class LicenseDetailsComponent {
   loadMachines() {
     this.machineData = [];
     for (var m = 0; m < this.machinesSoruce.length; m++) {
-      this.machineData.push({ title: this.machinesSoruce[m].macAddress, Id: this.machinesSoruce[m].id });
+      let name = this.machinesSoruce[m].machineName ? `${this.machinesSoruce[m].machineName}` : `${this.machinesSoruce[m].domain}`;
+      this.machineData.push({ title: name, Id: this.machinesSoruce[m].id });
     }
   }
 

@@ -223,40 +223,42 @@
                           <mat-option value="Staging">Staging</mat-option>
                         </mat-select>
                       </mat-form-field>
-                    </div>                    
+                    </div>
                     <div class="col-sm-12 col-md-6">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>No of Machines</mat-label>
                         <input matInput required>
                       </mat-form-field>
-                    </div>                    
+                    </div>
                     <div class="col-sm-12">
                       <div class="license-type-container">
                         <h5>License Type</h5>
-                        <mat-radio-group aria-label="Select an option" name="expiryType" required>
-                          <mat-radio-button value="Limited">Limited</mat-radio-button>
-                          <mat-radio-button value="UnLimited">UnLimited</mat-radio-button>
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="expiryType" name="expiryType" required>
+                          <mat-radio-button [value]="expiryTypeEnum.Limited">{{expiryTypeEnum.Limited}}</mat-radio-button>
+                          <mat-radio-button [value]="expiryTypeEnum.UnLimited">{{expiryTypeEnum.UnLimited}}</mat-radio-button>
                         </mat-radio-group>
                       </div>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Expiry Date</mat-label>
-                        <input matInput [matDatepicker]="picker" (dateInput)="onDateChange($event.value)" name="expiryDate" required (change)="checkLicenseFields(fLicense?.invalid)">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                      <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Expiry action</mat-label>
-                        <mat-select matInput [(ngModel)]="expiryAction" name="expiryAction" required (selectionChange)="checkLicenseFields(fLicense?.invalid)">
-                          <mat-option *ngFor="let policy of violationPolicies" [value]="policy">
-                            {{ policy }} Policy
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
+                    <ng-container *ngIf="expiryType === expiryTypeEnum.Limited">
+                      <div class="col-sm-12 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>Expiry Date</mat-label>
+                          <input matInput [matDatepicker]="picker" (dateInput)="onDateChange($event.value)" name="expiryDate" required>
+                          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>Expiry Action</mat-label>
+                          <mat-select [(ngModel)]="expiryAction" name="expiryAction" required>
+                            <mat-option *ngFor="let policy of violationPolicies" [value]="policy">
+                              {{ policy }} Policy
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </ng-container>
                     <mat-error *ngIf="errorMessage != ''">
                       {{errorMessage}}
                     </mat-error>
