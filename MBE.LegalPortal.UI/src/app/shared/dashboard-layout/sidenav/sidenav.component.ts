@@ -14,8 +14,8 @@ export class SidenavComponent {
     {name: 'Accounts', link: 'accounts', icon: 'group'},
     {name: 'Subscription Plan', link: 'subscriptionPlans', icon: 'view_kanban'},
     {name: 'License', link: 'license', icon: 'description'},
-    {name: 'Reseller', link: 'reseller', icon: 'work'},
-    {name: 'Region/Country', link: 'region/country', icon: 'public'},
+    //{name: 'Reseller', link: 'reseller', icon: 'work'},
+    //{name: 'Region/Country', link: 'region/country', icon: 'public'},
     {name: 'Settings', link: 'settings', icon: 'settings'},
   ];
   ngOnInit(): void{

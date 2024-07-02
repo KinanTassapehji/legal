@@ -9,7 +9,7 @@ import { formatDate } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationPopupComponent } from '../../../shared/popups/confirmation-popup/confirmation-popup.component';
 import { SnackbarService } from '../../../shared/custom-snackbar/snackbar.service';
-import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage } from '../../../constants/messages-constants';
+import { GetCreateSuccessfullyMessage, GetDeleteFailedMessage, GetDeleteSuccessfullyMessage, GetUpdateSuccessfullyMessage } from '../../../constants/messages-constants';
 import { MessageType } from '../../../enums/messageType';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 import { RegisterNewMachineComponent } from '../register-new-machine/register-new-machine.component';
@@ -189,10 +189,13 @@ export class LicenseDetailsComponent {
   updateViolation(violationId: any) {
     const dialogRef = this.matDialog.open(UpdateViolationComponent, {
       width: "600px",
+      disableClose: true, // Prevent closing the dialog by clicking outside
       data: violationId
     });
+
     dialogRef.componentInstance.violationUpdated.subscribe(() => {
-      this.getLicenseDetails();
+      this.snackbarService.show(GetUpdateSuccessfullyMessage("Overridden State"), MessageType.SUCCESS);
+      this.getLicenseDetails(); // Refresh the list of violations
     })
   }
 

@@ -2,9 +2,7 @@ import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { LicenseService } from '../../../services/license.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { SnackbarService } from '../../../shared/custom-snackbar/snackbar.service';
-import { GetUpdateSuccessfullyMessage } from '../../../constants/messages-constants';
-import { MessageType } from '../../../enums/messageType';
+import { GetUpdateFailedMessage } from '../../../constants/messages-constants';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
 import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 
@@ -25,7 +23,6 @@ export class UpdateViolationComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<UpdateViolationComponent>,
     private licenseService: LicenseService,
-    private snackbarService: SnackbarService,
     private matDialog: MatDialog) { }
 
   updateState() {
@@ -33,15 +30,15 @@ export class UpdateViolationComponent {
     let state = { Id: this.data, ViolationState: this.ViolationState, ResolvedReason: this.ResolvedReason };
     this.sub = this.licenseService.updateViolationState(state).subscribe({
       next: () => {
+        // Emit event to notify parent component
         this.violationUpdated.emit();
-        this.snackbarService.show(GetUpdateSuccessfullyMessage("violation status"), MessageType.SUCCESS);
-        this.dialogRef.close();
         this.progressBar = false;
+        // Close the dialog
+        this.dialogRef.close();
       },
       error: err => {
-        this.progressBar = false;
-        // Extract the detailed error message if available
-        let errorMessage = GetUpdateSuccessfullyMessage("Exception");
+        let errorMessage = GetUpdateFailedMessage("Overridden State");
+        console.error('Error updating Overridden State', err);
         if (err && err.error && err.error.messages) {
           errorMessage = err.error.messages.join(', ');
         }
@@ -51,6 +48,7 @@ export class UpdateViolationComponent {
           disableClose: true, // Prevent closing the dialog by clicking outside
           data: { title: 'Error', message: errorMessage }
         });
+        this.progressBar = false;
       }
     });
   }
