@@ -45,9 +45,9 @@ export class UpdateSettingComponent {
     this.progressBar = true;
     const requestBody = {
       id: this.settingId,
-      key: data.Key,
-      value: data.Value,
-      description: data.Description
+      key: data.key,
+      value: data.value,
+      description: data.description
     };
     this.sub = this.settingService.updateSetting(requestBody).subscribe({
       next: () => {
