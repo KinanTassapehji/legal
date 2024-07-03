@@ -60,10 +60,14 @@ export class CreateLicenseComponent {
 
   addLicense() {
     this.progressBar = true;
+
+
+    // Proceed to create license request
     if (this.expiryType === this.expiryTypeEnum.UnLimited) {
       this.expiryAction = 'NoViolation';
-      this.expiryDate = new Date(0).toISOString(); 
+      this.expiryDate = '1970-01-01T00:00:00.000Z'; // Set unlimited expiry date
     }
+
     let requestBody = {
       "maximumMachines": this.maximumMachines,
       "maximumRemainingDaysToEscalate": this.maximumRemainingDaysToEscalate,

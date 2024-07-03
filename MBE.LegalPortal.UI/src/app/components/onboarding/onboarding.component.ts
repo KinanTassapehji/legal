@@ -359,6 +359,14 @@ export class OnboardingComponent {
       return;
     }
     this.progressBar = true;
+
+
+    // Proceed to create license request
+    if (this.expiryType === this.expiryTypeEnum.UnLimited) {
+      this.expiryAction = 'NoViolation';
+      this.expiryDate = '1970-01-01T00:00:00.000Z'; // Set unlimited expiry date
+    }
+
     //get application constraints from selected plan...
     let applicationConstraints = this.selectedsubscriptionPlan.constraints[0] as any;
     // create new constraints with new object...
