@@ -44,6 +44,7 @@ export class UpdateLicenseComponent {
   expiryDate: string = '';
   expiryAction: string = '';
   maximumMachines: number = 1;
+  maximumRemainingDaysToEscalate: number = 1;
   expiryTypeEnum = ExpiryType; // Enum reference
   expiryType: ExpiryType = ExpiryType.Limited;
   violationPolicies = Object.keys(ViolationPolicy);
@@ -87,6 +88,7 @@ export class UpdateLicenseComponent {
         this.expiryDate = response.expiryDate.toString();
         this.creatApplicationConstraints(response.constraints);
         this.maximumMachines = response.maximumMachines;
+        this.maximumRemainingDaysToEscalate = response.maximumRemainingDaysToEscalate;
         this.expiryType = response.expiryType;
         this.accountId = response.account.id;
         this.applicationId = response.application.id;
@@ -182,6 +184,7 @@ export class UpdateLicenseComponent {
     this.progressBar = true;
     let requestBody = {
       "maximumMachines": this.maximumMachines,
+      "maximumRemainingDaysToEscalate": this.maximumRemainingDaysToEscalate,
       "expiryType": this.expiryType,
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,

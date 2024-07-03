@@ -65,6 +65,8 @@ export class OnboardingComponent {
   dataSource: any[] = [];
   //License Tab Fields....
   environment: string = '';
+  maximumMachines: number = 1;
+  maximumRemainingDaysToEscalate: number = 1;
   expiryType: ExpiryType = ExpiryType.Limited;
   expiryTypeEnum = ExpiryType; // Enum reference
   expiryDate: string = '';
@@ -378,6 +380,8 @@ export class OnboardingComponent {
       "expiryDate": new Date(this.expiryDate),
       "expiryAction": this.expiryAction,
       "environment": this.environment,
+      "maximumMachines": this.maximumMachines,
+      "maximumRemainingDaysToEscalate": this.maximumRemainingDaysToEscalate,
       "subscriptionPlanId": this.selectedsubscriptionPlan.id,
       "createConstraints": [createConstraint]
     };

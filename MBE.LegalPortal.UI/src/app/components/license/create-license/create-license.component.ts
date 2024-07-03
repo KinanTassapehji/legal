@@ -36,6 +36,7 @@ export class CreateLicenseComponent {
   tenantId: number = 0;
   subscriptionPlanId: number = 0;
   maximumMachines: number = 1;
+  maximumRemainingDaysToEscalate: number = 1;
   expiryTypeEnum = ExpiryType; // Enum reference
   expiryType: ExpiryType = ExpiryType.Limited;
   environment: string = '';
@@ -65,6 +66,7 @@ export class CreateLicenseComponent {
     }
     let requestBody = {
       "maximumMachines": this.maximumMachines,
+      "maximumRemainingDaysToEscalate": this.maximumRemainingDaysToEscalate,
       "expiryType": this.expiryType,
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,

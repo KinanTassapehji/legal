@@ -38,7 +38,7 @@
               <!-- Violation Date Column -->
               <ng-container matColumnDef="violationdate">
                 <th mat-header-cell *matHeaderCellDef> Violation Date </th>
-                <td mat-cell *matCellDef="let element"> {{ element.violationdate }} </td>
+                <td mat-cell *matCellDef="let element"> {{ element.violationdate | date: 'dd/MM/yyyy hh:mm:ss a' }} </td>
               </ng-container>
               <!-- License State Column -->
               <ng-container matColumnDef="licensestate">
@@ -55,7 +55,14 @@
               <!-- Resolved Date Column -->
               <ng-container matColumnDef="resolveddate">
                 <th mat-header-cell *matHeaderCellDef> Resolved Date </th>
-                <td mat-cell *matCellDef="let element"> {{element.resolveddate}} </td>
+                <td mat-cell *matCellDef="let element">
+                  <ng-container *ngIf="element.resolveddate !== 'N/A'; else naBlock">
+                    {{ element.resolveddate | date: 'dd/MM/yyyy hh:mm:ss a' }}
+                  </ng-container>
+                  <ng-template #naBlock>
+                    {{ element.resolveddate }}
+                  </ng-template>
+                </td>
               </ng-container>
               <!-- Resolved Reason Column -->
               <ng-container matColumnDef="resolvedreason">

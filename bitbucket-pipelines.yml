@@ -14,7 +14,7 @@ pipelines:
           artifacts:
             - MBE.LegalPortal.UI/dist/**
   branches:
-    master:
+    bug/kinan/LIC-315:
       - step:
           name: Build
           caches:

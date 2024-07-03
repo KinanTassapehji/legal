@@ -146,14 +146,14 @@ export class LicenseDetailsComponent {
         if (this.violation.length > 0) {
           for (var i = 0; i < this.violation.length; i++) {
             let _violationid = this.violation[i].id;
-            let _violationdate = formatDate(this.violation[i].violationDate, 'dd-MM-yyyy', 'en-US');
+            let _violationdate = this.violation[i].violationDate;
             let _licenseState = this.violation[i].licenseState;
             let _resolvedReason = this.violation[i].resolvedReason ? this.violation[i].resolvedReason : "N/A";
             let _messages = JSON.parse(this.violation[i].messages);
             let _violationState = this.violation[i].violationState;
             let _tag = _licenseState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _licenseState.toString().toLowerCase();
             let _violationStateTag = _violationState.toString().toLowerCase() === 'NoViolation' ? 'no-violation' : _violationState.toString().toLowerCase();
-            let _resolvedDate = this.violation[i].resolvedDate ? formatDate(this.violation[i].resolvedDate, 'dd-MM-yyyy', 'en-US') : "N/A";
+            let _resolvedDate = this.violation[i].resolvedDate ? this.violation[i].resolvedDate : 'N/A';
             this.VIOLATION_ELEMENT_DATA.push({
               violationid: _violationid,
               violationdate: _violationdate,

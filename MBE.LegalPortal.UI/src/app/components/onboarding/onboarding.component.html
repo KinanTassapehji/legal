@@ -227,7 +227,13 @@
                     <div class="col-sm-12 col-md-6">
                       <mat-form-field appearance="outline" class="w-100">
                         <mat-label>No of Machines</mat-label>
-                        <input matInput required>
+                        <input type="number" matInput [(ngModel)]="maximumMachines" name="maximumMachines" required>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Maximum remaining days to escalate</mat-label>
+                        <input type="number" matInput [(ngModel)]="maximumRemainingDaysToEscalate" name="maximumRemainingDaysToEscalate" required>
                       </mat-form-field>
                     </div>
                     <div class="col-sm-12">
