@@ -65,6 +65,8 @@ export class OnboardingComponent {
   dataSource: any[] = [];
   //License Tab Fields....
   environment: string = '';
+  maximumMachines: number = 1;
+  maximumRemainingDaysToEscalate: number = 1;
   expiryType: ExpiryType = ExpiryType.Limited;
   expiryTypeEnum = ExpiryType; // Enum reference
   expiryDate: string = '';
@@ -357,6 +359,14 @@ export class OnboardingComponent {
       return;
     }
     this.progressBar = true;
+
+
+    // Proceed to create license request
+    if (this.expiryType === this.expiryTypeEnum.UnLimited) {
+      this.expiryAction = 'NoViolation';
+      this.expiryDate = '1970-01-01T00:00:00.000Z'; // Set unlimited expiry date
+    }
+
     //get application constraints from selected plan...
     let applicationConstraints = this.selectedsubscriptionPlan.constraints[0] as any;
     // create new constraints with new object...
@@ -378,6 +388,8 @@ export class OnboardingComponent {
       "expiryDate": new Date(this.expiryDate),
       "expiryAction": this.expiryAction,
       "environment": this.environment,
+      "maximumMachines": this.maximumMachines,
+      "maximumRemainingDaysToEscalate": this.maximumRemainingDaysToEscalate,
       "subscriptionPlanId": this.selectedsubscriptionPlan.id,
       "createConstraints": [createConstraint]
     };

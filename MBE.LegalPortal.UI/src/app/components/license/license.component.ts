@@ -17,7 +17,6 @@ import { ErrorPopupComponent } from '../../shared/popups/error-popup/error-popup
 import { Router } from '@angular/router';
 import { ExpiryType } from '../../enums/expiryType';
 import { ViolationPolicy } from '../../enums/ViolationPolicy';
-import { formatDate } from '@angular/common';
 
 export interface PeriodicElement {
   application: string;
@@ -77,7 +76,7 @@ export class LicenseComponent {
 
   onCreateLicenseDialog() {
     const dialogRef = this.matDialog.open(CreateLicenseComponent, {
-      width: "600px",
+      width: "700px",
       disableClose: true, // Prevent closing the dialog by clicking outside
     });
 

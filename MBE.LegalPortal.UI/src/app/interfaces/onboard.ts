@@ -1,7 +1,3 @@
-import { IAccount } from "./account";
-import { IApplicationInstance } from "./application-instance";
-import { ILicense } from "./license";
-
 export interface IOnBoard {
   accountName: string,
   accountEmail: string,
@@ -14,6 +10,8 @@ export interface IOnBoard {
   expiryDate: Date,
   expiryAction: string,
   environment: string,
+  maximumMachines: number,
+  maximumRemainingDaysToEscalate: number,
   subscriptionPlanId: number | undefined,
   createConstraints: any
 }
