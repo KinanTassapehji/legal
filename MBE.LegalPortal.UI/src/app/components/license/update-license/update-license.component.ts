@@ -183,6 +183,21 @@ export class UpdateLicenseComponent {
   updateLicense() {
     this.progressBar = true;
 
+    // Validate expiry date if expiryType is Limited
+    if (this.expiryType === this.expiryTypeEnum.Limited) {
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in ISO format
+      if (!this.expiryDate || this.expiryDate < today) {
+        // Display error message or handle invalid date here
+        const errorMessage = 'Expiry date must be today or a future date.';
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
+        this.progressBar = false;
+        return; // Exit addLicense() method if validation fails
+      }
+    }
 
     // Proceed to create license request
     if (this.expiryType === this.expiryTypeEnum.UnLimited) {

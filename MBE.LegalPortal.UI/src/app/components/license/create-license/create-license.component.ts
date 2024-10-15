@@ -61,6 +61,21 @@ export class CreateLicenseComponent {
   addLicense() {
     this.progressBar = true;
 
+    // Validate expiry date if expiryType is Limited
+    if (this.expiryType === this.expiryTypeEnum.Limited) {
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in ISO format
+      if (!this.expiryDate || this.expiryDate < today) {
+        // Display error message or handle invalid date here
+        const errorMessage = 'Expiry date must be today or a future date.';
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
+        this.progressBar = false;
+        return; // Exit addLicense() method if validation fails
+      }
+    }
 
     // Proceed to create license request
     if (this.expiryType === this.expiryTypeEnum.UnLimited) {
@@ -79,6 +94,7 @@ export class CreateLicenseComponent {
       "subscriptionPlanId": this.subscriptionPlanId,
       "constraints": this.applicationConstraints
     };
+
     this.sub = this.licenseService.createLicense(requestBody).subscribe({
       next: (response) => {
         // Emit event to notify parent component
@@ -87,28 +103,27 @@ export class CreateLicenseComponent {
         // Close the dialog
         this.dialogRef.close();
       },
-    error: err => {
-      let errorMessage = GetCreateFailedMessage(this.modelName);
-      if (err.status === 409) {
-        // Handle 409 Conflict as a successful response
-        errorMessage = GetConflictMessage(this.modelName);
-      }
-      else {
-        // Extract the detailed error message if available
-        console.error('Error creating license', err);
-        if (err && err.error && err.error.messages) {
-          errorMessage = err.error.messages.join(', ');
+      error: err => {
+        let errorMessage = GetCreateFailedMessage(this.modelName);
+        if (err.status === 409) {
+          // Handle 409 Conflict as a successful response
+          errorMessage = GetConflictMessage(this.modelName);
+        } else {
+          // Extract the detailed error message if available
+          console.error('Error creating license', err);
+          if (err && err.error && err.error.messages) {
+            errorMessage = err.error.messages.join(', ');
+          }
         }
+        // Display the error message in a dialog
+        this.matDialog.open(ErrorPopupComponent, {
+          width: '500px',
+          disableClose: true, // Prevent closing the dialog by clicking outside
+          data: { title: 'Error', message: errorMessage }
+        });
+        this.progressBar = false;
       }
-      // Display the error message in a dialog
-      this.matDialog.open(ErrorPopupComponent, {
-        width: '500px',
-        disableClose: true, // Prevent closing the dialog by clicking outside
-        data: { title: 'Error', message: errorMessage }
-      });
-      this.progressBar = false;
-    }
-  });
+    });
   }
 
   OnDateChange(value: any) {
