@@ -41,7 +41,6 @@ pipelines:
             # Zip all content and save to Archive_File
             - zip -r -9 $Archive_File ./MBE.LegalPortal.UI/dist/*
             # Copy the archive to AWS S3
-            - aws s3 cp "$Archive_File" "${s3_url}/Api/Dev/build_${BITBUCKET_BUILD_NUMBER}/publish_archive.zip"
             - aws s3 cp "$Archive_File" "${s3_url}/UI/Dev/build_${BITBUCKET_BUILD_NUMBER}/publish_archive.zip"
       - step:
           name: Deploy to EC2
