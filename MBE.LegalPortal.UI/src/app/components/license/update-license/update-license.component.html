@@ -16,7 +16,7 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Application</mat-label>
-            <mat-select [(ngModel)]="applicationId" name="applicationId" required>
+            <mat-select [(ngModel)]="applicationId" name="applicationId" required (selectionChange)="getApplicationInstance()">
               <mat-option *ngFor="let app of applications" [value]="app.id">{{app.name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -24,7 +24,7 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Account</mat-label>
-            <mat-select matInput [(ngModel)]="accountId" name="accountId" required>
+            <mat-select matInput [(ngModel)]="accountId" name="accountId" required (selectionChange)="getApplicationInstance()">
               <mat-option *ngFor="let account of accounts" [value]="account.id">{{account.name}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -48,7 +48,7 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Subscription plan</mat-label>
-            <mat-select matInput required [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId" (selectionChange)="selectSubscriptionPlanId($event)">
+            <mat-select matInput [(ngModel)]="subscriptionPlanId" name="subscriptionPlanId" (selectionChange)="getApplicationConstraints()" required>
               <mat-option *ngFor="let subscriptionPlan of subscriptionPlans" [value]="subscriptionPlan.id">{{subscriptionPlan.name}}</mat-option>
             </mat-select>
           </mat-form-field>

@@ -56,9 +56,8 @@
         <div class="col-sm-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Environment</mat-label>
-            <mat-select matInput required [(ngModel)]="environment" name="environment">
-              <mat-option value="staging">Staging</mat-option>
-              <mat-option value="production">Production</mat-option>
+            <mat-select matInput required [(ngModel)]="environmentId" name="environmentId">
+              <mat-option *ngFor="let envir of environment" [value]="envir.environmentId">{{envir.environmentName}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

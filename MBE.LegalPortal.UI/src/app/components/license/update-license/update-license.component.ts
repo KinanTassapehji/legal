@@ -15,6 +15,7 @@ import { ExpiryType } from '../../../enums/expiryType';
 import { ViolationPolicy } from '../../../enums/ViolationPolicy';
 import { GetConflictMessage, GetUpdateFailedMessage } from '../../../constants/messages-constants';
 import { ErrorPopupComponent } from '../../../shared/popups/error-popup/error-popup.component';
+import { ApplicationInstanceService } from '../../../services/application-instance.service';
 
 @Component({
   selector: 'app-update-license',
@@ -61,7 +62,7 @@ export class UpdateLicenseComponent {
     private subscriptionPlanService: SubscriptionPlanService,
     private applicationService: ApplicationService,
     private accountService: AccountService,
-    private tenantService: TenantService,
+    private applicationInstanceService: ApplicationInstanceService,
     private dialogRef: MatDialogRef<UpdateLicenseComponent>) { }
 
   ngOnInit(): void {
@@ -92,19 +93,15 @@ export class UpdateLicenseComponent {
         this.expiryType = response.expiryType;
         this.accountId = response.account.id;
         this.applicationId = response.application.id;
+        this.applicationInstanceId = response.tenant.applicationInstance.id;
         this.getApplications();
         this.getAccounts();
         this.getSubscriptionPlans();
         this.getApplicationConstraints();
-        this.getTenantsApplicationInstance(this.tenantId);
+        this.getApplicationInstance();
         this.progressBar = false;
       }
     });
-  }
-
-  selectSubscriptionPlanId(event: any) {
-    this.subscriptionPlanId = event.value;
-    this.getApplicationConstraints();
   }
 
   getApplications() {
@@ -125,19 +122,6 @@ export class UpdateLicenseComponent {
     });
   }
 
-  getTenantsApplicationInstance(id: number) {
-    this.sub = this.tenantService.getTenantById(id).subscribe({
-      next: response => {
-        let data = response;
-        if (data) {
-          this.applicationInstance = [data.applicationInstance];
-          console.log('Selected application Instance:', this.applicationInstance)
-          this.applicationInstanceId = data.applicationInstance.id;
-        }
-      }
-    })
-  }
-
   getSubscriptionPlans() {
     this.subscriptionPlans = [];
     console.log('responseSubscriptionPlanapplicationId', this.applicationId);
@@ -147,6 +131,24 @@ export class UpdateLicenseComponent {
         this.subscriptionPlans = responseSubscriptionPlan;
       }
     });
+  }
+
+  getApplicationInstance() {
+    this.applicationInstance = [];
+    this.tenants = [];
+    if (this.applicationId > 0) {
+      this.getSubscriptionPlans();
+    }
+    if (this.accountId > 0 && this.applicationId > 0) {
+      this.sub = this.applicationInstanceService.getApplicationInstance(this.accountId, this.applicationId).subscribe({
+        next: response => {
+          if (response.data.length > 0) {
+            this.applicationInstance = [response.data[0]];
+            this.tenants = response.data[0].tenants;
+          }
+        }
+      });
+    }
   }
 
   getApplicationConstraints() {

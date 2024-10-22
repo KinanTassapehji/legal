@@ -39,12 +39,15 @@ export class CreateLicenseComponent {
   maximumRemainingDaysToEscalate: number = 1;
   expiryTypeEnum = ExpiryType; // Enum reference
   expiryType: ExpiryType = ExpiryType.Limited;
-  environment: string = '';
+  environmentId: string = '';
   expiryDate: string = '';
   expiryAction: string = '';
   applicationConstraints: any[] = [];
   violationPolicies = Object.keys(ViolationPolicy);
   progressBar = false;
+  environment = [{ environmentId: "Staging", environmentName: "Staging" },
+  { environmentId: "Production", environmentName: "Production" }
+  ];
   modelName: string = 'License';
 
   constructor(private matDialog: MatDialog, private licenseService: LicenseService,
@@ -89,7 +92,7 @@ export class CreateLicenseComponent {
       "expiryType": this.expiryType,
       "expiryDate": this.expiryDate,
       "expiryAction": this.expiryAction,
-      "environment": this.environment,
+      "environment": this.environmentId,
       "tenantId": this.tenantId,
       "subscriptionPlanId": this.subscriptionPlanId,
       "constraints": this.applicationConstraints
