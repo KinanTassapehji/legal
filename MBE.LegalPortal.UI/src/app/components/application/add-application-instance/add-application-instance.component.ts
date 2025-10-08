@@ -60,7 +60,7 @@ export class AddApplicationInstanceComponent implements OnInit, OnDestroy {
       accountId: this.accountId,
       tenants: this.tenants.map(tenant => ({
         ...tenant,
-        url: `https://${tenant.url}`  // Add 'https://' to the url
+        url: tenant.url
       }))
     };
 

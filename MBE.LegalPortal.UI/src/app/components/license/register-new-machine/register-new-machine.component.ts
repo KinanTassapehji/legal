@@ -35,7 +35,7 @@ export class RegisterNewMachineComponent implements OnDestroy {
       "macAddress": model.macAddress,
       "processorId": model.processorId,
       "volumeSerial": model.volumeSerial,
-      "domain": `https://${model.domain}`
+      "domain": model.domain
     };
 
     this.sub = this.machineService.createMachine(requestBody).subscribe({

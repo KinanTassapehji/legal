@@ -399,7 +399,7 @@ export class OnboardingComponent {
       "applicationId": this.applicationId,
       "tenantName": this.tenantName,
       "tenantEmail": this.tenantEmail,
-      "tenantUrl": 'https://' + this.tenantUrl,
+      "tenantUrl": this.tenantUrl,
       "expiryDate": new Date(this.expiryDate),
       "expiryAction": this.expiryAction,
       "environment": this.environment,

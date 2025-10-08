@@ -63,7 +63,6 @@
                 <div class="col-sm-12 col-md-4">
                   <mat-form-field appearance="outline" class="w-100" floatLabel="always">
                     <mat-label>Custom URL</mat-label>
-                    <span matTextPrefix>https:// </span>
                     <input matInput [(ngModel)]="tenant.url" name="tenantUrl{{i}}" required placeholder="websiteurl.com">
                     <mat-error *ngIf="f.controls['tenantUrl'+i].invalid && (f.controls['tenantUrl'+i].dirty || f.controls['tenantUrl'+i].touched)">
                       Tenant URL is required.
